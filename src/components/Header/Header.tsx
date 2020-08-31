@@ -5,7 +5,7 @@ function Header() {
     return (
         <header className={s.header}>
             <img
-                src="https://lh3.googleusercontent.com/proxy/USqDgPo2GRrZYggpG0TliQNpzIDAB3zcte_2mb0UHA1Uv60am3lnLKpAoK6J1e0pO58-LrpZSJQ"
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/1200px-Check_green_icon.svg.png"
                 alt=""/>
         </header>
     )
