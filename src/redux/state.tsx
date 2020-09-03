@@ -1,3 +1,5 @@
+import {rerenderEntireTree} from "../render";
+
 type StateProfilePagePostsItemType = {
     id: number
     message: string
@@ -23,7 +25,7 @@ type StateDialogsPageType = {
     dialogs: StateDialogsPageDialogsItemType[]
 }
 
-type StateObjectType = {
+export type StateObjectType = {
     profilePage: StateProfilePageType
     dialogsPage: StateDialogsPageType
 }
@@ -58,6 +60,16 @@ let state: StateObjectType = {
             {id: 6, name: 'Valera'}
         ]
     }
+}
+
+export const addPost = (postMessege: string) => {
+    let newPost: StateProfilePagePostsItemType = {
+        id: 5,
+        message: postMessege,
+        likesCount: 0
+    }
+    state.profilePage.posts.push(newPost)
+    rerenderEntireTree(state)
 }
 
 export default state

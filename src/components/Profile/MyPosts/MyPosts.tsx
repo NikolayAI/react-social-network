@@ -6,18 +6,34 @@ export type MyPostsType = {
     posts: PostType[]
 }
 
-function MyPosts(props: MyPostsType) {
+export type MyPostsPropsType = {
+    posts: PostType[]
+    addPost: (postMessege: string) => void
+}
+
+function MyPosts(props: MyPostsPropsType) {
 
     let postsElement = props.posts.map(p => <Post message={p.message} likesCount={p.likesCount} id={p.id}/>)
+
+    let newPost = React.createRef<HTMLTextAreaElement>()
+
+    const addPost = () => {
+        if (newPost.current) {
+            let text = newPost.current.value
+            props.addPost(text)
+            newPost.current.value = ''
+        }
+    }
+
 
     return (
         <div className={s.postsBlock}><h3>my posts</h3>
             <div>
                 <div>
-                    <textarea></textarea>
+                    <textarea ref={newPost}></textarea>
                 </div>
                 <div>
-                    <button>Add post</button>
+                    <button onClick={addPost}>Add post</button>
                 </div>
             </div>
             <div className={s.posts}>
