@@ -1,12 +1,10 @@
 import s from "../Dialogs.module.css";
 import React from "react";
+import {StateDialogsPageMessagesItemType} from "../../../redux/state";
 
-export type MessageType = {
-    id: number
-    message: string
-}
+export type MessagePropsType = StateDialogsPageMessagesItemType
 
-function Message(props: MessageType) {
+function Message(props: MessagePropsType) {
     return (
         <div className={s.message}>{props.message}</div>
     )
