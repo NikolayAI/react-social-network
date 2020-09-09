@@ -15,6 +15,9 @@ type AppPropsType = {
 }
 
 function App(props: AppPropsType) {
+
+    const state = props.store.getState()
+
     return (
         <BrowserRouter>
             <div className='app-wrapper'>
@@ -23,10 +26,12 @@ function App(props: AppPropsType) {
                 <div className={'app-wrapper-content'}>
                     <Route path={'/profile'}
                            render={() => <Profile
-                               profilePage={props.store.state.profilePage}
-                               addPost={props.store.addPost.bind(props.store)}
-                               updateNewPostText={props.store.updateNewPostText.bind(props.store)}/>}/>
-                    <Route path={'/dialogs'} render={() => <Dialogs dialogsPage={props.store.state.dialogsPage}/>}/>
+                               profilePage={state.profilePage}
+                               dispatch={props.store.dispatch.bind(props.store)}/>}/>
+                    <Route path={'/dialogs'}
+                           render={() => <Dialogs
+                               dialogsPage={state.dialogsPage}
+                               dispatch={props.store.dispatch.bind(props.store)}/>}/>
                     <Route path={'/news'} render={() => <News/>}/>
                     <Route path={'/music'} render={() => <Music/>}/>
                     <Route path={'/settings'} render={() => <Settings/>}/>

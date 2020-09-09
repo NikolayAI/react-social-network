@@ -1,14 +1,16 @@
 import React from "react";
 import s from './MyPosts.module.css'
 import Post from "./Post/Post";
-import {StateProfilePagePostsItemType} from "../../../redux/state";
+import {DispatchActionsType, StateProfilePagePostsItemType,} from "../../../redux/state";
+import {addPostActionCreator, updatePostActionCreator} from "../../../redux/ProfilePageReducer";
+
 
 export type MyPostsPropsType = {
     posts: StateProfilePagePostsItemType[]
-    addPost: () => void
+    dispatch: (action: DispatchActionsType) => void
     newPostText: string
-    updateNewPostText: (newText: string) => void
 }
+
 
 function MyPosts(props: MyPostsPropsType) {
 
@@ -17,11 +19,11 @@ function MyPosts(props: MyPostsPropsType) {
     let newPost = React.createRef<HTMLTextAreaElement>()
 
     const addPost = () => {
-            props.addPost()
+        props.dispatch(addPostActionCreator())
     }
 
-    const newPostTextHandler = (e:  React.ChangeEvent<HTMLTextAreaElement>) => {
-        props.updateNewPostText(e.currentTarget.value)
+    const newPostTextHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        props.dispatch(updatePostActionCreator(e.currentTarget.value))
     }
 
     return (
