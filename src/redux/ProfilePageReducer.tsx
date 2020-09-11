@@ -4,12 +4,22 @@ import {
     StateProfilePagePostsItemType,
     StateProfilePageType,
     UpdatePostDispatchType
-} from "./state";
+} from "./store";
 
 const ADD_POST = 'ADD-POST'
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT'
 
-export const profilePageReducer = (state: StateProfilePageType, action: DispatchActionsType) => {
+const initialState = {
+    posts: [
+        {id: 1, message: 'Hi, how are you?', likesCount: 12},
+        {id: 2, message: 'It\'s my first post', likesCount: 23},
+        {id: 3, message: 'Blabla', likesCount: 5},
+        {id: 4, message: 'Dada', likesCount: 7},
+    ],
+    newPostText: '',
+}
+
+export const profilePageReducer = (state: StateProfilePageType = initialState, action: DispatchActionsType) => {
     switch (action.type) {
         case ADD_POST:
             let newPost: StateProfilePagePostsItemType = {
