@@ -8,7 +8,7 @@ import {
 export const ADD_MESSAGE = 'ADD-MESSAGE'
 export const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT'
 
-const initialState = {
+const initialState: StateDialogsPageType = {
     dialogs: [
         {id: 1, name: 'Dimych'},
         {id: 2, name: 'Andrey'},
