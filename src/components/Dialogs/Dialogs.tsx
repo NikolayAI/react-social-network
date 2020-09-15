@@ -2,8 +2,7 @@ import React from "react";
 import s from './Dialogs.module.css'
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
-import {DispatchActionsType, StateDialogsPageType,} from "../../redux/store";
-import {addMessageActionCreator, updateMessageActionCreator} from "../../redux/DialogsPageReducer";
+import {StateDialogsPageType,} from "../../redux/store";
 
 type DialogsPropsType = {
     dialogsPage: StateDialogsPageType
@@ -13,14 +12,15 @@ type DialogsPropsType = {
 
 function Dialogs(props: DialogsPropsType) {
 
+    let state = props.dialogsPage
+
     let newMessage = React.createRef<HTMLTextAreaElement>()
 
-    let dialogsElements = props.dialogsPage.dialogs.map(d => <DialogItem name={d.name} id={d.id}/>)
-    let messagesElements = props.dialogsPage.messages.map(m => <Message message={m.message} id={m.id}/>)
+    let dialogsElements = state.dialogs.map(d => <DialogItem key={d.id} name={d.name} id={d.id}/>)
+    let messagesElements = state.messages.map(m => <Message key={m.id} message={m.message} id={m.id}/>)
 
-    const sendMessageHandler = () => {
-        props.sendMessageHandler()
-    }
+    const sendMessageHandler = () => props.sendMessageHandler()
+
 
     const newMessageTextHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         props.newMessageTextHandler(e.currentTarget.value)
@@ -34,7 +34,7 @@ function Dialogs(props: DialogsPropsType) {
             <div className={s.messages}>
                 {messagesElements}
                 <div>
-                    <textarea ref={newMessage} value={props.dialogsPage.newMessageText} onChange={newMessageTextHandler}/>
+                    <textarea ref={newMessage} value={state.newMessageText} onChange={newMessageTextHandler}/>
                 </div>
                 <div>
                     <button onClick={sendMessageHandler}>Send message</button>

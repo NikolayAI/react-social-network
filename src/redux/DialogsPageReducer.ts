@@ -1,9 +1,4 @@
-import {
-    AddMessageDispatchType,
-    DispatchActionsType,
-    StateDialogsPageMessagesItemType,
-    StateDialogsPageType, UpdateMessageDispatchType
-} from "./store";
+import {AddMessageDispatchType, DispatchActionsType, StateDialogsPageType, UpdateMessageDispatchType} from "./store";
 
 export const ADD_MESSAGE = 'ADD-MESSAGE'
 export const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT'
@@ -30,15 +25,12 @@ const initialState: StateDialogsPageType = {
 export const dialogsPageReducer = (state: StateDialogsPageType = initialState, action: DispatchActionsType) => {
     switch (action.type) {
         case ADD_MESSAGE:
-            let newMessage: StateDialogsPageMessagesItemType = {
-                id: 10,
-                message: state.newMessageText
+            let text = state.newMessageText
+            return {
+                ...state,
+                newMessageText: '',
+                messages: [...state.messages, {id: 10, message: text}]
             }
-            let stateCopy = {...state}
-            stateCopy.messages = [...state.messages]
-            stateCopy.messages.push(newMessage)
-            stateCopy.newMessageText = ''
-            return stateCopy
         case UPDATE_NEW_MESSAGE_TEXT:
             return {...state, newMessageText: action.text}
         default:
