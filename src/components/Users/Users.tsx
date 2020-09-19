@@ -1,5 +1,7 @@
 import React from "react";
 import {UsersPageObjectsType} from "../../redux/UsersPageReducer";
+import axios from 'axios'
+import userPhoto from '../../assets/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg'
 
 type UsersPropsType = {
     usersPage: UsersPageObjectsType[]
@@ -11,38 +13,20 @@ type UsersPropsType = {
 function Users(props: UsersPropsType) {
 
     if (props.usersPage.length === 0) {
-        props.setUsers([
-            {
-                id: 1,
-                photoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSVdSZiirXtyx85jKUHoHFKPjFdC9FtX1sP3w&usqp=CAU',
-                followed: false,
-                fullName: 'Dmitriy',
-                status: 'I am a boss',
-                location: {city: 'Minsk', country: 'Belarus'}
-            },
-            {
-                id: 2,
-                photoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSVdSZiirXtyx85jKUHoHFKPjFdC9FtX1sP3w&usqp=CAU',
-                followed: true,
-                fullName: 'Sasha',
-                status: 'I am a boss too',
-                location: {city: 'Moscow', country: 'Russia'}
-            },
-            {
-                id: 3,
-                photoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSVdSZiirXtyx85jKUHoHFKPjFdC9FtX1sP3w&usqp=CAU',
-                followed: false,
-                fullName: 'Andrew',
-                status: 'I am also a boss',
-                location: {city: 'Kiev', country: 'Ukraine'}
-            },
-        ])
+        axios.get('https://social-network.samuraijs.com/api/1.0/users')
+            .then(response => {
+                props.setUsers(response.data.items)
+            })
     }
+
     return (
         <div>
             {props.usersPage.map(u => <div key={u.id}>
                 <span>
-                    <div><img style={{width: '5vw'}} src={u.photoUrl}/></div>
+                    <div>
+                        <img style={{width: '5vw', borderRadius: '25px'}}
+                             src={u.photos.small != null ? u.photos.small : userPhoto}/>
+                    </div>
                     <div>
                         {u.followed
                             ? <button onClick={() => props.unfollowHandler(u.id)}>unfollow</button>
@@ -51,11 +35,11 @@ function Users(props: UsersPropsType) {
                 </span>
                 <span>
                     <span>
-                        <div>{u.fullName}</div><div>{u.status}</div>
+                        <div>{u.name}</div><div>{u.status}</div>
                     </span>
                     <span>
-                        <div>{u.location.country}</div>
-                        <div>{u.location.city}</div>
+                        <div>{'u.location.country'}</div>
+                        <div>{'u.location.city'}</div>
                     </span>
                 </span>
             </div>)}

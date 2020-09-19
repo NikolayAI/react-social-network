@@ -28,12 +28,12 @@ export type StateUsersPageType = {
 }
 
 export type UsersPageObjectsType = {
+    name: string
     id: number
-    photoUrl: string
+    uniqueUrlName: string | null
+    photos: {small: string, large: string}
+    status: string | null
     followed: boolean
-    fullName: string
-    status: string
-    location: UsersPageLocationType
 }
 
 export type UsersPageLocationType = {
@@ -46,7 +46,6 @@ const initialState: StateUsersPageType = {
 }
 
 export const usersPageReducer = (state: StateUsersPageType = initialState, action: DispatchActionsType) => {
-    debugger
     switch (action.type) {
         case FOLLOW:
             return {
