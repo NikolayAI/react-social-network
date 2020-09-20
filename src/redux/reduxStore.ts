@@ -9,6 +9,8 @@ const reducers = combineReducers({
     usersPage: usersPageReducer
 })
 
-export let store = createStore(reducers)
+export let store = createStore(reducers,
+    //@ts-ignore
+window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 //@ts-ignore
 window.store = store
