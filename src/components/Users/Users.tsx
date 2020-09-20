@@ -12,15 +12,18 @@ type UsersPropsType = {
 
 function Users(props: UsersPropsType) {
 
-    if (props.usersPage.length === 0) {
-        axios.get('https://social-network.samuraijs.com/api/1.0/users')
-            .then(response => {
-                props.setUsers(response.data.items)
-            })
+    const getUsersHandler = () => {
+        if (props.usersPage.length === 0) {
+            axios.get('https://social-network.samuraijs.com/api/1.0/users')
+                .then(response => {
+                    props.setUsers(response.data.items)
+                })
+        }
     }
 
     return (
         <div>
+            <button onClick={getUsersHandler}>Get users</button>
             {props.usersPage.map(u => <div key={u.id}>
                 <span>
                     <div>
