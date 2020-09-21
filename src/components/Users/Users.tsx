@@ -10,21 +10,16 @@ type UsersPropsType = {
     setUsers: (users: UsersPageObjectsType[]) => void
 }
 
-function Users(props: UsersPropsType) {
+export class Users extends React.Component<UsersPropsType> {
 
-    const getUsersHandler = () => {
-        if (props.usersPage.length === 0) {
-            axios.get('https://social-network.samuraijs.com/api/1.0/users')
-                .then(response => {
-                    props.setUsers(response.data.items)
-                })
-        }
-    }
+    componentDidMount() {
+        axios.get('https://social-network.samuraijs.com/api/1.0/users')
+            .then(response => this.props.setUsers(response.data.items))}
 
-    return (
-        <div>
-            <button onClick={getUsersHandler}>Get users</button>
-            {props.usersPage.map(u => <div key={u.id}>
+    render() {
+        return (
+            <div>
+                {this.props.usersPage.map(u => <div key={u.id}>
                 <span>
                     <div>
                         <img style={{width: '5vw', borderRadius: '25px'}}
@@ -32,11 +27,11 @@ function Users(props: UsersPropsType) {
                     </div>
                     <div>
                         {u.followed
-                            ? <button onClick={() => props.unfollowHandler(u.id)}>unfollow</button>
-                            : <button onClick={() => props.followHandler(u.id)}>follow</button>}
+                            ? <button onClick={() => this.props.unfollowHandler(u.id)}>unfollow</button>
+                            : <button onClick={() => this.props.followHandler(u.id)}>follow</button>}
                     </div>
                 </span>
-                <span>
+                    <span>
                     <span>
                         <div>{u.name}</div><div>{u.status}</div>
                     </span>
@@ -45,9 +40,10 @@ function Users(props: UsersPropsType) {
                         <div>{'u.location.city'}</div>
                     </span>
                 </span>
-            </div>)}
-        </div>
-    )
+                </div>)}
+            </div>
+        )
+    }
 }
 
 export default Users
