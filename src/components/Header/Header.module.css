@@ -1,4 +1,5 @@
 .header {
+    height: 15vh;
     grid-area: h;
     background-color: green;
 }

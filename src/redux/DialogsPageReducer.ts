@@ -1,7 +1,7 @@
 import {AddMessageDispatchType, DispatchActionsType, StateDialogsPageType, UpdateMessageDispatchType} from "./store";
 
-export const ADD_MESSAGE = 'ADD-MESSAGE'
-export const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT'
+export const ADD_MESSAGE = 'ADD_MESSAGE'
+export const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE_NEW_MESSAGE_TEXT'
 
 const initialState: StateDialogsPageType = {
     dialogs: [

@@ -1,6 +1,12 @@
 import {profilePageReducer} from "./ProfilePageReducer";
 import {dialogsPageReducer} from "./DialogsPageReducer";
-import {FollowDispatchType, setUsersDispatchType, StateUsersPageType, UnfollowDispatchType} from "./UsersPageReducer";
+import {
+    FollowDispatchType,
+    SetCurrentPageType, SetTotalUsersCountType,
+    SetUsersDispatchType,
+    StateUsersPageType, ToggleIsFetchingType,
+    UnfollowDispatchType
+} from "./UsersPageReducer";
 
 
 export type StateProfilePagePostsItemType = {
@@ -43,23 +49,26 @@ export type DispatchActionsType =
     | UpdateMessageDispatchType
     | FollowDispatchType
     | UnfollowDispatchType
-    | setUsersDispatchType
+    | SetUsersDispatchType
+    | SetCurrentPageType
+    | SetTotalUsersCountType
+    | ToggleIsFetchingType
 
 export type AddPostDispatchType = {
-    type: 'ADD-POST'
+    type: 'ADD_POST'
 }
 
 export type AddMessageDispatchType = {
-    type: 'ADD-MESSAGE'
+    type: 'ADD_MESSAGE'
 }
 
 export type UpdatePostDispatchType = {
-    type: 'UPDATE-NEW-POST-TEXT'
+    type: 'UPDATE_NEW_POST_TEXT'
     text: string
 }
 
 export type UpdateMessageDispatchType = {
-    type: 'UPDATE-NEW-MESSAGE-TEXT'
+    type: 'UPDATE_NEW_MESSAGE_TEXT'
     text: string
 }
 

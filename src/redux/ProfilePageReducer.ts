@@ -1,7 +1,7 @@
 import {AddPostDispatchType, DispatchActionsType, StateProfilePageType, UpdatePostDispatchType} from "./store";
 
-const ADD_POST = 'ADD-POST'
-const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT'
+const ADD_POST = 'ADD_POST'
+const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT'
 
 const initialState: StateProfilePageType = {
     posts: [
