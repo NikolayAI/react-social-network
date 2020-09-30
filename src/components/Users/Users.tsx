@@ -3,6 +3,7 @@ import style from './Users.module.css'
 import {UsersPageObjectsType} from "../../redux/UsersPageReducer";
 import userPhoto
     from "../../assets/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg";
+import {NavLink} from "react-router-dom";
 
 type UsersPropsType = {
     users: UsersPageObjectsType[]
@@ -28,8 +29,10 @@ function Users(props: UsersPropsType) {
             {props.users.map(u => <div key={u.id}>
                 <span>
                     <div>
-                        <img style={{width: '3vw', borderRadius: '25px'}}
-                             src={u.photos.small != null ? u.photos.small : userPhoto}/>
+                        <NavLink to={'/profile'}>
+                            <img style={{width: '3vw', borderRadius: '25px'}}
+                                 src={u.photos.small != null ? u.photos.small : userPhoto}/>
+                        </NavLink>
                     </div>
                     <div>
                         {u.followed
