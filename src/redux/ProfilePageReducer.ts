@@ -1,7 +1,14 @@
-import {AddPostDispatchType, DispatchActionsType, StateProfilePageType, UpdatePostDispatchType} from "./store";
+import {
+    AddPostDispatchType,
+    DispatchActionsType, ResponseProfilePageType,
+    SetUserProfileDispatchType,
+    StateProfilePageType,
+    UpdatePostDispatchType
+} from "./store";
 
 const ADD_POST = 'ADD_POST'
 const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT'
+const SET_USER_PROFILE = 'SET_USER_PROFILE'
 
 const initialState: StateProfilePageType = {
     posts: [
@@ -11,7 +18,9 @@ const initialState: StateProfilePageType = {
         {id: 4, message: 'Dada', likesCount: 7},
     ],
     newPostText: '',
+    profile: null
 }
+
 
 export const profilePageReducer = (state: StateProfilePageType = initialState, action: DispatchActionsType) => {
     switch (action.type) {
@@ -24,6 +33,8 @@ export const profilePageReducer = (state: StateProfilePageType = initialState, a
             };
         case UPDATE_NEW_POST_TEXT:
             return {...state, newPostText: action.text}
+        case SET_USER_PROFILE:
+            return {...state, profile: action.profile}
         default:
             return state;
     }
@@ -32,4 +43,7 @@ export const profilePageReducer = (state: StateProfilePageType = initialState, a
 export const addPostActionCreator = (): AddPostDispatchType => ({type: ADD_POST})
 export const updatePostActionCreator = (text: string): UpdatePostDispatchType => {
     return {type: UPDATE_NEW_POST_TEXT, text: text}
+}
+export const setUserProfileAC = (profile: ResponseProfilePageType): SetUserProfileDispatchType => {
+    return {type: SET_USER_PROFILE, profile}
 }

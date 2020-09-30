@@ -8,21 +8,9 @@ type MapStateToPropsType = {
     dialogsPage: StateDialogsPageType
 }
 
-// type MapDispatchToPropsType = {
-//     sendMessageHandler: () => void
-//     newMessageTextHandler: (text: string) => void
-// }
-
 const mapStateToProps = (state: StateObjectType): MapStateToPropsType => {
     return {dialogsPage: state.dialogsPage}
 }
-
-// const mapDispatchToProps = (dispatch: (action: DispatchActionsType) => void): MapDispatchToPropsType => {
-//     return {
-//         sendMessageHandler: () => dispatch(addMessageActionCreator()),
-//         newMessageTextHandler: (text: string) => dispatch(updateMessageActionCreator(text)),
-//     }
-// }
 
 const mapDispatchToProps = {
     addMessageActionCreator,
