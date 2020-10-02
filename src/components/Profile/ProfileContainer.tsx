@@ -3,8 +3,8 @@ import Profile from "./Profile";
 import axios from "axios";
 import {connect} from "react-redux";
 import {setUserProfileAC} from "../../redux/ProfilePageReducer";
-import {ResponseProfilePageType, StateProfileObjectPageType, StateProfilePageType} from "../../redux/store";
-import {withRouter, RouteComponentProps} from 'react-router'
+import {ResponseProfilePageType, StateProfileObjectPageType} from "../../redux/ProfilePageReducer";
+import {RouteComponentProps, withRouter} from 'react-router'
 
 type mapStateToPropsType = {
     profile: ResponseProfilePageType | null

@@ -10,12 +10,7 @@ import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import {UsersContainer} from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 
-// type AppPropsType = {
-//     store: StoreType
-// }
-
 function App() {
-
     return (
         <BrowserRouter>
             <div className='app-wrapper'>

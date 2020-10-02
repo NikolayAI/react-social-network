@@ -1,14 +1,18 @@
 import React from "react";
-import {addMessageActionCreator, updateMessageActionCreator} from "../../redux/DialogsPageReducer";
+import {
+    addMessageActionCreator,
+    StateDialogsObjectPageType,
+    StateDialogsPageType,
+    updateMessageActionCreator
+} from "../../redux/DialogsPageReducer";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
-import {DispatchActionsType, StateDialogsPageType, StateObjectType} from "../../redux/store";
 
 type MapStateToPropsType = {
     dialogsPage: StateDialogsPageType
 }
 
-const mapStateToProps = (state: StateObjectType): MapStateToPropsType => {
+const mapStateToProps = (state: StateDialogsObjectPageType): MapStateToPropsType => {
     return {dialogsPage: state.dialogsPage}
 }
 

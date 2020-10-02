@@ -1,6 +1,6 @@
 import s from "../Dialogs.module.css";
 import React from "react";
-import {StateDialogsPageMessagesItemType} from "../../../redux/store";
+import {StateDialogsPageMessagesItemType} from "../../../redux/DialogsPageReducer";
 
 export type MessagePropsType = StateDialogsPageMessagesItemType
 
