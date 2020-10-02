@@ -1,6 +1,6 @@
 import React from "react";
 import s from './Post.module.css'
-import {StateProfilePagePostsItemType} from "../../../../redux/store";
+import {StateProfilePagePostsItemType} from "../../../../redux/ProfilePageReducer";
 
 function Post(props: StateProfilePagePostsItemType) {
     return (

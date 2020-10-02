@@ -1,8 +1,13 @@
 import React from "react";
-import {addPostActionCreator, updatePostActionCreator} from "../../../redux/ProfilePageReducer";
+import {
+    addPostActionCreator,
+    ActionsProfilePageType,
+    StateProfileObjectPageType,
+    StateProfilePagePostsItemType,
+    updatePostActionCreator
+} from "../../../redux/ProfilePageReducer";
 import MyPosts from "./MyPosts";
 import {connect} from "react-redux";
-import {DispatchActionsType, StateObjectType, StateProfilePagePostsItemType} from "../../../redux/store";
 
 type MapStateToPropsType = {
     posts: StateProfilePagePostsItemType[]
@@ -14,13 +19,13 @@ type MapDispatchToPropsType = {
     newPostTextHandler: (text: string) => void
 }
 
-const mapStateToProps = (state: StateObjectType): MapStateToPropsType => {
+const mapStateToProps = (state: StateProfileObjectPageType): MapStateToPropsType => {
     return {
         posts: state.profilePage.posts,
         newPostText: state.profilePage.newPostText
     }
 }
-const mapDispatchToProps = (dispatch: (action: DispatchActionsType) => void): MapDispatchToPropsType => {
+const mapDispatchToProps = (dispatch: (action: ActionsProfilePageType) => void): MapDispatchToPropsType => {
     return {
         addPostHandler:() => dispatch(addPostActionCreator()),
         newPostTextHandler: (text: string) => dispatch(updatePostActionCreator(text))

@@ -1,14 +1,67 @@
-import {
-    AddPostDispatchType,
-    DispatchActionsType, ResponseProfilePageType,
-    SetUserProfileDispatchType,
-    StateProfilePageType,
-    UpdatePostDispatchType
-} from "./store";
-
 const ADD_POST = 'ADD_POST'
 const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT'
 const SET_USER_PROFILE = 'SET_USER_PROFILE'
+
+export type AddPostProfilePageACType = {
+    type: 'ADD_POST'
+}
+
+export type UpdatePostProfilePageACType = {
+    type: 'UPDATE_NEW_POST_TEXT'
+    text: string
+}
+
+export type SetUserProfilePageACType = {
+    type: 'SET_USER_PROFILE'
+    profile: ResponseProfilePageType | null
+}
+
+export type ActionsProfilePageType = AddPostProfilePageACType
+    | UpdatePostProfilePageACType
+    | SetUserProfilePageACType
+
+
+export type StateProfilePagePostsItemType = {
+    id: number
+    message: string
+    likesCount: number
+}
+
+type ResponseProfilePageContactsType = {
+    facebook: string | null
+    website: string | null
+    vk: string | null
+    twitter: string | null
+    instagram: string | null
+    youtube: string | null
+    github: string | null
+    mainLink: string | null
+}
+
+type ResponseProfilePagePhotosType = {
+    small: string | undefined
+    large: string | undefined
+}
+
+export type ResponseProfilePageType = {
+    aboutMe: string | null
+    contacts: ResponseProfilePageContactsType
+    lookingForAJob: boolean | null
+    lookingForAJobDescription: string | null
+    fullName: string | null
+    userId: number | null
+    photos: ResponseProfilePagePhotosType
+}
+
+export type StateProfileObjectPageType = {
+    profilePage: StateProfilePageType
+}
+
+export type StateProfilePageType = {
+    posts: StateProfilePagePostsItemType[]
+    newPostText: string
+    profile: ResponseProfilePageType | null
+}
 
 const initialState: StateProfilePageType = {
     posts: [
@@ -21,8 +74,7 @@ const initialState: StateProfilePageType = {
     profile: null
 }
 
-
-export const profilePageReducer = (state: StateProfilePageType = initialState, action: DispatchActionsType) => {
+export const profilePageReducer = (state: StateProfilePageType = initialState, action: ActionsProfilePageType) => {
     switch (action.type) {
         case ADD_POST:
             let text = state.newPostText;
@@ -40,10 +92,10 @@ export const profilePageReducer = (state: StateProfilePageType = initialState, a
     }
 };
 
-export const addPostActionCreator = (): AddPostDispatchType => ({type: ADD_POST})
-export const updatePostActionCreator = (text: string): UpdatePostDispatchType => {
+export const addPostActionCreator = (): AddPostProfilePageACType => ({type: ADD_POST})
+export const updatePostActionCreator = (text: string): UpdatePostProfilePageACType => {
     return {type: UPDATE_NEW_POST_TEXT, text: text}
 }
-export const setUserProfileAC = (profile: ResponseProfilePageType): SetUserProfileDispatchType => {
+export const setUserProfileAC = (profile: ResponseProfilePageType): SetUserProfilePageACType => {
     return {type: SET_USER_PROFILE, profile}
 }

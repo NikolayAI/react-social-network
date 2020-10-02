@@ -1,7 +1,37 @@
-import {AddMessageDispatchType, DispatchActionsType, StateDialogsPageType, UpdateMessageDispatchType} from "./store";
+const ADD_MESSAGE = 'ADD_MESSAGE'
+const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE_NEW_MESSAGE_TEXT'
 
-export const ADD_MESSAGE = 'ADD_MESSAGE'
-export const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE_NEW_MESSAGE_TEXT'
+export type AddMessageDialogsPageACType = {
+    type: 'ADD_MESSAGE'
+}
+
+export type UpdateMessageDialogsPageACType = {
+    type: 'UPDATE_NEW_MESSAGE_TEXT'
+    text: string
+}
+
+type ActionsDialogsPageTypes = AddMessageDialogsPageACType
+    | UpdateMessageDialogsPageACType
+
+export type StateDialogsObjectPageType = {
+    dialogsPage: StateDialogsPageType
+}
+
+export type StateDialogsPageMessagesItemType = {
+    id: number
+    message: string
+}
+
+export type StateDialogsPageDialogsItemType = {
+    id: number
+    name: string
+}
+
+export type StateDialogsPageType = {
+    messages: StateDialogsPageMessagesItemType[]
+    dialogs: StateDialogsPageDialogsItemType[]
+    newMessageText: string
+}
 
 const initialState: StateDialogsPageType = {
     dialogs: [
@@ -22,7 +52,7 @@ const initialState: StateDialogsPageType = {
     newMessageText: '',
 }
 
-export const dialogsPageReducer = (state: StateDialogsPageType = initialState, action: DispatchActionsType) => {
+export const dialogsPageReducer = (state: StateDialogsPageType = initialState, action: ActionsDialogsPageTypes): StateDialogsPageType => {
     switch (action.type) {
         case ADD_MESSAGE:
             let text = state.newMessageText
@@ -38,7 +68,7 @@ export const dialogsPageReducer = (state: StateDialogsPageType = initialState, a
     }
 }
 
-export const addMessageActionCreator = (): AddMessageDispatchType => ({type: ADD_MESSAGE})
-export const updateMessageActionCreator = (text: string): UpdateMessageDispatchType => {
+export const addMessageActionCreator = (): AddMessageDialogsPageACType => ({type: ADD_MESSAGE})
+export const updateMessageActionCreator = (text: string): UpdateMessageDialogsPageACType => {
     return {type: UPDATE_NEW_MESSAGE_TEXT, text: text}
 }
