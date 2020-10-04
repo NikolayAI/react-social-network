@@ -18,9 +18,9 @@ type PathParamsType = {
     userId: string
 }
 
-type OwnProfileContainerPropsType = mapStateToPropsType & mapDispatchToPropsType
-
-type ProfileContainerPropsType = RouteComponentProps<PathParamsType> & OwnProfileContainerPropsType
+type ProfileContainerPropsType = RouteComponentProps<PathParamsType>
+    & mapStateToPropsType
+    & mapDispatchToPropsType
 
 export class ProfileContainer extends React.Component<ProfileContainerPropsType>{
 
