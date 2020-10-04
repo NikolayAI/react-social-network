@@ -10,7 +10,7 @@ import {
     toggleIsFetchingAC,
     unfollowAC,
     UsersPageObjectsType
-} from "../../redux/UsersPageReducer";
+} from "../../redux/usersPageReducer";
 import axios from "axios";
 import {Preloader} from "../common/Preloader/Preloader";
 

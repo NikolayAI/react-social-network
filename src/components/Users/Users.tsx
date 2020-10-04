@@ -1,6 +1,6 @@
 import React from "react";
 import style from './Users.module.css'
-import {UsersPageObjectsType} from "../../redux/UsersPageReducer";
+import {UsersPageObjectsType} from "../../redux/usersPageReducer";
 import userPhoto
     from "../../assets/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg";
 import {NavLink} from "react-router-dom";

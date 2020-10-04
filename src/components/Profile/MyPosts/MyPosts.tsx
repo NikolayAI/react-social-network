@@ -1,7 +1,7 @@
 import React from "react";
 import s from './MyPosts.module.css'
 import Post from "./Post/Post";
-import {StateProfilePagePostsItemType,} from "../../../redux/ProfilePageReducer";
+import {StateProfilePagePostsItemType,} from "../../../redux/profilePageReducer";
 
 
 export type MyPostsPropsType = {

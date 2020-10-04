@@ -1,7 +1,7 @@
 import React, {ReactNode} from "react";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import MyPostsContainer from "./MyPosts/MyPostsContainer";
-import {ResponseProfilePageType} from "../../redux/ProfilePageReducer";
+import {ResponseProfilePageType} from "../../redux/profilePageReducer";
 
 type ProfilePropsType = {
     children?: ReactNode

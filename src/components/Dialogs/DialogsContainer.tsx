@@ -4,7 +4,7 @@ import {
     StateDialogsObjectPageType,
     StateDialogsPageType,
     updateMessageActionCreator
-} from "../../redux/DialogsPageReducer";
+} from "../../redux/dialogsPageReducer";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 

@@ -5,7 +5,7 @@ import {
     StateProfileObjectPageType,
     StateProfilePagePostsItemType,
     updatePostActionCreator
-} from "../../../redux/ProfilePageReducer";
+} from "../../../redux/profilePageReducer";
 import MyPosts from "./MyPosts";
 import {connect} from "react-redux";
 

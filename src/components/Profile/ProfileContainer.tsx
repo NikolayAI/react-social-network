@@ -2,8 +2,8 @@ import React from "react";
 import Profile from "./Profile";
 import axios from "axios";
 import {connect} from "react-redux";
-import {setUserProfileAC} from "../../redux/ProfilePageReducer";
-import {ResponseProfilePageType, StateProfileObjectPageType} from "../../redux/ProfilePageReducer";
+import {setUserProfileAC} from "../../redux/profilePageReducer";
+import {ResponseProfilePageType, StateProfileObjectPageType} from "../../redux/profilePageReducer";
 import {RouteComponentProps, withRouter} from 'react-router'
 
 type mapStateToPropsType = {
