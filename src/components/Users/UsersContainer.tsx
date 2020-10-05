@@ -7,12 +7,12 @@ import {
     setTotalUsersCountAC,
     setUsersAC,
     StateUsersObjectPageType,
-    toggleIsFetchingAC,
+    toggleIsFetchingAC, toggleFollowingProgressAC,
     unfollowAC,
     UsersPageObjectsType
 } from "../../redux/usersPageReducer";
-import axios from "axios";
 import {Preloader} from "../common/Preloader/Preloader";
+import {usersAPI} from "../../api/api";
 
 type mapStateToProps = {
     users: UsersPageObjectsType[]
@@ -20,6 +20,7 @@ type mapStateToProps = {
     totalUsersCount: number
     currentPage: number
     isFetching: boolean
+    followingInProgress: number[]
 }
 
 type UsersContainerPropsType = {
@@ -34,27 +35,29 @@ type UsersContainerPropsType = {
     setCurrentPageAC: (page: number) => void
     setTotalUsersCountAC: (usersCount: number) => void
     toggleIsFetchingAC: (isFetching: boolean) => void
+    toggleFollowingProgressAC: (followingInProgress: boolean, userId: number) => void
+    followingInProgress: number[]
 }
 
 export class UsersContainerToo extends React.Component<UsersContainerPropsType> {
 
     componentDidMount() {
         this.props.toggleIsFetchingAC(true)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
-            .then(response => {
+        usersAPI.getUsers(this.props.currentPage, this.props.pageSize)
+            .then(data => {
                 this.props.toggleIsFetchingAC(false)
-                this.props.setUsersAC(response.data.items)
-                this.props.setTotalUsersCountAC(response.data.totalCount)
+                this.props.setUsersAC(data.items)
+                this.props.setTotalUsersCountAC(data.totalCount)
             })
     }
 
     setCurrentPageHandler = (page: number) => {
         this.props.setCurrentPageAC(page)
         this.props.toggleIsFetchingAC(true)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.pageSize}`)
-            .then(response => {
+        usersAPI.getUsers(page, this.props.pageSize)
+            .then(data => {
                 this.props.toggleIsFetchingAC(false)
-                this.props.setUsersAC(response.data.items)
+                this.props.setUsersAC(data.items)
             })
     }
 
@@ -66,8 +69,10 @@ export class UsersContainerToo extends React.Component<UsersContainerPropsType> 
                        currentPage={this.props.currentPage}
                        setCurrentPageHandler={this.setCurrentPageHandler}
                        users={this.props.users}
-                       followHandler={this.props.followAC}
-                       unfollowHandler={this.props.unfollowAC}/>
+                       follow={this.props.followAC}
+                       unfollow={this.props.unfollowAC}
+                       toggleFollowingProgressAC={this.props.toggleFollowingProgressAC}
+                       followingInProgress={this.props.followingInProgress}/>
             </>
         )
     }
@@ -80,6 +85,7 @@ const mapStateToProps = (state: StateUsersObjectPageType): mapStateToProps => {
         totalUsersCount: state.usersPage.totalUsersCount,
         currentPage: state.usersPage.currentPage,
         isFetching: state.usersPage.isFetching,
+        followingInProgress: state.usersPage.followingInProgress,
     }
 }
 
@@ -90,6 +96,7 @@ const mapDispatchToProps= {
     setCurrentPageAC,
     setTotalUsersCountAC,
     toggleIsFetchingAC,
+    toggleFollowingProgressAC,
 }
 
 export const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(UsersContainerToo)
