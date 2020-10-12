@@ -1,34 +1,19 @@
 import React from "react";
 import Header from "./Header";
 import {connect} from "react-redux";
-import {setAuthUserDataAC, setAuthUserPhotoAC, StateAuthObjectType} from "../../redux/authReducer";
-import {authAPI, profileAPI} from "../../api/api";
+import {getAuthUserData, StateAuthObjectType} from "../../redux/authReducer";
 
 type HeaderContainerPropsType = {
-    setAuthUserDataAC: (userId: number|null, login: string|null, email: string|null) => void
-    setAuthUserPhotoAC: (userPhoto: string | null) => void
     isAuth: boolean
     login: string | null
     smallPhoto: string | null
     userId: number | null
+    getAuthUserData: (userId: number | null) => void
 }
 
 class HeaderContainer extends React.Component<HeaderContainerPropsType> {
 
-    componentDidMount() {
-        authAPI.getLogin()
-            .then(response => {
-                if (response.data.resultCode === 0) {
-                    const {id, login, email} = response.data.data
-                    this.props.setAuthUserDataAC(id, login, email)
-                }
-            }).then(() => {
-                profileAPI.getProfile(this.props.userId)
-                    .then(smallPhoto => {
-                        this.props.setAuthUserPhotoAC(smallPhoto)
-                        })
-                    })
-                }
+    componentDidMount() {this.props.getAuthUserData(this.props.userId)}
 
     render() {
         return <Header isAuth={this.props.isAuth} login={this.props.login} smallPhoto={this.props.smallPhoto}/>
@@ -52,9 +37,7 @@ const mapStateToProps = (state: StateAuthObjectType): mapStateToProps => {
 }
 
 const mapDispatchToProps = {
-    setAuthUserDataAC,
-    setAuthUserPhotoAC,
+    getAuthUserData,
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(HeaderContainer)

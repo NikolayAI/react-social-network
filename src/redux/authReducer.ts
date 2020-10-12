@@ -1,3 +1,6 @@
+import {authAPI, usersAPI} from "../api/api";
+import {ThunkDispatch} from "redux-thunk";
+
 const SET_AUTH_USER_DATA = 'SET_AUTH_USER_DATA'
 const SET_AUTH_USER_PHOTO = 'SET_AUTH_USER_PHOTO'
 
@@ -36,7 +39,7 @@ export type StateAuthType = {
 type ActionsAuthTypes = SetAuthUserDataACType
     | SetAuthUserPhotoACType
 
-type StateDataObjectType = {
+export type StateDataObjectType = {
     userId: number | null
     login: string | null
     email: string | null
@@ -61,11 +64,22 @@ export const authReducer = (state: StateAuthType = initialState, action: Actions
     }
 };
 
-export const setAuthUserDataAC = (userId: number|null, login: string|null,
-                                  email: string|null): SetAuthUserDataACType => {
+export const setAuthUserDataAC = (userId: number | null, login: string | null, email: string | null): SetAuthUserDataACType => {
     return {type: SET_AUTH_USER_DATA, data: {userId, login, email}}
 }
-
 export const setAuthUserPhotoAC = (userPhoto: string | null): SetAuthUserPhotoACType => {
     return {type: SET_AUTH_USER_PHOTO, userPhoto}
+}
+
+export const getAuthUserData = (userId: number | null) => (dispatch: ThunkDispatch<StateAuthType, {}, ActionsAuthTypes>) => {
+    authAPI.getLogin()
+        .then(response => {
+            if (response.data.resultCode === 0) {
+                const {id, login, email} = response.data.data
+                dispatch(setAuthUserDataAC(id, login, email))
+            }
+        }).then(() => {
+            usersAPI.getProfileSmallPhoto(userId)
+                .then(response => dispatch(setAuthUserPhotoAC(response.data.photos.small)))
+    })
 }

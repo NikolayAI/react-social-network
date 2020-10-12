@@ -1,17 +1,20 @@
 import React from "react";
 import Profile from "./Profile";
-import axios from "axios";
 import {connect} from "react-redux";
-import {setUserProfileAC} from "../../redux/profilePageReducer";
-import {ResponseProfilePageType, StateProfileObjectPageType} from "../../redux/profilePageReducer";
+import {getUserProfile, ResponseProfilePageType, StateProfileObjectPageType} from "../../redux/profilePageReducer";
 import {RouteComponentProps, withRouter} from 'react-router'
+import {StateAuthObjectType} from "../../redux/authReducer";
+import {Redirect} from "react-router-dom";
 
 type mapStateToPropsType = {
     profile: ResponseProfilePageType | null
+    isAuth: boolean
 }
 
+type MapStateToPropsStateMergeType = StateProfileObjectPageType & StateAuthObjectType
+
 type mapDispatchToPropsType = {
-    setUserProfileAC: (profile: ResponseProfilePageType) => void
+    getUserProfile: (userId: number | null) => void
 }
 
 type PathParamsType = {
@@ -25,27 +28,30 @@ type ProfileContainerPropsType = RouteComponentProps<PathParamsType>
 export class ProfileContainer extends React.Component<ProfileContainerPropsType>{
 
     componentDidMount() {
-        let userId = this.props.match.params.userId
-        if (!userId) userId = '2'
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userId)
-            .then(response => this.props.setUserProfileAC(response.data))
+        let userId = Number(this.props.match.params.userId)
+        if (!userId) userId = 2
+        this.props.getUserProfile(userId)
     }
 
     render() {
+
+        if (!this.props.isAuth) return <Redirect to={'/login/'}/>
+
         return (
-            <Profile {...this.props} profile={this.props.profile}/>
+            <Profile profile={this.props.profile}/>
         )
     }
 }
 
-const mapStateToProps = (state: StateProfileObjectPageType): mapStateToPropsType => {
+const mapStateToProps = (state: MapStateToPropsStateMergeType): mapStateToPropsType => {
     return {
-        profile: state.profilePage.profile
+        profile: state.profilePage.profile,
+        isAuth: state.auth.isAuth,
     }
 }
 
 const mapDispatchToProps = {
-    setUserProfileAC,
+    getUserProfile,
 }
 
 const UrlDataContainerComponentWithRouter = withRouter(ProfileContainer)

@@ -2,9 +2,9 @@ import React, {ReactNode} from "react";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import MyPostsContainer from "./MyPosts/MyPostsContainer";
 import {ResponseProfilePageType} from "../../redux/profilePageReducer";
+import { Redirect } from "react-router-dom";
 
 type ProfilePropsType = {
-    children?: ReactNode
     profile: ResponseProfilePageType | null
 }
 

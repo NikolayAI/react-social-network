@@ -7,13 +7,20 @@ import {
 } from "../../redux/dialogsPageReducer";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
+import {StateAuthObjectType} from "../../redux/authReducer";
 
 type MapStateToPropsType = {
     dialogsPage: StateDialogsPageType
+    isAuth: boolean
 }
 
-const mapStateToProps = (state: StateDialogsObjectPageType): MapStateToPropsType => {
-    return {dialogsPage: state.dialogsPage}
+type MapStateToPropsStateMergeType = StateDialogsObjectPageType & StateAuthObjectType
+
+const mapStateToProps = (state: MapStateToPropsStateMergeType): MapStateToPropsType => {
+    return {
+        dialogsPage: state.dialogsPage,
+        isAuth: state.auth.isAuth,
+    }
 }
 
 const mapDispatchToProps = {
