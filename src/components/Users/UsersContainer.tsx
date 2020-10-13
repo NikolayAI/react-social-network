@@ -10,6 +10,8 @@ import {
     UsersPageObjectsType
 } from "../../redux/usersPageReducer";
 import {Preloader} from "../common/Preloader/Preloader";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import { compose } from "redux";
 
 type mapStateToProps = {
     users: UsersPageObjectsType[]
@@ -41,13 +43,6 @@ export class UsersContainerToo extends React.Component<UsersContainerPropsType> 
 
     setCurrentPageHandler = (page: number) => {
         this.props.getUsers(page, this.props.pageSize)
-        // this.props.setCurrentPageAC(page)
-        // this.props.toggleIsFetchingAC(true)
-        // usersAPI.getUsers(page, this.props.pageSize)
-        //     .then(data => {
-        //         this.props.toggleIsFetchingAC(false)
-        //         this.props.setUsersAC(data.items)
-        //     })
     }
 
     render() {
@@ -84,4 +79,4 @@ const mapDispatchToProps= {
     getUsers,
 }
 
-export const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(UsersContainerToo)
+export const UsersContainer = withAuthRedirect(connect(mapStateToProps, mapDispatchToProps)(UsersContainerToo))

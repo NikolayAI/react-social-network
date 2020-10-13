@@ -8,19 +8,17 @@ import {
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 import {StateAuthObjectType} from "../../redux/authReducer";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import { compose } from "redux";
 
 type MapStateToPropsType = {
     dialogsPage: StateDialogsPageType
-    isAuth: boolean
 }
 
 type MapStateToPropsStateMergeType = StateDialogsObjectPageType & StateAuthObjectType
 
 const mapStateToProps = (state: MapStateToPropsStateMergeType): MapStateToPropsType => {
-    return {
-        dialogsPage: state.dialogsPage,
-        isAuth: state.auth.isAuth,
-    }
+    return {dialogsPage: state.dialogsPage,}
 }
 
 const mapDispatchToProps = {
@@ -28,7 +26,4 @@ const mapDispatchToProps = {
     updateMessageActionCreator,
 }
 
-const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs)
-
-
-export default DialogsContainer
+export default withAuthRedirect(connect(mapStateToProps, mapDispatchToProps)(Dialogs))

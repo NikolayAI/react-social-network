@@ -60,5 +60,4 @@ function Users(props: UsersPropsType) {
     )
 }
 
-
 export default Users
