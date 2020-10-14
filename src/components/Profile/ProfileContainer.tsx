@@ -25,6 +25,7 @@ type ProfileContainerPropsType = RouteComponentProps<PathParamsType>
 export class ProfileContainer extends React.Component<ProfileContainerPropsType>{
 
     componentDidMount() {
+        console.log(this.props)
         let userId = Number(this.props.match.params.userId)
         if (!userId) userId = 2
         this.props.getUserProfile(userId)
@@ -47,4 +48,7 @@ const mapDispatchToProps = {
     getUserProfile,
 }
 
-export default withAuthRedirect(withRouter(connect(mapStateToProps, mapDispatchToProps)(ProfileContainer)))
+export default compose<React.FC>(
+    connect(mapStateToProps, mapDispatchToProps),
+    withRouter)
+(ProfileContainer)

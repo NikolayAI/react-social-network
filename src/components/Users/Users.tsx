@@ -30,7 +30,7 @@ function Users(props: UsersPropsType) {
             {props.users.map(u => <div key={u.id}>
                 <span>
                     <div>
-                        <NavLink to={'/profile'}>
+                        <NavLink to={`/profile/${u.id}`}>
                             <img style={{width: '3vw', borderRadius: '25px'}}
                                  src={u.photos.small != null ? u.photos.small : userPhoto}/>
                         </NavLink>

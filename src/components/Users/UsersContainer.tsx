@@ -79,4 +79,7 @@ const mapDispatchToProps= {
     getUsers,
 }
 
-export const UsersContainer = withAuthRedirect(connect(mapStateToProps, mapDispatchToProps)(UsersContainerToo))
+export const UsersContainer = compose<React.FC>(
+    connect(mapStateToProps, mapDispatchToProps),
+    withAuthRedirect)
+(UsersContainerToo)

@@ -26,4 +26,7 @@ const mapDispatchToProps = {
     updateMessageActionCreator,
 }
 
-export default withAuthRedirect(connect(mapStateToProps, mapDispatchToProps)(Dialogs))
+export default compose<React.FC>(
+    connect(mapStateToProps, mapDispatchToProps),
+    withAuthRedirect)
+(Dialogs)
