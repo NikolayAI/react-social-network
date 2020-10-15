@@ -6,6 +6,8 @@ import ProfileStatus from "../../ProfileStatus/ProfileStatus";
 
 type ProfileInfoPropsType = {
     profile: ResponseProfilePageType | null
+    status: string
+    updateUserStatus: (status: string) => void
 }
 
 function ProfileInfo(props: ProfileInfoPropsType) {
@@ -15,7 +17,7 @@ function ProfileInfo(props: ProfileInfoPropsType) {
             <div className={s.descriptionBlock}>
                 {props.profile ? <img src={props.profile.photos.large} alt=""/> : <Preloader/>}
                 ava + desription
-                <ProfileStatus status={'hello my friends'}/>
+                <ProfileStatus status={props.status} updateUserStatus={props.updateUserStatus}/>
             </div>
         </div>
     )

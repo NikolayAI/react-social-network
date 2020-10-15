@@ -1,9 +1,10 @@
 import {ThunkDispatch} from "redux-thunk";
-import {usersAPI} from "../api/api";
+import {profileAPI, usersAPI} from "../api/api";
 
 const ADD_POST = 'ADD_POST'
 const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT'
 const SET_USER_PROFILE = 'SET_USER_PROFILE'
+const SET_USER_STATUS = 'SET_USER_STATUS'
 
 export type AddPostProfilePageACType = {
     type: 'ADD_POST'
@@ -19,9 +20,15 @@ export type SetUserProfilePageACType = {
     profile: ResponseProfilePageType | null
 }
 
+export type SetUserStatusProfilePageACType = {
+    type: 'SET_USER_STATUS'
+    status: string
+}
+
 export type ActionsProfilePageType = AddPostProfilePageACType
     | UpdatePostProfilePageACType
     | SetUserProfilePageACType
+    | SetUserStatusProfilePageACType
 
 
 export type StateProfilePagePostsItemType = {
@@ -64,6 +71,7 @@ export type StateProfilePageType = {
     posts: StateProfilePagePostsItemType[]
     newPostText: string
     profile: ResponseProfilePageType | null
+    status: string
 }
 
 const initialState: StateProfilePageType = {
@@ -74,7 +82,8 @@ const initialState: StateProfilePageType = {
         {id: 4, message: 'Dada', likesCount: 7},
     ],
     newPostText: '',
-    profile: null
+    profile: null,
+    status: '',
 }
 
 export const profilePageReducer = (state: StateProfilePageType = initialState, action: ActionsProfilePageType) => {
@@ -90,6 +99,8 @@ export const profilePageReducer = (state: StateProfilePageType = initialState, a
             return {...state, newPostText: action.text}
         case SET_USER_PROFILE:
             return {...state, profile: action.profile}
+        case SET_USER_STATUS:
+            return {...state, status: action.status}
         default:
             return state;
     }
@@ -101,6 +112,21 @@ export const updatePostActionCreator = (text: string): UpdatePostProfilePageACTy
 }
 export const setUserProfileAC = (profile: ResponseProfilePageType): SetUserProfilePageACType => {
     return {type: SET_USER_PROFILE, profile}
+}
+export const setUserStatusProfileAC = (status: string): SetUserStatusProfilePageACType => {
+    return {type: SET_USER_STATUS, status}
+}
+
+export const getUserStatus = (userId: number | null) => (dispatch: ThunkDispatch<StateProfilePageType, {}, ActionsProfilePageType>) => {
+    profileAPI.getStatus(userId)
+        .then(response => dispatch(setUserStatusProfileAC(response.data)))
+}
+
+export const updateUserStatus = (status: string) => (dispatch: ThunkDispatch<StateProfilePageType, {}, ActionsProfilePageType>) => {
+    profileAPI.updateStatus(status)
+        .then(response => {
+            if (!response.data.resultCode) dispatch(setUserStatusProfileAC(status))
+        })
 }
 
 export const getUserProfile = (userId: number | null) => (dispatch: ThunkDispatch<StateProfilePageType, {}, ActionsProfilePageType>) => {
