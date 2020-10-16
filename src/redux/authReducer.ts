@@ -72,7 +72,7 @@ export const setAuthUserPhotoAC = (userPhoto: string | null): SetAuthUserPhotoAC
 }
 
 export const getAuthUserData = (userId: number | null) => (dispatch: ThunkDispatch<StateAuthType, {}, ActionsAuthTypes>) => {
-    authAPI.getLogin()
+    authAPI.me()
         .then(response => {
             if (response.data.resultCode === 0) {
                 const {id, login, email} = response.data.data

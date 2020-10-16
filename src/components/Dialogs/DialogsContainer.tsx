@@ -1,15 +1,10 @@
 import React from "react";
-import {
-    addMessageActionCreator,
-    StateDialogsObjectPageType,
-    StateDialogsPageType,
-    updateMessageActionCreator
-} from "../../redux/dialogsPageReducer";
+import {addMessageAC, StateDialogsObjectPageType, StateDialogsPageType} from "../../redux/dialogsPageReducer";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 import {StateAuthObjectType} from "../../redux/authReducer";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
-import { compose } from "redux";
+import {compose} from "redux";
 
 type MapStateToPropsType = {
     dialogsPage: StateDialogsPageType
@@ -22,8 +17,7 @@ const mapStateToProps = (state: MapStateToPropsStateMergeType): MapStateToPropsT
 }
 
 const mapDispatchToProps = {
-    addMessageActionCreator,
-    updateMessageActionCreator,
+    addMessageAC,
 }
 
 export default compose<React.FC>(

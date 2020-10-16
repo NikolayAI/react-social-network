@@ -1,17 +1,11 @@
 const ADD_MESSAGE = 'ADD_MESSAGE'
-const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE_NEW_MESSAGE_TEXT'
 
 export type AddMessageDialogsPageACType = {
     type: 'ADD_MESSAGE'
-}
-
-export type UpdateMessageDialogsPageACType = {
-    type: 'UPDATE_NEW_MESSAGE_TEXT'
     text: string
 }
 
 type ActionsDialogsPageTypes = AddMessageDialogsPageACType
-    | UpdateMessageDialogsPageACType
 
 export type StateDialogsObjectPageType = {
     dialogsPage: StateDialogsPageType
@@ -30,7 +24,6 @@ export type StateDialogsPageDialogsItemType = {
 export type StateDialogsPageType = {
     messages: StateDialogsPageMessagesItemType[]
     dialogs: StateDialogsPageDialogsItemType[]
-    newMessageText: string
 }
 
 const initialState: StateDialogsPageType = {
@@ -49,26 +42,18 @@ const initialState: StateDialogsPageType = {
         {id: 4, message: 'Yo'},
         {id: 5, message: 'Yo'}
     ],
-    newMessageText: '',
 }
 
 export const dialogsPageReducer = (state: StateDialogsPageType = initialState, action: ActionsDialogsPageTypes): StateDialogsPageType => {
     switch (action.type) {
         case ADD_MESSAGE:
-            let text = state.newMessageText
             return {
                 ...state,
-                newMessageText: '',
-                messages: [...state.messages, {id: 10, message: text}]
+                messages: [...state.messages, {id: 10, message: action.text}]
             }
-        case UPDATE_NEW_MESSAGE_TEXT:
-            return {...state, newMessageText: action.text}
         default:
             return state
     }
 }
 
-export const addMessageActionCreator = (): AddMessageDialogsPageACType => ({type: ADD_MESSAGE})
-export const updateMessageActionCreator = (text: string): UpdateMessageDialogsPageACType => {
-    return {type: UPDATE_NEW_MESSAGE_TEXT, text: text}
-}
+export const addMessageAC = (text: string): AddMessageDialogsPageACType => ({type: ADD_MESSAGE, text})

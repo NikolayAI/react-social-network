@@ -4,11 +4,11 @@ import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import {StateDialogsPageType,} from "../../redux/dialogsPageReducer";
 import { Redirect } from "react-router-dom";
+import {Field, InjectedFormProps, reduxForm} from "redux-form";
 
 type DialogsPropsType = {
     dialogsPage: StateDialogsPageType
-    addMessageActionCreator: () => void
-    updateMessageActionCreator: (text: string) => void
+    addMessageAC: (text: string) => void
     isAuth: boolean
 }
 
@@ -16,16 +16,11 @@ function Dialogs(props: DialogsPropsType) {
 
     let state = props.dialogsPage
 
-    let newMessage = React.createRef<HTMLTextAreaElement>()
-
     let dialogsElements = state.dialogs.map(d => <DialogItem key={d.id} name={d.name} id={d.id}/>)
     let messagesElements = state.messages.map(m => <Message key={m.id} message={m.message} id={m.id}/>)
 
-    const sendMessageHandler = () => props.addMessageActionCreator()
-
-
-    const newMessageTextHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        props.updateMessageActionCreator(e.currentTarget.value)
+    const addNewDialogsMyPostsMessage = (dialogsMyPostsFormData: DialogsMyPostsFormDataType) => {
+        props.addMessageAC(dialogsMyPostsFormData.dialogsMyPostsMessage)
     }
 
     if (!props.isAuth) return <Redirect to={'/login/'}/>
@@ -37,14 +32,33 @@ function Dialogs(props: DialogsPropsType) {
             </div>
             <div className={s.messages}>
                 {messagesElements}
-                <div>
-                    <textarea ref={newMessage} value={state.newMessageText} onChange={newMessageTextHandler}/>
-                </div>
-                <div>
-                    <button onClick={sendMessageHandler}>Send message</button>
-                </div>
+                <DialogsAddMessageReduxForm onSubmit={addNewDialogsMyPostsMessage}/>
             </div>
         </div>
+    )
+}
+
+const DialogsAddMessageReduxForm = reduxForm<DialogsMyPostsFormDataType>({form: 'dialogsMyPostsForm'})(DialogsAddMessageForm)
+
+type DialogsMyPostsFormDataType = {
+    dialogsMyPostsMessage:string
+}
+
+function DialogsAddMessageForm(props: InjectedFormProps<DialogsMyPostsFormDataType>) {
+    return (
+        <>
+            <form onSubmit={props.handleSubmit}>
+                <div>
+                    <Field component={'textarea'}
+                           name={'dialogsMyPostsMessage'}
+                           placeholder={'Enter your message'}
+                    />
+                </div>
+                <div>
+                    <button>Send message</button>
+                </div>
+            </form>
+        </>
     )
 }
 
