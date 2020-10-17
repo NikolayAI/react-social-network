@@ -3,6 +3,8 @@ import s from './MyPosts.module.css'
 import Post from "./Post/Post";
 import {StateProfilePagePostsItemType,} from "../../../redux/profilePageReducer";
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
+import {maxLengthCreator, required} from "../../../utils/validators/validators";
+import {Element} from "../../common/FormsControl/FormsControl";
 
 
 export type MyPostsPropsType = {
@@ -34,15 +36,20 @@ type MyPostsFormDataType = {
     profileMyPostsMessage: string
 }
 
+const maxLength10 = maxLengthCreator(10)
+
+const TextArea = Element('textarea')
+
 function ProfileAddMessageForm(props: InjectedFormProps<MyPostsFormDataType>) {
 
     return (
         <>
             <form onSubmit={props.handleSubmit}>
                 <div>
-                    <Field component={'textarea'}
+                    <Field component={TextArea}
                            name={'profileMyPostsMessage'}
                            placeholder={'Enter your message'}
+                           validate={[required, maxLength10]}
                     />
                 </div>
                 <div>

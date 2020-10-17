@@ -15,7 +15,7 @@ const SET_AUTH_USER_PHOTO = 'SET_AUTH_USER_PHOTO'
 // }
 export type SetAuthUserDataACType = {
     type: 'SET_AUTH_USER_DATA'
-    data: StateDataObjectType
+    payload: StateDataObjectType
 }
 
 export type SetAuthUserPhotoACType = {
@@ -43,6 +43,7 @@ export type StateDataObjectType = {
     userId: number | null
     login: string | null
     email: string | null
+    isAuth: boolean
 }
 
 const initialState: StateAuthType = {
@@ -56,7 +57,7 @@ const initialState: StateAuthType = {
 export const authReducer = (state: StateAuthType = initialState, action: ActionsAuthTypes): StateAuthType => {
     switch (action.type) {
         case SET_AUTH_USER_DATA:
-            return {...state, ...action.data, isAuth: true}
+            return {...state, ...action.payload}
         case SET_AUTH_USER_PHOTO:
             return {...state, smallPhoto: action.userPhoto}
         default:
@@ -64,22 +65,41 @@ export const authReducer = (state: StateAuthType = initialState, action: Actions
     }
 };
 
-export const setAuthUserDataAC = (userId: number | null, login: string | null, email: string | null): SetAuthUserDataACType => {
-    return {type: SET_AUTH_USER_DATA, data: {userId, login, email}}
+export const setAuthUserDataAC = (userId: number | null, login: string | null, email: string | null, isAuth: boolean): SetAuthUserDataACType => {
+    return {type: SET_AUTH_USER_DATA, payload: {userId, login, email, isAuth}}
 }
 export const setAuthUserPhotoAC = (userPhoto: string | null): SetAuthUserPhotoACType => {
     return {type: SET_AUTH_USER_PHOTO, userPhoto}
 }
 
-export const getAuthUserData = (userId: number | null) => (dispatch: ThunkDispatch<StateAuthType, {}, ActionsAuthTypes>) => {
+export const getAuthUserData = () => (dispatch: ThunkDispatch<StateAuthType, {}, ActionsAuthTypes>) => {
     authAPI.me()
         .then(response => {
             if (response.data.resultCode === 0) {
                 const {id, login, email} = response.data.data
-                dispatch(setAuthUserDataAC(id, login, email))
+                dispatch(setAuthUserDataAC(id, login, email, true))
+                return id
             }
-        }).then(() => {
+        }).then(userId => {
             usersAPI.getProfileSmallPhoto(userId)
                 .then(response => dispatch(setAuthUserPhotoAC(response.data.photos.small)))
     })
+}
+
+export const login = (email: string, password: string, rememberMe: boolean) => (dispatch: ThunkDispatch<StateAuthType, {}, ActionsAuthTypes>) => {
+    authAPI.login(email, password, rememberMe)
+        .then(response => {
+            if (response.data.resultCode === 0) {
+                dispatch(getAuthUserData())
+            }
+    })
+}
+
+export const logout = () => (dispatch: ThunkDispatch<StateAuthType, {}, ActionsAuthTypes>) => {
+    authAPI.logout()
+        .then(response => {
+            if (response.data.resultCode === 0) {
+                dispatch(setAuthUserDataAC(null, null, null, false))
+            }
+        })
 }

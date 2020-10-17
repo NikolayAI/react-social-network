@@ -8,6 +8,7 @@ type HeadersPropsType = {
     isAuth: boolean
     login: string | null
     smallPhoto: string | null
+    logout: () => void
 }
 
 function Header(props: HeadersPropsType) {
@@ -17,8 +18,12 @@ function Header(props: HeadersPropsType) {
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/1200px-Check_green_icon.svg.png"
                 alt=""/>
             <div className={s.loginBlock}>
-                {props.isAuth ? <div><img style={{width: '3vw', borderRadius: '25px'}}
-                                     src={props.smallPhoto != null ? props.smallPhoto : userPhoto}/>{props.login}</div> : <NavLink to={'/login/'}>Login</NavLink>}
+                {props.isAuth
+                    ? <div><img style={{width: '3vw', borderRadius: '25px'}}
+                                     src={props.smallPhoto != null ? props.smallPhoto : userPhoto}
+                            />{props.login} - <button onClick={props.logout}>Logout</button>
+                    </div>
+                    : <NavLink to={'/login/'}>Login</NavLink>}
             </div>
         </header>
     )
