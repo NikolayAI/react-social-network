@@ -7,7 +7,7 @@ import userPhoto
 type HeadersPropsType = {
     isAuth: boolean
     login: string | null
-    smallPhoto: string | null
+    smallPhoto: string | undefined
     logout: () => void
 }
 

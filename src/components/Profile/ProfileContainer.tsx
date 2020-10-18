@@ -9,10 +9,13 @@ import {
 } from "../../redux/profilePageReducer";
 import {RouteComponentProps, withRouter} from 'react-router'
 import {compose} from "redux";
+import {StateAuthObjectType} from "../../redux/authReducer";
 
 type mapStateToPropsType = {
     profile: ResponseProfilePageType | null
     status: string
+    authorizedUserId: number | null
+    isAuth: boolean
 }
 
 type mapDispatchToPropsType = {
@@ -32,9 +35,11 @@ type ProfileContainerPropsType = RouteComponentProps<PathParamsType>
 export class ProfileContainer extends React.Component<ProfileContainerPropsType>{
 
     componentDidMount() {
-        console.log(this.props)
-        let userId = Number(this.props.match.params.userId)
-        if (!userId) userId = 11483
+        let userId = Number(this.props.match.params.userId) || null
+        if (!userId) {
+            userId = this.props.authorizedUserId
+            if (!userId) this.props.history.push('/login/')
+        }
         this.props.getUserProfile(userId)
         this.props.getUserStatus(userId)
     }
@@ -46,10 +51,12 @@ export class ProfileContainer extends React.Component<ProfileContainerPropsType>
     }
 }
 
-const mapStateToProps = (state: StateProfileObjectPageType): mapStateToPropsType => {
+const mapStateToProps = (state: StateProfileObjectPageType & StateAuthObjectType): mapStateToPropsType => {
     return {
         profile: state.profilePage.profile,
-        status: state.profilePage.status
+        status: state.profilePage.status,
+        authorizedUserId: state.auth.userId,
+        isAuth: state.auth.isAuth,
     }
 }
 

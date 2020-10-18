@@ -1,5 +1,4 @@
 import axios from "axios";
-import {FormDataType} from "../components/Login/Login";
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.0/',
@@ -20,9 +19,6 @@ export const usersAPI = {
     getProfile(userId: number | null){
         return profileAPI.getProfile(userId)
     },
-    getProfileSmallPhoto(userId: number | null) {
-        return instance.get(`profile/${userId}`)
-    }
 }
 
 export const profileAPI = {

@@ -2,7 +2,7 @@ import React from "react";
 import s from './ProfileInfo.module.css'
 import {ResponseProfilePageType} from "../../../redux/profilePageReducer";
 import {Preloader} from "../../common/Preloader/Preloader";
-import ProfileStatus from "../../ProfileStatus/ProfileStatus";
+import ProfileStatus from "../ProfileStatus/ProfileStatus";
 
 type ProfileInfoPropsType = {
     profile: ResponseProfilePageType | null

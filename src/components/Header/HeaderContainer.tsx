@@ -1,20 +1,17 @@
 import React from "react";
 import Header from "./Header";
 import {connect} from "react-redux";
-import {getAuthUserData, logout, StateAuthObjectType} from "../../redux/authReducer";
+import {logout, StateAuthObjectType} from "../../redux/authReducer";
+import {StateProfileObjectPageType} from "../../redux/profilePageReducer";
 
 type HeaderContainerPropsType = {
     isAuth: boolean
     login: string | null
-    smallPhoto: string | null
-    userId: number | null
-    getAuthUserData: (userId: number | null) => void
+    smallPhoto: string | undefined
     logout: () => void
 }
 
 class HeaderContainer extends React.Component<HeaderContainerPropsType> {
-
-    componentDidMount() {this.props.getAuthUserData(this.props.userId)}
 
     render() {
         return <Header logout={this.props.logout} isAuth={this.props.isAuth} login={this.props.login} smallPhoto={this.props.smallPhoto}/>
@@ -22,23 +19,20 @@ class HeaderContainer extends React.Component<HeaderContainerPropsType> {
 }
 
 type mapStateToProps = {
-    userId: number | null
     login: string | null
     isAuth: boolean
-    smallPhoto: string | null
+    smallPhoto: string | undefined
 }
 
-const mapStateToProps = (state: StateAuthObjectType): mapStateToProps => {
+const mapStateToProps = (state: StateAuthObjectType & StateProfileObjectPageType): mapStateToProps => {
     return {
-        userId: state.auth.userId,
         login: state.auth.login,
         isAuth: state.auth.isAuth,
-        smallPhoto: state.auth.smallPhoto,
+        smallPhoto: state.profilePage.profile?.photos.small,
     }
 }
 
 const mapDispatchToProps = {
-    getAuthUserData,
     logout,
 }
 

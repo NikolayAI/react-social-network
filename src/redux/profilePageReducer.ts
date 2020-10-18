@@ -116,5 +116,8 @@ export const updateUserStatus = (status: string) => (dispatch: ThunkDispatch<Sta
 
 export const getUserProfile = (userId: number | null) => (dispatch: ThunkDispatch<StateProfilePageType, {}, ActionsProfilePageType>) => {
     usersAPI.getProfile(userId)
-        .then(response => dispatch(setUserProfileAC(response.data)))
+        .then(response => {
+            console.log(response)
+            dispatch(setUserProfileAC(response.data))
+        })
 }
