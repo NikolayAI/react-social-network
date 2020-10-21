@@ -17,7 +17,7 @@ import {
     getIsFetching,
     getPageSize,
     getTotalUsersCount,
-    getUsers, getUsersSuperSelector
+    getUsers
 } from "../../redux/users-selectors";
 
 type mapStateToProps = {
