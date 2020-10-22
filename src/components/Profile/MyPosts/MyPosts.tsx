@@ -14,15 +14,15 @@ export type MyPostsPropsType = {
 
 function MyPosts(props: MyPostsPropsType) {
 
-    const addNewProfileMyPostsMessage = (profileMyPostsFormData: MyPostsFormDataType) => {
+    const onSubmit = (profileMyPostsFormData: MyPostsFormDataType) => {
         props.addPostHandler(profileMyPostsFormData.profileMyPostsMessage)
     }
 
-    let postsElement = props.posts.map(p => <Post key={p.id} message={p.message} likesCount={p.likesCount} id={p.id}/>)
+    let postsElement = props.posts.map(p => <Post key={p.id} message={p.message} likesCount={p.likesCount} id={p.id}/>).reverse()
 
     return (
         <div className={s.postsBlock}><h3>my posts</h3>
-            <ProfileAddMessageReduxForm onSubmit={addNewProfileMyPostsMessage}/>
+            <ProfileAddMessageReduxForm onSubmit={onSubmit}/>
             <div className={s.posts}>
                 {postsElement}
             </div>

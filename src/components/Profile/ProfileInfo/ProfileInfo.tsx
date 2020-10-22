@@ -10,14 +10,15 @@ type ProfileInfoPropsType = {
     updateUserStatus: (status: string) => void
 }
 
-function ProfileInfo(props: ProfileInfoPropsType) {
+const ProfileInfo: React.FC<ProfileInfoPropsType> = ({profile, status,
+                                                         updateUserStatus}) => {
     return (
         <div>
             <div className={s.divContentImg}><img className='contentImg' src="" alt=""/></div>
             <div className={s.descriptionBlock}>
-                {props.profile ? <img src={props.profile.photos.large} alt=""/> : <Preloader/>}
+                {profile ? <img src={profile.photos.large} alt=""/> : <Preloader/>}
                 ava + desription
-                <ProfileStatus status={props.status} updateUserStatus={props.updateUserStatus}/>
+                <ProfileStatus status={status} updateUserStatus={updateUserStatus}/>
             </div>
         </div>
     )

@@ -1,7 +1,7 @@
 import React from "react";
 import {
     ActionsProfilePageType,
-    addPostActionCreator,
+    addPostAC,
     StateProfileObjectPageType,
     StateProfilePagePostsItemType
 } from "../../../redux/profilePageReducer";
@@ -23,7 +23,7 @@ const mapStateToProps = (state: StateProfileObjectPageType): MapStateToPropsType
 }
 const mapDispatchToProps = (dispatch: (action: ActionsProfilePageType) => void): MapDispatchToPropsType => {
     return {
-        addPostHandler:(text: string) => dispatch(addPostActionCreator(text)),
+        addPostHandler:(text: string) => dispatch(addPostAC(text)),
     }
 }
 

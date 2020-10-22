@@ -1,10 +1,10 @@
 import React from "react";
-import {Field, InjectedFormProps, reduxForm} from "redux-form";
-import {Element} from "../common/FormsControl/FormsControl";
+import {InjectedFormProps, reduxForm} from "redux-form";
+import {createField, Element} from "../common/FormsControl/FormsControl";
 import {required} from "../../utils/validators/validators";
 import {connect} from "react-redux";
 import {login, StateAuthObjectType} from "../../redux/authReducer";
-import { Redirect } from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import style from './../common/FormsControl/FormsControl.module.css'
 
 export type FormDataType = {
@@ -18,13 +18,13 @@ type LoginPropsType = {
     isAuth: boolean
 }
 
-function Login(props: LoginPropsType) {
+const Login: React.FC<LoginPropsType> = ({login, isAuth}) => {
 
     const onSubmit = (formData: FormDataType) => {
-        props.login(formData.email, formData.password, formData.rememberMe)
+        login(formData.email, formData.password, formData.rememberMe)
     }
 
-    if (props.isAuth) return <Redirect to={'/profile/'}/>
+    if (isAuth) return <Redirect to={'/profile/'}/>
 
     return (
         <>
@@ -34,23 +34,23 @@ function Login(props: LoginPropsType) {
     )
 }
 
-const LoginReduxForm = reduxForm<FormDataType>({form: 'login'})(LoginForm)
-
 const InputElement = Element('input')
 
-function LoginForm(props: InjectedFormProps<FormDataType>) {
+const LoginForm: React.FC<InjectedFormProps<FormDataType>> = ({error, handleSubmit}) => {
     return (
         <>
-            <form onSubmit={props.handleSubmit}>
-                <div><Field placeholder={'email'} component={InputElement} name={'email'} validate={[required]}/></div>
-                <div><Field placeholder={'Password'} component={InputElement} name={'password'} type={'password'} validate={[required]}/></div>
-                <div><Field type={'checkbox'} component={InputElement} name={'rememberMe'} validate={[required]}/>remember me</div>
-                {props.error && <div className={style.formSummaryError}>{props.error}</div>}
+            <form onSubmit={handleSubmit}>
+                {createField('email', 'email', [required], InputElement)}
+                {createField('password', 'password', [required], InputElement, {type: 'password'})}
+                {createField(null, 'rememberMe', [], InputElement, {type: 'checkbox'}, 'remember me')}
+                {error && <div className={style.formSummaryError}>{error}</div>}
                 <div><button>Login</button></div>
             </form>
         </>
     )
 }
+
+const LoginReduxForm = reduxForm<FormDataType>({form: 'login'})(LoginForm)
 
 type mapStateToPropsType = {
     isAuth: boolean

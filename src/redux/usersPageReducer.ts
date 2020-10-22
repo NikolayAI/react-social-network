@@ -1,5 +1,7 @@
 import {usersAPI} from "../api/api";
-import { ThunkDispatch } from "redux-thunk";
+import {ThunkDispatch} from "redux-thunk";
+import {Dispatch} from "react";
+import {updateObjectInArray} from "../utils/object-helpers";
 
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
@@ -89,22 +91,12 @@ export const usersPageReducer = (state: StateUsersPageType = initialState, actio
         case FOLLOW:
             return {
                 ...state,
-                users: state.users.map(u => {
-                    if (u.id === action.userId) {
-                        return {...u, followed: true}
-                    }
-                    return u
-                })
+                users: updateObjectInArray(state.users, action.userId, 'id', {followed: true})
             }
         case UNFOLLOW:
             return {
                 ...state,
-                users: state.users.map(u => {
-                    if (u.id === action.userId) {
-                        return {...u, followed: false}
-                    }
-                    return u
-                })
+                users: updateObjectInArray(state.users, action.userId, 'id', {followed: false})
             }
         case SET_USERS:
             return {...state, users: action.users}
@@ -141,29 +133,25 @@ export const toggleFollowingProgressAC = (isFetching: boolean, userId: number): 
     return {type: "TOGGLE_FOLLOWING_PROGRESS", isFetching, userId}
 }
 
-export const requestUsers = (page: number, pageSize: number) => (dispatch: ThunkDispatch<StateUsersPageType, {}, ActionsUsersPageTypes>) => {
+export const requestUsers = (page: number, pageSize: number) => async (dispatch: ThunkDispatch<StateUsersPageType, {}, ActionsUsersPageTypes>) => {
     dispatch(toggleIsFetchingAC(true))
     dispatch(setCurrentPageAC(page))
-    usersAPI.getUsers(page, pageSize)
-        .then(response => {
-            dispatch(toggleIsFetchingAC(false))
-            dispatch(setUsersAC(response.data.items))
-            dispatch(setTotalUsersCountAC(response.data.totalCount))
-        })
+    const response = await usersAPI.getUsers(page, pageSize)
+    dispatch(toggleIsFetchingAC(false))
+    dispatch(setUsersAC(response.data.items))
+    dispatch(setTotalUsersCountAC(response.data.totalCount))
 }
-export const follow = (userId: number ) => (dispatch: ThunkDispatch<StateUsersPageType, {}, ActionsUsersPageTypes>) => {
+
+const followUnfollowFlow = async (dispatch: ThunkDispatch<StateUsersPageType, {}, ActionsUsersPageTypes>, userId: number, apiMethod: any, actionCreator: any) => {
     dispatch(toggleFollowingProgressAC(true, userId))
-    usersAPI.follow(userId)
-        .then(response => {
-            if (response.data.resultCode === 0) dispatch(followAC(userId))
-            dispatch(toggleFollowingProgressAC(false, userId))
-        })
+    const response = await apiMethod(userId)
+    if (response.data.resultCode === 0) dispatch(actionCreator(userId))
+    dispatch(toggleFollowingProgressAC(false, userId))
 }
-export const unfollow = (userId: number ) => (dispatch: ThunkDispatch<StateUsersPageType, {}, ActionsUsersPageTypes>) => {
-    dispatch(toggleFollowingProgressAC(true, userId))
-    usersAPI.unfollow(userId)
-        .then(response => {
-            if (response.data.resultCode === 0) dispatch(unfollowAC(userId))
-            dispatch(toggleFollowingProgressAC(false, userId))
-        })
+
+export const follow = (userId: number) => async (dispatch: ThunkDispatch<StateUsersPageType, {}, ActionsUsersPageTypes>) => {
+    followUnfollowFlow(dispatch, userId, usersAPI.follow.bind(usersAPI), followAC)
+}
+export const unfollow = (userId: number) => async (dispatch: ThunkDispatch<StateUsersPageType, {}, ActionsUsersPageTypes>) => {
+    followUnfollowFlow(dispatch, userId, usersAPI.unfollow.bind(usersAPI), unfollowAC)
 }
