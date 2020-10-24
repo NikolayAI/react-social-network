@@ -24,4 +24,4 @@ export let store = createStore(rootReducer, compose(
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 )
 //@ts-ignore
-window.store = store
+window.__store__ = store
