@@ -5,6 +5,7 @@ const ADD_POST = 'ADD_POST'
 const DELETE_POST = 'DELETE_POST'
 const SET_USER_PROFILE = 'SET_USER_PROFILE'
 const SET_USER_STATUS = 'SET_USER_STATUS'
+const SET_PHOTO_SUCCESS = 'SET_PHOTO_SUCCESS'
 
 export type AddPostProfilePageACType = {
     type: 'ADD_POST'
@@ -26,10 +27,16 @@ export type SetUserStatusProfilePageACType = {
     status: string
 }
 
+export type SetUserPhotoProfilePageACType = {
+    type: 'SET_PHOTO_SUCCESS'
+    photos: string
+}
+
 export type ActionsProfilePageType = AddPostProfilePageACType
     | SetUserProfilePageACType
     | SetUserStatusProfilePageACType
     | DeletePostProfilePageACType
+    | SetUserPhotoProfilePageACType
 
 
 export type StateProfilePagePostsItemType = {
@@ -101,6 +108,8 @@ export const profilePageReducer = (state: StateProfilePageType = initialState, a
             return {...state, profile: action.profile}
         case SET_USER_STATUS:
             return {...state, status: action.status}
+        case "SET_PHOTO_SUCCESS":
+            return {...state, profile: {...state.profile, photos: action.photos}}
         default:
             return state;
     }
@@ -113,6 +122,9 @@ export const setUserProfileAC = (profile: ResponseProfilePageType): SetUserProfi
 }
 export const setUserStatusProfileAC = (status: string): SetUserStatusProfilePageACType => {
     return {type: SET_USER_STATUS, status}
+}
+export const savePhotoSuccessAC = (photos: string): SetUserPhotoProfilePageACType => {
+    return {type: SET_PHOTO_SUCCESS, photos}
 }
 
 export const getUserStatus = (userId: number | null) => async (dispatch: ThunkDispatch<StateProfilePageType, {}, ActionsProfilePageType>) => {
@@ -127,5 +139,10 @@ export const updateUserStatus = (status: string) => async (dispatch: ThunkDispat
 
 export const getUserProfile = (userId: number | null) => async (dispatch: ThunkDispatch<StateProfilePageType, {}, ActionsProfilePageType>) => {
     const response = await usersAPI.getProfile(userId)
-    dispatch(setUserProfileAC(response.data))
+    if (!response.data.resultCode) dispatch(setUserProfileAC(response.data))
+}
+
+export const savePhoto = (file: File) => async (dispatch: ThunkDispatch<StateProfilePageType, {}, ActionsProfilePageType>) => {
+    const response = await profileAPI.savePhoto(file)
+    if (!response.data.resultCode) dispatch(savePhotoSuccessAC(response.data.data.photos))
 }

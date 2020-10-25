@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {
     getUserProfile,
     getUserStatus,
-    ResponseProfilePageType,
+    ResponseProfilePageType, savePhoto,
     StateProfileObjectPageType, updateUserStatus
 } from "../../redux/profilePageReducer";
 import {RouteComponentProps, withRouter} from 'react-router'
@@ -22,6 +22,7 @@ type mapDispatchToPropsType = {
     getUserProfile: (userId: number | null) => void
     getUserStatus: (userId: number | null) => void
     updateUserStatus: (status: string) => void
+    savePhoto: (file: File) => void
 }
 
 type PathParamsType = {
@@ -34,7 +35,7 @@ type ProfileContainerPropsType = RouteComponentProps<PathParamsType>
 
 export class ProfileContainer extends React.Component<ProfileContainerPropsType>{
 
-    componentDidMount() {
+    refreshProfile = () => {
         let userId = Number(this.props.match.params.userId) || null
         if (!userId) {
             userId = this.props.authorizedUserId
@@ -44,9 +45,23 @@ export class ProfileContainer extends React.Component<ProfileContainerPropsType>
         this.props.getUserStatus(userId)
     }
 
+    componentDidMount() {
+        this.refreshProfile()
+    }
+
+    componentDidUpdate(prevProps: Readonly<ProfileContainerPropsType>, prevState: Readonly<{}>, snapshot?: any) {
+        if(this.props.match.params.userId !== prevProps.match.params.userId) this.refreshProfile()
+    }
+
     render() {
         return (
-            <Profile profile={this.props.profile} status={this.props.status} updateUserStatus={this.props.updateUserStatus}/>
+            <Profile
+                isOwner={!this.props.match.params.userId}
+                profile={this.props.profile}
+                status={this.props.status}
+                updateUserStatus={this.props.updateUserStatus}
+                onSavePhoto={this.props.savePhoto}
+            />
         )
     }
 }
@@ -64,6 +79,7 @@ const mapDispatchToProps = {
     getUserProfile,
     getUserStatus,
     updateUserStatus,
+    savePhoto,
 }
 
 export default compose<React.FC>(

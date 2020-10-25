@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Navbar from "./components/Navbar/Navbar";
-import {BrowserRouter, Route} from "react-router-dom";
+import {BrowserRouter, HashRouter, Route} from "react-router-dom";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
@@ -12,7 +12,7 @@ import {connect} from "react-redux";
 import {compose} from 'redux';
 import {initialize, StateAppObjectType} from "./redux/appReducer";
 import {Preloader} from "./components/common/Preloader/Preloader";
-import {withSuspense} from "./hoc/withSuspens";
+import withSuspense from "./hoc/withSuspens";
 
 const DialogsContainer = React.lazy(() => import("./components/Dialogs/DialogsContainer"));
 const ProfileContainer = React.lazy(() => import("./components/Profile/ProfileContainer"));
@@ -31,13 +31,14 @@ class App extends React.Component<AppPropsType> {
     render() {
         if (!this.props.initialized) return <Preloader/>
         return (
-            <BrowserRouter>
+            //HashRouter for gh-pages only
+            <HashRouter>
                 <div className='app-wrapper'>
                     <HeaderContainer/>
                     <Navbar/>
                     <div className={'app-wrapper-content'}>
-                        <Route path={'/profile/:userId?'} render={withSuspense(<ProfileContainer/>)}/>
-                        <Route path={'/dialogs/'} render={withSuspense(<DialogsContainer/>)}/>
+                        <Route path={'/profile/:userId?'} render={withSuspense(ProfileContainer)}/>
+                        <Route path={'/dialogs/'} render={withSuspense(DialogsContainer)}/>
                         <Route path={'/users/'} render={() => <UsersContainer/>}/>
                         <Route path={'/news/'} render={() => <News/>}/>
                         <Route path={'/music/'} render={() => <Music/>}/>
@@ -45,7 +46,7 @@ class App extends React.Component<AppPropsType> {
                         <Route path={'/login/'} render={() => <Login/>}/>
                     </div>
                 </div>
-            </BrowserRouter>
+            </HashRouter>
         )
     }
 }
