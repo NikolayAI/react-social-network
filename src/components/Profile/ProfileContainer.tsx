@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {
     getUserProfile,
     getUserStatus,
-    ResponseProfilePageType, savePhoto,
+    ResponseProfilePageType, savePhoto, saveProfile,
     StateProfileObjectPageType, updateUserStatus
 } from "../../redux/profilePageReducer";
 import {RouteComponentProps, withRouter} from 'react-router'
@@ -23,6 +23,7 @@ type mapDispatchToPropsType = {
     getUserStatus: (userId: number | null) => void
     updateUserStatus: (status: string) => void
     savePhoto: (file: File) => void
+    saveProfile: (data: any) => Promise<any>
 }
 
 type PathParamsType = {
@@ -61,6 +62,7 @@ export class ProfileContainer extends React.Component<ProfileContainerPropsType>
                 status={this.props.status}
                 updateUserStatus={this.props.updateUserStatus}
                 onSavePhoto={this.props.savePhoto}
+                saveProfile={this.props.saveProfile}
             />
         )
     }
@@ -80,6 +82,7 @@ const mapDispatchToProps = {
     getUserStatus,
     updateUserStatus,
     savePhoto,
+    saveProfile,
 }
 
 export default compose<React.FC>(

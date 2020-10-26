@@ -25,3 +25,5 @@ export const createField = (placeholder: string | null, name: string, validators
         /> {text}
     </div>
 )
+export const InputElement = Element('input')
+export const TextareaElement = Element('textarea')

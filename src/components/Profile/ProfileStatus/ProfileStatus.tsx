@@ -22,11 +22,11 @@ function ProfileStatus(props: ProfileStatusPropsType) {
     }, [props.status])
 
     return (
-        <>
+        <><b>Status: </b>
             {editMode
-                ? <div><input autoFocus={true} onChange={statusChangeHandler} onBlur={deActivateEditModeHandler}
-                              value={status}/></div>
-                : <div><span onDoubleClick={activateEditModeHandler}>{props.status || '-------'}</span></div>}
+                ? <input autoFocus={true} onChange={statusChangeHandler} onBlur={deActivateEditModeHandler}
+                              value={status}/>
+                : <span onDoubleClick={activateEditModeHandler}>{props.status || '-------'}</span>}
         </>
     )
 

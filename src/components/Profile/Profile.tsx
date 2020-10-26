@@ -9,6 +9,7 @@ type ProfilePropsType = {
     status: string
     updateUserStatus: (status: string) => void
     onSavePhoto: (file: File) => void
+    saveProfile: (data: any) => Promise<any>
 }
 
 function Profile(props: ProfilePropsType) {
@@ -20,6 +21,7 @@ function Profile(props: ProfilePropsType) {
                 status={props.status}
                 updateUserStatus={props.updateUserStatus}
                 onSavePhoto={props.onSavePhoto}
+                saveProfile={props.saveProfile}
             />
             <MyPostsContainer/>
         </div>

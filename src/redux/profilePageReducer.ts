@@ -1,5 +1,6 @@
 import {ThunkDispatch} from "redux-thunk";
 import {profileAPI, usersAPI} from "../api/api";
+import {stopSubmit} from "redux-form";
 
 const ADD_POST = 'ADD_POST'
 const DELETE_POST = 'DELETE_POST'
@@ -29,7 +30,7 @@ export type SetUserStatusProfilePageACType = {
 
 export type SetUserPhotoProfilePageACType = {
     type: 'SET_PHOTO_SUCCESS'
-    photos: string
+    photos?: string
 }
 
 export type ActionsProfilePageType = AddPostProfilePageACType
@@ -145,4 +146,20 @@ export const getUserProfile = (userId: number | null) => async (dispatch: ThunkD
 export const savePhoto = (file: File) => async (dispatch: ThunkDispatch<StateProfilePageType, {}, ActionsProfilePageType>) => {
     const response = await profileAPI.savePhoto(file)
     if (!response.data.resultCode) dispatch(savePhotoSuccessAC(response.data.data.photos))
+}
+
+export const saveProfile = (profile: any) => async (dispatch: ThunkDispatch<StateProfilePageType, {}, ActionsProfilePageType>, getState: any) => {
+    const userId = getState().auth.userId
+    const response = await profileAPI.saveProfile(profile)
+    if (response.data.resultCode === 0) {
+        dispatch(getUserProfile(userId))
+    } else {
+        let wrongNetwork = response.data.messages[0].slice(
+                response.data.messages[0].indexOf(">") + 1,
+                response.data.messages[0].indexOf(")")
+            ).toLocaleLowerCase();
+        dispatch(stopSubmit('editProfile', {_error: wrongNetwork}))
+        return Promise.reject(response.data.messages[0])
+        // dispatch(stopSubmit('editProfile', {'contacts': {'facebook': response.data.messages[0]}}))
+    }
 }
