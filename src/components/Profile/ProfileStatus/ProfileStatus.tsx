@@ -5,7 +5,7 @@ type ProfileStatusPropsType = {
     updateUserStatus: (status: string) => void
 }
 
-function ProfileStatus(props: ProfileStatusPropsType) {
+const ProfileStatus: React.FC<ProfileStatusPropsType> = (props) => {
 
     const [editMode, setEditMode] = useState<boolean>(false)
     const [status, setStatus] = useState<string>(props.status)
@@ -21,14 +21,14 @@ function ProfileStatus(props: ProfileStatusPropsType) {
         setStatus(props.status)
     }, [props.status])
 
-    return (
-        <><b>Status: </b>
+    return <>
+            <b>Status: </b>
             {editMode
                 ? <input autoFocus={true} onChange={statusChangeHandler} onBlur={deActivateEditModeHandler}
                               value={status}/>
                 : <span onDoubleClick={activateEditModeHandler}>{props.status || '-------'}</span>}
         </>
-    )
+
 
 }
 

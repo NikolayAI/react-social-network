@@ -1,11 +1,11 @@
 import React from "react";
-import {UsersPageObjectsType} from "../../redux/usersPageReducer";
 import userPhoto
     from "../../assets/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg";
 import {NavLink} from "react-router-dom";
+import {ResponseUserType} from "../../types/types";
 
 type UserPropsType = {
-    user: UsersPageObjectsType
+    user: ResponseUserType
     follow: (userId: number) => void
     unfollow: (userId: number) => void
     followingInProgress: number[]

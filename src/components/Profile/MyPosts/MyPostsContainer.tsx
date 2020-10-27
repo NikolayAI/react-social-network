@@ -2,8 +2,7 @@ import React from "react";
 import {
     ActionsProfilePageType,
     addPostAC,
-    StateProfileObjectPageType,
-    StateProfilePagePostsItemType
+    StateProfileObjectPageType, StateProfilePagePostsItemType
 } from "../../../redux/profilePageReducer";
 import MyPosts from "./MyPosts";
 import {connect} from "react-redux";

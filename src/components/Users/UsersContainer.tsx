@@ -1,14 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import Users from "./Users";
-import {
-    follow,
-    requestUsers,
-    setCurrentPageAC,
-    StateUsersObjectPageType,
-    unfollow,
-    UsersPageObjectsType
-} from "../../redux/usersPageReducer";
+import {follow, requestUsers, setCurrentPageAC, unfollow} from "../../redux/usersPageReducer";
 import {Preloader} from "../common/Preloader/Preloader";
 import {compose} from "redux";
 import {
@@ -19,30 +12,29 @@ import {
     getTotalUsersCount,
     getUsers
 } from "../../redux/users-selectors";
+import {ResponseUserType} from "../../types/types";
+import {RootStateType} from "../../redux/reduxStore";
 
 type mapStateToProps = {
-    users: UsersPageObjectsType[]
+    users: Array<ResponseUserType>
     pageSize: number
     totalUsersCount: number
     currentPage: number
     isFetching: boolean
-    followingInProgress: number[]
+    followingInProgress: Array<number>
 }
 
-type UsersContainerPropsType = {
-    users: UsersPageObjectsType[]
-    pageSize: number
-    totalUsersCount: number
-    currentPage: number
-    isFetching: boolean
+type mapDispatchToProps = {
     follow: (userId: number) => void
     unfollow: (userId: number) => void
-    setCurrentPageAC: (page: number) => void
-    followingInProgress: number[]
     requestUsers: (currentPage: number, pageSize: number) => void
 }
 
-export class UsersContainerToo extends React.Component<UsersContainerPropsType> {
+type OwnUsersContainerTooPropsType = {}
+
+type UsersContainerTooPropsType = OwnUsersContainerTooPropsType & mapStateToProps & mapDispatchToProps
+
+export class UsersContainerToo extends React.Component<UsersContainerTooPropsType> {
 
     componentDidMount() {
         const {requestUsers, currentPage, pageSize} = this.props
@@ -70,7 +62,7 @@ export class UsersContainerToo extends React.Component<UsersContainerPropsType> 
     }
 }
 
-const mapStateToProps = (state: StateUsersObjectPageType): mapStateToProps => {
+const mapStateToProps = (state: RootStateType): mapStateToProps => {
     return {
         users: getUsers(state),
         pageSize: getPageSize(state),
@@ -81,14 +73,14 @@ const mapStateToProps = (state: StateUsersObjectPageType): mapStateToProps => {
     }
 }
 
-const mapDispatchToProps = {
+const mapDispatchToProps: mapDispatchToProps = {
     follow,
     unfollow,
-    setCurrentPageAC,
     requestUsers,
 }
 
 export const UsersContainer = compose<React.FC>(
-    connect(mapStateToProps, mapDispatchToProps)
+    connect<mapStateToProps, mapDispatchToProps,
+        OwnUsersContainerTooPropsType, RootStateType>(mapStateToProps, mapDispatchToProps)
 )
 (UsersContainerToo)

@@ -1,9 +1,9 @@
 import React from "react";
-import {ResponseProfilePageType} from "../../../redux/profilePageReducer";
 import {createField, InputElement, TextareaElement} from "../../common/FormsControl/FormsControl";
 import {InjectedFormProps, reduxForm} from "redux-form";
 import s from './ProfileInfo.module.css'
 import style from "../../common/FormsControl/FormsControl.module.css";
+import {ResponseProfileType} from "../../../types/types";
 
 export type ProfileDataFormFormDataType = {
     fullName: string
@@ -13,7 +13,7 @@ export type ProfileDataFormFormDataType = {
 }
 
 type ProfileDataFormPropsType = {
-    profile: ResponseProfilePageType | null
+    profile: ResponseProfileType | null
     offEditMode: () => void
 }
 

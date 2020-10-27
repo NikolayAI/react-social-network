@@ -1,10 +1,10 @@
 import React from "react";
 import s from './MyPosts.module.css'
 import Post from "./Post/Post";
-import {StateProfilePagePostsItemType,} from "../../../redux/profilePageReducer";
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {maxLengthCreator, required} from "../../../utils/validators/validators";
 import {Element} from "../../common/FormsControl/FormsControl";
+import {StateProfilePagePostsItemType} from "../../../redux/profilePageReducer";
 
 
 export type MyPostsPropsType = {

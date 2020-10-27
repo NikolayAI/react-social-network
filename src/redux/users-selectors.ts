@@ -1,11 +1,11 @@
-import {StateUsersObjectPageType} from "./usersPageReducer";
 import {createSelector} from "reselect";
+import {RootStateType} from "./reduxStore";
 
-export const getUsersSuperSelector = (state: StateUsersObjectPageType) => state.usersPage.users
+export const getUsersSuperSelector = (state: RootStateType) => state.usersPage.users
 export const getUsers = createSelector(getUsersSuperSelector, (users) => users)
 
-export const getPageSize = (state: StateUsersObjectPageType) => state.usersPage.pageSize
-export const getTotalUsersCount = (state: StateUsersObjectPageType) => state.usersPage.totalUsersCount
-export const getCurrentPage = (state: StateUsersObjectPageType) => state.usersPage.currentPage
-export const getIsFetching = (state: StateUsersObjectPageType) => state.usersPage.isFetching
-export const getFollowingInProgress = (state: StateUsersObjectPageType) => state.usersPage.followingInProgress
+export const getPageSize = (state: RootStateType) => state.usersPage.pageSize
+export const getTotalUsersCount = (state: RootStateType) => state.usersPage.totalUsersCount
+export const getCurrentPage = (state: RootStateType) => state.usersPage.currentPage
+export const getIsFetching = (state: RootStateType) => state.usersPage.isFetching
+export const getFollowingInProgress = (state: RootStateType) => state.usersPage.followingInProgress

@@ -1,17 +1,17 @@
 import React from "react";
-import {UsersPageObjectsType} from "../../redux/usersPageReducer";
 import {Paginator} from "../common/Paginator/Paginator";
 import User from "./User";
+import {ResponseUserType} from "../../types/types";
 
 type UsersPropsType = {
-    users: UsersPageObjectsType[]
+    users: Array<ResponseUserType>
     pageSize: number
     totalUsersCount: number
     currentPage: number
     follow: (userId: number) => void
     unfollow: (userId: number) => void
     setCurrentPageHandler: (page: number) => void
-    followingInProgress: number[]
+    followingInProgress: Array<number>
 }
 
 const Users: React.FC<UsersPropsType> = ({totalUsersCount, pageSize, currentPage,

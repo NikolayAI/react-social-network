@@ -1,99 +1,30 @@
 import {ThunkDispatch} from "redux-thunk";
 import {profileAPI, usersAPI} from "../api/api";
 import {stopSubmit} from "redux-form";
+import {ResponseProfileType} from "../types/types";
 
-const ADD_POST = 'ADD_POST'
-const DELETE_POST = 'DELETE_POST'
-const SET_USER_PROFILE = 'SET_USER_PROFILE'
-const SET_USER_STATUS = 'SET_USER_STATUS'
-const SET_PHOTO_SUCCESS = 'SET_PHOTO_SUCCESS'
-
-export type AddPostProfilePageACType = {
-    type: 'ADD_POST'
-    text: string
+const initialState = {
+    posts: [
+        {id: 1, message: 'Hi, how are you?', likesCount: 12},
+        {id: 2, message: 'It\'s my first post', likesCount: 23},
+        {id: 3, message: 'Blabla', likesCount: 5},
+        {id: 4, message: 'Dada', likesCount: 7},
+    ] as Array<StateProfilePagePostsItemType>,
+    profile: null as ResponseProfileType | null,
+    status: '',
 }
-
-export type DeletePostProfilePageACType = {
-    type: 'DELETE_POST'
-    postId: number
-}
-
-export type SetUserProfilePageACType = {
-    type: 'SET_USER_PROFILE'
-    profile: ResponseProfilePageType | null
-}
-
-export type SetUserStatusProfilePageACType = {
-    type: 'SET_USER_STATUS'
-    status: string
-}
-
-export type SetUserPhotoProfilePageACType = {
-    type: 'SET_PHOTO_SUCCESS'
-    photos?: string
-}
-
-export type ActionsProfilePageType = AddPostProfilePageACType
-    | SetUserProfilePageACType
-    | SetUserStatusProfilePageACType
-    | DeletePostProfilePageACType
-    | SetUserPhotoProfilePageACType
-
 
 export type StateProfilePagePostsItemType = {
     id: number
     message: string
     likesCount: number
 }
-
-type ResponseProfilePageContactsType = {
-    facebook: string | null
-    website: string | null
-    vk: string | null
-    twitter: string | null
-    instagram: string | null
-    youtube: string | null
-    github: string | null
-    mainLink: string | null
-}
-
-type ResponseProfilePagePhotosType = {
-    small: string | undefined
-    large: string | undefined
-}
-
-export type ResponseProfilePageType = {
-    aboutMe: string | null
-    contacts: ResponseProfilePageContactsType
-    lookingForAJob: boolean | null
-    lookingForAJobDescription: string | null
-    fullName: string | null
-    userId: number | null
-    photos: ResponseProfilePagePhotosType
-}
-
 export type StateProfileObjectPageType = {
     profilePage: StateProfilePageType
 }
+export type StateProfilePageType = typeof initialState
 
-export type StateProfilePageType = {
-    posts: StateProfilePagePostsItemType[]
-    profile: ResponseProfilePageType | null
-    status: string
-}
-
-const initialState: StateProfilePageType = {
-    posts: [
-        {id: 1, message: 'Hi, how are you?', likesCount: 12},
-        {id: 2, message: 'It\'s my first post', likesCount: 23},
-        {id: 3, message: 'Blabla', likesCount: 5},
-        {id: 4, message: 'Dada', likesCount: 7},
-    ],
-    profile: null,
-    status: '',
-}
-
-export const profilePageReducer = (state: StateProfilePageType = initialState, action: ActionsProfilePageType) => {
+export const profilePageReducer = (state = initialState, action: ActionsProfilePageType) => {
     switch (action.type) {
         case ADD_POST:
             return {
@@ -109,22 +40,55 @@ export const profilePageReducer = (state: StateProfilePageType = initialState, a
             return {...state, profile: action.profile}
         case SET_USER_STATUS:
             return {...state, status: action.status}
-        case "SET_PHOTO_SUCCESS":
+        case SET_PHOTO_SUCCESS:
             return {...state, profile: {...state.profile, photos: action.photos}}
         default:
             return state;
     }
 };
 
-export const addPostAC = (text: string): AddPostProfilePageACType => ({type: ADD_POST, text})
-export const deletePostAC = (postId: number): DeletePostProfilePageACType => ({type: DELETE_POST, postId})
-export const setUserProfileAC = (profile: ResponseProfilePageType): SetUserProfilePageACType => {
+const ADD_POST = 'social_network/profile/ADD_POST'
+const DELETE_POST = 'social_network/profile/DELETE_POST'
+const SET_USER_PROFILE = 'social_network/profile/SET_USER_PROFILE'
+const SET_USER_STATUS = 'social_network/profile/SET_USER_STATUS'
+const SET_PHOTO_SUCCESS = 'social_network/profile/SET_PHOTO_SUCCESS'
+
+export type AddPostProfilePageActionType = {
+    type: typeof ADD_POST
+    text: string
+}
+export type DeletePostProfilePageActionType = {
+    type: typeof DELETE_POST
+    postId: number
+}
+export type SetUserProfilePageActionType = {
+    type: typeof SET_USER_PROFILE
+    profile: ResponseProfileType | null
+}
+export type SetUserStatusProfilePageActionType = {
+    type: typeof SET_USER_STATUS
+    status: string
+}
+export type SetUserPhotoProfilePageActionType = {
+    type: typeof SET_PHOTO_SUCCESS
+    photos?: string
+}
+
+export type ActionsProfilePageType = AddPostProfilePageActionType
+    | SetUserProfilePageActionType
+    | SetUserStatusProfilePageActionType
+    | DeletePostProfilePageActionType
+    | SetUserPhotoProfilePageActionType
+
+export const addPostAC = (text: string): AddPostProfilePageActionType => ({type: ADD_POST, text})
+export const deletePostAC = (postId: number): DeletePostProfilePageActionType => ({type: DELETE_POST, postId})
+export const setUserProfileAC = (profile: ResponseProfileType): SetUserProfilePageActionType => {
     return {type: SET_USER_PROFILE, profile}
 }
-export const setUserStatusProfileAC = (status: string): SetUserStatusProfilePageACType => {
+export const setUserStatusProfileAC = (status: string): SetUserStatusProfilePageActionType => {
     return {type: SET_USER_STATUS, status}
 }
-export const savePhotoSuccessAC = (photos: string): SetUserPhotoProfilePageACType => {
+export const savePhotoSuccessAC = (photos: string): SetUserPhotoProfilePageActionType => {
     return {type: SET_PHOTO_SUCCESS, photos}
 }
 
@@ -163,3 +127,9 @@ export const saveProfile = (profile: any) => async (dispatch: ThunkDispatch<Stat
         // dispatch(stopSubmit('editProfile', {'contacts': {'facebook': response.data.messages[0]}}))
     }
 }
+
+// export type StateProfilePageType = {
+//     posts: StateProfilePagePostsItemType[]
+//     profile: ResponseProfilePageType | null
+//     status: string
+// }

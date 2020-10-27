@@ -1,15 +1,15 @@
 import React, {useState} from "react";
 import s from './ProfileInfo.module.css'
-import {ResponseProfilePageType} from "../../../redux/profilePageReducer";
 import {Preloader} from "../../common/Preloader/Preloader";
 import ProfileStatus from "../ProfileStatus/ProfileStatus";
 import userPhoto
     from "../../../assets/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg";
 import ProfileDataReduxForm, {ProfileDataFormFormDataType} from "./ProfileDataForm";
+import {ResponseProfileType} from "../../../types/types";
 
 type ProfileInfoPropsType = {
     isOwner: boolean
-    profile: ResponseProfilePageType | null
+    profile: ResponseProfileType | null
     status: string
     updateUserStatus: (status: string) => void
     onSavePhoto: (file: File) => void
@@ -56,7 +56,7 @@ const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
 }
 
 type ProfileDataPropsType = {
-    profile: ResponseProfilePageType | null
+    profile: ResponseProfileType | null
     isOwner: boolean
     onEditMode: () => void
 }
