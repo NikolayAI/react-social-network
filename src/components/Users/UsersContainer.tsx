@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import Users from "./Users";
-import {follow, requestUsers, setCurrentPageAC, unfollow} from "../../redux/usersPageReducer";
+import {follow, requestUsers, unfollow} from "../../redux/usersPageReducer";
 import {Preloader} from "../common/Preloader/Preloader";
 import {compose} from "redux";
 import {

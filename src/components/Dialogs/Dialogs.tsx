@@ -5,7 +5,7 @@ import Message from "./Message/Message";
 import {StateDialogsPageType,} from "../../redux/dialogsPageReducer";
 import {Redirect} from "react-router-dom";
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
-import {Element} from "../common/FormsControl/FormsControl";
+import {Element, TextareaElement} from "../common/FormsControl/FormsControl";
 import {maxLengthCreator, required} from "../../utils/validators/validators";
 
 type DialogsPropsType = {
@@ -48,14 +48,12 @@ type DialogsMyPostsFormDataType = {
 
 const maxLength50 = maxLengthCreator(50)
 
-const TextArea = Element('textarea')
-
 function DialogsAddMessageForm(props: InjectedFormProps<DialogsMyPostsFormDataType>) {
     return (
         <>
             <form onSubmit={props.handleSubmit}>
                 <div>
-                    <Field component={TextArea}
+                    <Field component={TextareaElement}
                            name={'dialogsMyPostsMessage'}
                            placeholder={'Enter your message'}
                            validate={[required, maxLength50]}
