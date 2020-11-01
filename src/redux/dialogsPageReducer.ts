@@ -1,3 +1,6 @@
+import {InferActionsTypes} from "./reduxStore";
+
+
 const initialState = {
     dialogs: [
         {id: 1, name: 'Dimych'},
@@ -16,6 +19,25 @@ const initialState = {
     ] as Array<StateDialogsPageMessagesItemType>,
 }
 
+
+export const dialogsPageReducer = (state = initialState, action: ActionsDialogsPageTypes): StateDialogsPageType => {
+    switch (action.type) {
+        case 's_n/dialogs/ADD_MESSAGE':
+            return {
+                ...state,
+                messages: [...state.messages, {id: 10, message: action.text}]
+            }
+        default:
+            return state
+    }
+}
+
+
+export const dialogsActions = {
+    addMessageAC: (text: string) => ({type: 's_n/dialogs/ADD_MESSAGE', text} as const)
+}
+
+
 export type StateDialogsPageDialogsItemType = {
     id: number
     name: string
@@ -28,31 +50,4 @@ export type StateDialogsObjectPageType = {
     dialogsPage: StateDialogsPageType
 }
 export type StateDialogsPageType = typeof initialState
-
-export const dialogsPageReducer = (state = initialState, action: ActionsDialogsPageTypes): StateDialogsPageType => {
-    switch (action.type) {
-        case ADD_MESSAGE:
-            return {
-                ...state,
-                messages: [...state.messages, {id: 10, message: action.text}]
-            }
-        default:
-            return state
-    }
-}
-
-const ADD_MESSAGE = 'social_network/dialogs/ADD_MESSAGE'
-
-export type AddMessageDialogsPageActionType = {
-    type: typeof ADD_MESSAGE
-    text: string
-}
-
-type ActionsDialogsPageTypes = AddMessageDialogsPageActionType
-
-export const addMessageAC = (text: string): AddMessageDialogsPageActionType => ({type: ADD_MESSAGE, text})
-
-// export type StateDialogsPageType = {
-//     dialogs: StateDialogsPageDialogsItemType[]
-//     messages: StateDialogsPageMessagesItemType[]
-// }
+type ActionsDialogsPageTypes = InferActionsTypes<typeof dialogsActions>

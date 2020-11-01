@@ -1,12 +1,12 @@
 import React from "react";
 import {InjectedFormProps, reduxForm} from "redux-form";
-import {createField, InputElement} from "../common/FormsControl/FormsControl";
+import {createField, GetStringKeys, InputElement} from "../common/FormsControl/FormsControl";
 import {required} from "../../utils/validators/validators";
 import {connect} from "react-redux";
 import {login} from "../../redux/authReducer";
 import {Redirect} from "react-router-dom";
 import style from './../common/FormsControl/FormsControl.module.css'
-import {RootStateType} from "../../redux/reduxStore";
+import {GlobalStateType} from "../../redux/reduxStore";
 
 type MapStateToPropsType = {
     isAuth: boolean
@@ -22,7 +22,7 @@ export type LoginFormDataType = {
     rememberMe: boolean
     captcha: string | null
 }
-type LoginFormDataKeysType = Extract<keyof LoginFormDataType, string>
+type LoginFormDataKeysType = GetStringKeys<LoginFormDataType>
 
 const Login: React.FC<MapStateToPropsType & MapDispatchToPropsType> = ({login, isAuth, captchaUrl}) => {
 
@@ -63,7 +63,7 @@ const LoginForm: React.FC<InjectedFormProps<LoginFormDataType, LoginFormPropsTyp
 
 const LoginReduxForm = reduxForm<LoginFormDataType, LoginFormPropsType>({form: 'login'})(LoginForm)
 
-const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
+const mapStateToProps = (state: GlobalStateType): MapStateToPropsType => ({
     isAuth: state.auth.isAuth,
     captchaUrl: state.auth.captchaUrl,
 })

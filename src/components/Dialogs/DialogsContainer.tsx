@@ -1,26 +1,24 @@
 import React from "react";
-import {addMessageAC, StateDialogsObjectPageType, StateDialogsPageType} from "../../redux/dialogsPageReducer";
+import {dialogsActions, StateDialogsPageType} from "../../redux/dialogsPageReducer";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
-import {StateAuthObjectType} from "../../redux/authReducer";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
+import {GlobalStateType} from "../../redux/reduxStore";
 
 type MapStateToPropsType = {
     dialogsPage: StateDialogsPageType
 }
 
-type MapStateToPropsStateMergeType = StateDialogsObjectPageType & StateAuthObjectType
-
-const mapStateToProps = (state: MapStateToPropsStateMergeType): MapStateToPropsType => {
+const mapStateToProps = (state: GlobalStateType): MapStateToPropsType => {
     return {dialogsPage: state.dialogsPage,}
 }
 
 const mapDispatchToProps = {
-    addMessageAC,
+    addMessageAC: dialogsActions.addMessageAC,
 }
 
-export default compose<React.FC>(
+export default compose<React.ComponentType>(
     connect(mapStateToProps, mapDispatchToProps),
     withAuthRedirect)
 (Dialogs)

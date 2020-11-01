@@ -3,18 +3,16 @@ import s from './Dialogs.module.css'
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import {StateDialogsPageType,} from "../../redux/dialogsPageReducer";
-import {Redirect} from "react-router-dom";
-import {Field, InjectedFormProps, reduxForm} from "redux-form";
-import {Element, TextareaElement} from "../common/FormsControl/FormsControl";
+import {InjectedFormProps, reduxForm} from "redux-form";
+import {createField, TextareaElement} from "../common/FormsControl/FormsControl";
 import {maxLengthCreator, required} from "../../utils/validators/validators";
 
 type DialogsPropsType = {
     dialogsPage: StateDialogsPageType
     addMessageAC: (text: string) => void
-    isAuth: boolean
 }
 
-function Dialogs(props: DialogsPropsType) {
+const Dialogs: React.FC<DialogsPropsType> = (props) => {
 
     let state = props.dialogsPage
 
@@ -24,8 +22,6 @@ function Dialogs(props: DialogsPropsType) {
     const addNewDialogsMyPostsMessage = (dialogsMyPostsFormData: DialogsMyPostsFormDataType) => {
         props.addMessageAC(dialogsMyPostsFormData.dialogsMyPostsMessage)
     }
-
-    if (!props.isAuth) return <Redirect to={'/login/'}/>
 
     return (
         <div className={s.dialogs}>
@@ -40,24 +36,21 @@ function Dialogs(props: DialogsPropsType) {
     )
 }
 
-const DialogsAddMessageReduxForm = reduxForm<DialogsMyPostsFormDataType>({form: 'dialogsMyPostsForm'})(DialogsAddMessageForm)
-
 type DialogsMyPostsFormDataType = {
     dialogsMyPostsMessage:string
 }
 
+type DialogsMyPostsFormDataKeysType = Extract<keyof DialogsMyPostsFormDataType, string>
+
 const maxLength50 = maxLengthCreator(50)
 
-function DialogsAddMessageForm(props: InjectedFormProps<DialogsMyPostsFormDataType>) {
+const DialogsAddMessageForm: React.FC<InjectedFormProps<DialogsMyPostsFormDataType>> = (props) => {
     return (
         <>
             <form onSubmit={props.handleSubmit}>
                 <div>
-                    <Field component={TextareaElement}
-                           name={'dialogsMyPostsMessage'}
-                           placeholder={'Enter your message'}
-                           validate={[required, maxLength50]}
-                    />
+                    {createField<DialogsMyPostsFormDataKeysType>('Enter your message',
+                        'dialogsMyPostsMessage', [required, maxLength50], TextareaElement)}
                 </div>
                 <div>
                     <button>Send message</button>
@@ -66,5 +59,10 @@ function DialogsAddMessageForm(props: InjectedFormProps<DialogsMyPostsFormDataTy
         </>
     )
 }
+
+const DialogsAddMessageReduxForm = reduxForm<DialogsMyPostsFormDataType>({
+    form: 'dialogsMyPostsForm'
+})(DialogsAddMessageForm)
+
 
 export default Dialogs

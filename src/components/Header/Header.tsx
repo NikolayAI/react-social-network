@@ -11,7 +11,7 @@ type HeadersPropsType = {
     logout: () => void
 }
 
-function Header(props: HeadersPropsType) {
+const Header: React.FC<HeadersPropsType> = (props) =>  {
     return (
         <header className={s.header}>
             <img

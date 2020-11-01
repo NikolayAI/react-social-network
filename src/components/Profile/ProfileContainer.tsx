@@ -43,15 +43,19 @@ export class ProfileContainer extends React.Component<ProfileContainerPropsType>
             userId = this.props.authorizedUserId
             if (!userId) this.props.history.push('/login/')
         }
-        this.props.getUserProfile(userId)
-        this.props.getUserStatus(userId)
+        if (!userId) {
+            throw new Error('ID should exists in URI params or in state("authorizedUserId")')
+        } else {
+            this.props.getUserProfile(userId)
+            this.props.getUserStatus(userId)
+        }
     }
 
     componentDidMount() {
         this.refreshProfile()
     }
 
-    componentDidUpdate(prevProps: Readonly<ProfileContainerPropsType>, prevState: Readonly<{}>, snapshot?: any) {
+    componentDidUpdate(prevProps: ProfileContainerPropsType, prevState: ProfileContainerPropsType) {
         if(this.props.match.params.userId !== prevProps.match.params.userId) this.refreshProfile()
     }
 
@@ -69,7 +73,9 @@ export class ProfileContainer extends React.Component<ProfileContainerPropsType>
     }
 }
 
-const mapStateToProps = (state: StateProfileObjectPageType & StateAuthObjectType): mapStateToPropsType => {
+type MergedMapStateToPropsArgumentType = StateProfileObjectPageType & StateAuthObjectType
+
+const mapStateToProps = (state: MergedMapStateToPropsArgumentType): mapStateToPropsType => {
     return {
         profile: state.profilePage.profile,
         status: state.profilePage.status,
@@ -86,7 +92,7 @@ const mapDispatchToProps = {
     saveProfile,
 }
 
-export default compose<React.FC>(
+export default compose<React.ComponentType>(
     connect(mapStateToProps, mapDispatchToProps),
     withRouter)
 (ProfileContainer)

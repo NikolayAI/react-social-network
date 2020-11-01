@@ -13,7 +13,7 @@ import {
     getUsers
 } from "../../redux/users-selectors";
 import {ResponseUserType} from "../../types/types";
-import {RootStateType} from "../../redux/reduxStore";
+import {GlobalStateType} from "../../redux/reduxStore";
 
 type mapStateToProps = {
     users: Array<ResponseUserType>
@@ -62,7 +62,7 @@ export class UsersContainerToo extends React.Component<UsersContainerTooPropsTyp
     }
 }
 
-const mapStateToProps = (state: RootStateType): mapStateToProps => {
+const mapStateToProps = (state: GlobalStateType): mapStateToProps => {
     return {
         users: getUsers(state),
         pageSize: getPageSize(state),
@@ -81,6 +81,6 @@ const mapDispatchToProps: mapDispatchToProps = {
 
 export const UsersContainer = compose<React.FC>(
     connect<mapStateToProps, mapDispatchToProps,
-        OwnUsersContainerTooPropsType, RootStateType>(mapStateToProps, mapDispatchToProps)
+        OwnUsersContainerTooPropsType, GlobalStateType>(mapStateToProps, mapDispatchToProps)
 )
 (UsersContainerToo)

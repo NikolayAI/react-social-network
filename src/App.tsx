@@ -14,15 +14,22 @@ import {initialize, StateAppObjectType} from "./redux/appReducer";
 import {Preloader} from "./components/common/Preloader/Preloader";
 import withSuspense from "./hoc/withSuspens";
 
-const DialogsContainer = React.lazy(() => import("./components/Dialogs/DialogsContainer"));
 const ProfileContainer = React.lazy(() => import("./components/Profile/ProfileContainer"));
+const DialogsContainer = React.lazy(() => import("./components/Dialogs/DialogsContainer"));
 
-type AppPropsType = {
+const SuspendedProfile = withSuspense(ProfileContainer)
+const SuspendedDialogs = withSuspense(DialogsContainer)
+
+type MapStateToPropsType = {
     initialized: boolean
+}
+
+type MapDispatchToPropsType = {
     initialize: () => void
 }
 
-class App extends React.Component<AppPropsType> {
+
+class App extends React.Component<MapStateToPropsType & MapDispatchToPropsType> {
     catchAllUnhandledErrors = (promiseRejectionEvent: PromiseRejectionEvent) => {
         alert('some error occurred')
         console.log(promiseRejectionEvent)
@@ -46,8 +53,8 @@ class App extends React.Component<AppPropsType> {
                     <div className={'app-wrapper-content'}>
                         <Switch>
                             <Route exact path={'/'} render={() => <Redirect to={'/profile/'}/>}/>
-                            <Route path={'/profile/:userId?'} render={withSuspense(ProfileContainer)}/>
-                            <Route path={'/dialogs/'} render={withSuspense(DialogsContainer)}/>
+                            <Route path={'/profile/:userId?'} render={() => <SuspendedProfile/>}/>
+                            <Route path={'/dialogs/'} render={() => <SuspendedDialogs/>}/>
                             <Route path={'/users/'} render={() => <UsersContainer/>}/>
                             <Route path={'/news/'} render={() => <News/>}/>
                             <Route path={'/music/'} render={() => <Music/>}/>
@@ -62,11 +69,8 @@ class App extends React.Component<AppPropsType> {
     }
 }
 
-type mapStateToProps = {
-    initialized: boolean
-}
 
-const mapStateToProps = (state: StateAppObjectType): mapStateToProps => ({
+const mapStateToProps = (state: StateAppObjectType): MapStateToPropsType => ({
     initialized: state.app.initialized,
 })
 
@@ -74,4 +78,4 @@ const mapDispatchToProps = {
     initialize,
 }
 
-export default compose<React.FC>(connect(mapStateToProps, mapDispatchToProps))(App)
+export default compose<React.ComponentType>(connect(mapStateToProps, mapDispatchToProps))(App)

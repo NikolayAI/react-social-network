@@ -4,10 +4,8 @@ import {StateDialogsPageMessagesItemType} from "../../../redux/dialogsPageReduce
 
 export type MessagePropsType = StateDialogsPageMessagesItemType
 
-function Message(props: MessagePropsType) {
-    return (
-        <div className={s.message}>{props.message}</div>
-    )
+const Message: React.FC<MessagePropsType> = (props) => {
+    return <div className={s.message}>{props.message}</div>
 }
 
 export default Message

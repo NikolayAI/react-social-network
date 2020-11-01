@@ -1,9 +1,9 @@
 import React from "react";
 import s from './MyPosts.module.css'
 import Post from "./Post/Post";
-import {Field, InjectedFormProps, reduxForm} from "redux-form";
+import {InjectedFormProps, reduxForm} from "redux-form";
 import {maxLengthCreator, required} from "../../../utils/validators/validators";
-import {Element} from "../../common/FormsControl/FormsControl";
+import {createField, GetStringKeys, TextareaElement} from "../../common/FormsControl/FormsControl";
 import {StateProfilePagePostsItemType} from "../../../redux/profilePageReducer";
 
 
@@ -12,13 +12,15 @@ export type MyPostsPropsType = {
     addPostHandler: (text: string) => void
 }
 
-function MyPosts(props: MyPostsPropsType) {
+const MyPosts = (props: MyPostsPropsType) => {
 
     const onSubmit = (profileMyPostsFormData: MyPostsFormDataType) => {
         props.addPostHandler(profileMyPostsFormData.profileMyPostsMessage)
     }
 
-    let postsElement = props.posts.map(p => <Post key={p.id} message={p.message} likesCount={p.likesCount} id={p.id}/>).reverse()
+    let postsElement = props.posts.map(
+        p => <Post key={p.id} message={p.message} likesCount={p.likesCount} id={p.id}/>
+        ).reverse()
 
     return (
         <div className={s.postsBlock}><h3>my posts</h3>
@@ -30,27 +32,22 @@ function MyPosts(props: MyPostsPropsType) {
     )
 }
 
-const ProfileAddMessageReduxForm = reduxForm<MyPostsFormDataType>({form: 'profileMyPostsForm'})(ProfileAddMessageForm)
-
 type MyPostsFormDataType = {
     profileMyPostsMessage: string
 }
 
+type ProfileMyPostsFormDataKeysType = GetStringKeys<MyPostsFormDataType>
+
 const maxLength10 = maxLengthCreator(10)
 
-const TextArea = Element('textarea')
-
-function ProfileAddMessageForm(props: InjectedFormProps<MyPostsFormDataType>) {
+const ProfileAddMessageForm: React.FC<InjectedFormProps<MyPostsFormDataType>> = (props) => {
 
     return (
         <>
             <form onSubmit={props.handleSubmit}>
                 <div>
-                    <Field component={TextArea}
-                           name={'profileMyPostsMessage'}
-                           placeholder={'Enter your message'}
-                           validate={[required, maxLength10]}
-                    />
+                    {createField<ProfileMyPostsFormDataKeysType>('Enter your message',
+                        'profileMyPostsMessage', [required, maxLength10], TextareaElement)}
                 </div>
                 <div>
                     <button>Add post</button>
@@ -58,6 +55,11 @@ function ProfileAddMessageForm(props: InjectedFormProps<MyPostsFormDataType>) {
             </form>
         </>
     )
+
 }
+
+const ProfileAddMessageReduxForm = reduxForm<MyPostsFormDataType>({
+    form: 'profileMyPostsForm'
+})(ProfileAddMessageForm)
 
 export default MyPosts

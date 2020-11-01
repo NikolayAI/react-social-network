@@ -5,7 +5,7 @@ import ProfileStatus from "../ProfileStatus/ProfileStatus";
 import userPhoto
     from "../../../assets/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg";
 import ProfileDataReduxForm, {ProfileDataFormFormDataType} from "./ProfileDataForm";
-import {ResponseProfileType} from "../../../types/types";
+import {ResponseContactsType, ResponseProfileType} from "../../../types/types";
 
 type ProfileInfoPropsType = {
     isOwner: boolean
@@ -13,7 +13,7 @@ type ProfileInfoPropsType = {
     status: string
     updateUserStatus: (status: string) => void
     onSavePhoto: (file: File) => void
-    saveProfile: (data: any) => Promise<any>
+    saveProfile: (data: ProfileDataFormFormDataType) => Promise<any>
 }
 
 const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
@@ -23,7 +23,7 @@ const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
     const [editMode, setEditMode] = useState<boolean>(false)
 
     const mainPhotoSelectedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.target.files && e.target.files.length && onSavePhoto(e.target.files[0])
+        e.target.files?.length && onSavePhoto(e.target.files[0])
     }
 
     const onEditMode = () => setEditMode(true)
@@ -45,7 +45,6 @@ const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
                 {editMode
                     ? <ProfileDataReduxForm profile={profile}
                                             onSubmit={onSubmit}
-                                            initialValues={profile}
                                             offEditMode={offEditMode}
                     />
                     : <ProfileData profile={profile} isOwner={isOwner} onEditMode={onEditMode}/>
@@ -70,15 +69,14 @@ const ProfileData: React.FC<ProfileDataPropsType> = ({profile, isOwner, onEditMo
         <div><b>Contacts</b>: {Object.keys(profile !== null && profile.contacts).map(key => {
             return <Contacts key={key}
                             contactTitle={key}
-                // @ts-ignore
-                            contactValue={profile?.contacts[key]}/>
+                            contactValue={profile?.contacts[key as keyof ResponseContactsType]}/>
         })}</div>
     </>
 }
 
 type ContactPropsType = {
     contactTitle: string
-    contactValue: string
+    contactValue: string | null | undefined
 }
 export const Contacts: React.FC<ContactPropsType> = ({contactTitle, contactValue}) => {
     return <div className={s.contact}><b>{contactTitle}</b>: {contactValue}</div>

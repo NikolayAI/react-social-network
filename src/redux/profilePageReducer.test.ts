@@ -1,4 +1,4 @@
-import {addPostAC, deletePostAC, profilePageReducer, StateProfilePageType} from "./profilePageReducer";
+import {profileActions, profilePageReducer, StateProfilePageType} from "./profilePageReducer";
 
 const state: StateProfilePageType = {
     posts: [
@@ -12,7 +12,7 @@ const state: StateProfilePageType = {
 }
 
 it('length of posts should be incremented', () => {
-    const action = addPostAC('hello there')
+    const action = profileActions.addPostAC('hello there')
 
     let newState = profilePageReducer(state, action)
 
@@ -20,7 +20,7 @@ it('length of posts should be incremented', () => {
 })
 
 it('message of new post should be correct', () => {
-    const action = addPostAC('hello there')
+    const action = profileActions.addPostAC('hello there')
 
     let newState = profilePageReducer(state, action)
 
@@ -28,7 +28,7 @@ it('message of new post should be correct', () => {
 })
 
 it('after deleting length of messages should be decrement', () => {
-    const action = deletePostAC(1)
+    const action = profileActions.deletePostAC(1)
 
     let newState = profilePageReducer(state, action)
 
@@ -36,7 +36,7 @@ it('after deleting length of messages should be decrement', () => {
 })
 
 it(`after deleting length of messages shouldn't be decrement if id is incorrect`, () => {
-    const action = deletePostAC(1000)
+    const action = profileActions.deletePostAC(1000)
 
     let newState = profilePageReducer(state, action)
 

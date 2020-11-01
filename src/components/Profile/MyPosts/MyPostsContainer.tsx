@@ -1,11 +1,12 @@
 import React from "react";
 import {
-    ActionsProfilePageType,
-    addPostAC,
-    StateProfileObjectPageType, StateProfilePagePostsItemType
+    profileActions,
+    StateProfileObjectPageType,
+    StateProfilePagePostsItemType
 } from "../../../redux/profilePageReducer";
 import MyPosts from "./MyPosts";
 import {connect} from "react-redux";
+import {GlobalStateType} from "../../../redux/reduxStore";
 
 type MapStateToPropsType = {
     posts: StateProfilePagePostsItemType[]
@@ -20,12 +21,10 @@ const mapStateToProps = (state: StateProfileObjectPageType): MapStateToPropsType
         posts: state.profilePage.posts,
     }
 }
-const mapDispatchToProps = (dispatch: (action: ActionsProfilePageType) => void): MapDispatchToPropsType => {
-    return {
-        addPostHandler:(text: string) => dispatch(addPostAC(text)),
-    }
+const mapDispatchToProps: MapDispatchToPropsType = {
+    addPostHandler: profileActions.addPostAC,
 }
 
-const MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts)
+const MyPostsContainer = connect<MapStateToPropsType, MapDispatchToPropsType, {}, GlobalStateType>(mapStateToProps, mapDispatchToProps)(MyPosts)
 
 export default MyPostsContainer

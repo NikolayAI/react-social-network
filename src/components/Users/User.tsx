@@ -8,7 +8,7 @@ type UserPropsType = {
     user: ResponseUserType
     follow: (userId: number) => void
     unfollow: (userId: number) => void
-    followingInProgress: number[]
+    followingInProgress: Array<number>
 }
 
 const User: React.FC<UserPropsType> = ({user, followingInProgress, unfollow, follow}) => {

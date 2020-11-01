@@ -1,11 +1,12 @@
-import {combineReducers, createStore, applyMiddleware, compose} from 'redux'
-import {profilePageReducer} from "./profilePageReducer";
+import {combineReducers, createStore, applyMiddleware, compose, Action} from 'redux'
+import {profilePageReducer, StateProfilePageType} from "./profilePageReducer";
 import {dialogsPageReducer} from "./dialogsPageReducer";
 import {usersPageReducer} from "./usersPageReducer";
 import {authReducer} from "./authReducer";
-import thunkMiddleware from 'redux-thunk'
+import thunkMiddleware, {ThunkAction} from 'redux-thunk'
 import {reducer as formReducer} from 'redux-form'
 import {appReducer} from "./appReducer";
+
 
 const rootReducer = combineReducers({
     profilePage: profilePageReducer,
@@ -16,11 +17,11 @@ const rootReducer = combineReducers({
     form: formReducer,
 })
 
-type PropertiesTypes<T> = T extends {[key: string]: infer U} ? U : never
 
-export type InferActionsTypes<T extends {[key: string]: (...args: Array<any>) => any}> = ReturnType<PropertiesTypes<T>>
+export type GlobalStateType = ReturnType<typeof rootReducer>
+export type InferActionsTypes<T> = T extends {[key: string]: (...args: Array<any>) => infer U} ? U : never
+export type BaseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, GlobalStateType, unknown, A>
 
-export type RootStateType = ReturnType<typeof rootReducer>
 
 export let store = createStore(rootReducer, compose(
     applyMiddleware(thunkMiddleware),
