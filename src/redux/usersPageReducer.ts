@@ -3,6 +3,7 @@ import {ResponseUserType} from "../types/types";
 import {Dispatch} from "react";
 import {BaseThunkType, InferActionsTypes} from "./reduxStore";
 import {usersAPI} from "../api/usersApi";
+import {APIResponseType} from '../api/api'
 
 
 const initialState = {
@@ -68,16 +69,17 @@ export const requestUsers = (page: number, pageSize: number): UsersThunkType => 
     dispatch(usersPageActions.setTotalUsersCountAC(data.totalCount))
 }
 export const follow = (userId: number): UsersThunkType => async (dispatch) => {
-    _followUnfollowFlow(dispatch, userId, usersAPI.follow.bind(usersAPI), usersPageActions.followAC)
+    await _followUnfollowFlow(dispatch, userId, usersAPI.follow.bind(usersAPI), usersPageActions.followAC)
 }
 export const unfollow = (userId: number): UsersThunkType => async (dispatch) => {
-    _followUnfollowFlow(dispatch, userId, usersAPI.unfollow.bind(usersAPI), usersPageActions.unfollowAC)
+    await _followUnfollowFlow(dispatch, userId, usersAPI.unfollow.bind(usersAPI), usersPageActions.unfollowAC)
 }
-const _followUnfollowFlow = async (dispatch: Dispatch<ActionsUsersPageTypes>, userId: number, apiMethod: any,
+const _followUnfollowFlow = async (dispatch: Dispatch<ActionsUsersPageTypes>, userId: number,
+                                   apiMethod: (userId: number) => Promise<APIResponseType>,
                                    actionCreator: (userId: number) => ActionsUsersPageTypes) => {
     dispatch(usersPageActions.toggleFollowingProgressAC(true, userId))
     const data = await apiMethod(userId)
-    if (data.resultCode === 0) dispatch(actionCreator(userId))
+    if (!data.resultCode) dispatch(actionCreator(userId))
     dispatch(usersPageActions.toggleFollowingProgressAC(false, userId))
 }
 
