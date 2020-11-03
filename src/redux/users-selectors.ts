@@ -9,3 +9,4 @@ export const getTotalUsersCount = (state: GlobalStateType) => state.usersPage.to
 export const getCurrentPage = (state: GlobalStateType) => state.usersPage.currentPage
 export const getIsFetching = (state: GlobalStateType) => state.usersPage.isFetching
 export const getFollowingInProgress = (state: GlobalStateType) => state.usersPage.followingInProgress
+export const getUsersFilter = (state: GlobalStateType) => state.usersPage.filter

@@ -35,6 +35,9 @@ type ProfileContainerPropsType = RouteComponentProps<PathParamsType>
     & mapStateToPropsType
     & mapDispatchToPropsType
 
+// const urlParams = new URLSearchParams(window.location.search);
+// const id = urlParams.get('id');
+
 export class ProfileContainer extends React.Component<ProfileContainerPropsType>{
 
     refreshProfile = () => {

@@ -13,6 +13,10 @@ const initialState = {
     currentPage: 1,
     isFetching: false,
     followingInProgress: [] as Array<number>, // array of users id
+    filter: {
+        term: '',
+        friend: null as null | boolean,
+    }
 }
 
 
@@ -36,6 +40,8 @@ export const usersPageReducer = (state = initialState, action: ActionsUsersPageT
             return {...state, totalUsersCount: action.usersCount}
         case 's_n/users/TOGGLE_IS_FETCHING':
             return {...state, isFetching: action.isFetching}
+        case 's_n/users/SET_FILTER':
+            return {...state, filter: action.payload}
         case 's_n/users/TOGGLE_FOLLOWING_PROGRESS':
             return {
                 ...state, followingInProgress: action.isFetching
@@ -55,15 +61,17 @@ export const usersPageActions = {
     setCurrentPageAC: (page: number) => ({type: 's_n/users/SET_CURRENT_PAGE', page} as const),
     setTotalUsersCountAC: (usersCount: number) => ({type: 's_n/users/SET_TOTAL_USERS_COUNT', usersCount} as const),
     toggleIsFetchingAC: (isFetching: boolean) => ({type: 's_n/users/TOGGLE_IS_FETCHING', isFetching} as const),
+    setFilterAC: (filter: UsersPageFilterType) => ({type: 's_n/users/SET_FILTER', payload: filter} as const),
     toggleFollowingProgressAC: (isFetching: boolean, userId: number) =>
         ({type: 's_n/users/TOGGLE_FOLLOWING_PROGRESS', isFetching, userId} as const),
 }
 
 
-export const requestUsers = (page: number, pageSize: number): UsersThunkType => async (dispatch) => {
+export const requestUsers = (page: number, pageSize: number, filter: UsersPageFilterType): UsersThunkType => async (dispatch) => {
     dispatch(usersPageActions.toggleIsFetchingAC(true))
     dispatch(usersPageActions.setCurrentPageAC(page))
-    const data = await usersAPI.getUsers(page, pageSize)
+    dispatch(usersPageActions.setFilterAC(filter))
+    const data = await usersAPI.getUsers(page, pageSize, filter.term, filter.friend)
     dispatch(usersPageActions.toggleIsFetchingAC(false))
     dispatch(usersPageActions.setUsersAC(data.items))
     dispatch(usersPageActions.setTotalUsersCountAC(data.totalCount))
@@ -85,5 +93,6 @@ const _followUnfollowFlow = async (dispatch: Dispatch<ActionsUsersPageTypes>, us
 
 
 export type StateUsersPageType = typeof initialState
+export type UsersPageFilterType = typeof initialState.filter
 type ActionsUsersPageTypes = InferActionsTypes<typeof usersPageActions>
 type UsersThunkType = BaseThunkType<ActionsUsersPageTypes>
