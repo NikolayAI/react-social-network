@@ -1,11 +1,11 @@
-import {combineReducers, createStore, applyMiddleware, compose, Action} from 'redux'
-import {profilePageReducer, StateProfilePageType} from "./profilePageReducer";
-import {dialogsPageReducer} from "./dialogsPageReducer";
-import {usersPageReducer} from "./usersPageReducer";
-import {authReducer} from "./authReducer";
+import {Action, applyMiddleware, combineReducers, compose, createStore} from 'redux'
+import {profilePageReducer} from "./profilePageReducer"
+import {dialogsPageReducer} from "./dialogsPageReducer"
+import {usersPageReducer} from "./usersPageReducer"
+import {authReducer} from "./authReducer"
 import thunkMiddleware, {ThunkAction} from 'redux-thunk'
 import {reducer as formReducer} from 'redux-form'
-import {appReducer} from "./appReducer";
+import {appReducer} from "./appReducer"
 
 
 const rootReducer = combineReducers({

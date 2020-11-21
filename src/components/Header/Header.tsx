@@ -1,8 +1,9 @@
-import React from "react";
+import React from "react"
 import s from './Header.module.css'
-import {NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom"
 import userPhoto
-    from "../../assets/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg";
+    from "../../assets/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg"
+
 
 type HeadersPropsType = {
     isAuth: boolean
@@ -11,7 +12,8 @@ type HeadersPropsType = {
     logout: () => void
 }
 
-const Header: React.FC<HeadersPropsType> = (props) =>  {
+
+const Header: React.FC<HeadersPropsType> = (props) => {
     return (
         <header className={s.header}>
             <img
@@ -20,13 +22,14 @@ const Header: React.FC<HeadersPropsType> = (props) =>  {
             <div className={s.loginBlock}>
                 {props.isAuth
                     ? <div><img style={{width: '3vw', borderRadius: '25px'}}
-                                     src={props.smallPhoto != null ? props.smallPhoto : userPhoto}
-                            />{props.login} - <button onClick={props.logout}>Logout</button>
+                                src={props.smallPhoto != null ? props.smallPhoto : userPhoto}
+                    />{props.login} - <button onClick={props.logout}>Logout</button>
                     </div>
                     : <NavLink to={'/login/'}>Login</NavLink>}
             </div>
         </header>
     )
 }
+
 
 export default Header

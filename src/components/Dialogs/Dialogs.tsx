@@ -1,16 +1,18 @@
-import React from "react";
+import React from "react"
 import s from './Dialogs.module.css'
-import DialogItem from "./DialogItem/DialogItem";
-import Message from "./Message/Message";
-import {StateDialogsPageType,} from "../../redux/dialogsPageReducer";
-import {InjectedFormProps, reduxForm} from "redux-form";
-import {createField, TextareaElement} from "../common/FormsControl/FormsControl";
-import {maxLengthCreator, required} from "../../utils/validators/validators";
+import DialogItem from "./DialogItem/DialogItem"
+import Message from "./Message/Message"
+import {StateDialogsPageType,} from "../../redux/dialogsPageReducer"
+import {InjectedFormProps, reduxForm} from "redux-form"
+import {createField, TextareaElement} from "../common/FormsControl/FormsControl"
+import {maxLengthCreator, required} from "../../utils/validators/validators"
+
 
 type DialogsPropsType = {
     dialogsPage: StateDialogsPageType
     addMessageAC: (text: string) => void
 }
+
 
 const Dialogs: React.FC<DialogsPropsType> = (props) => {
 
@@ -36,13 +38,15 @@ const Dialogs: React.FC<DialogsPropsType> = (props) => {
     )
 }
 
+
 type DialogsMyPostsFormDataType = {
-    dialogsMyPostsMessage:string
+    dialogsMyPostsMessage: string
 }
 
 type DialogsMyPostsFormDataKeysType = Extract<keyof DialogsMyPostsFormDataType, string>
 
 const maxLength50 = maxLengthCreator(50)
+
 
 const DialogsAddMessageForm: React.FC<InjectedFormProps<DialogsMyPostsFormDataType>> = (props) => {
     return (
@@ -59,6 +63,7 @@ const DialogsAddMessageForm: React.FC<InjectedFormProps<DialogsMyPostsFormDataTy
         </>
     )
 }
+
 
 const DialogsAddMessageReduxForm = reduxForm<DialogsMyPostsFormDataType>({
     form: 'dialogsMyPostsForm'

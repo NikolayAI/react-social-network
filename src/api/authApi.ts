@@ -1,4 +1,4 @@
-import {instance, APIResponseType, ResultCodeForCaptcha, ResultCodes} from "./api";
+import {instance, APIResponseType, ResultCodeForCaptcha, ResultCodes} from "./api"
 
 type MeResponseDataType = {
     id: number
@@ -14,7 +14,12 @@ export const authAPI = {
         return instance.get<APIResponseType<MeResponseDataType>>(`auth/me`).then(res => res.data)
     },
     login(email: string, password: string, rememberMe = false, captcha: string | null = null) {
-        return instance.post<APIResponseType<MeResponseDataType, ResultCodes | ResultCodeForCaptcha>>(`auth/login`, {email, password, rememberMe, captcha})
+        return instance.post<APIResponseType<MeResponseDataType, ResultCodes | ResultCodeForCaptcha>>(`auth/login`, {
+            email,
+            password,
+            rememberMe,
+            captcha
+        })
             .then(res => res.data)
     },
     logout() {

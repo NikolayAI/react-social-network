@@ -1,7 +1,8 @@
-import React from "react";
+import React from "react"
 import styles from './FormsControl.module.css'
-import {Field, WrappedFieldMetaProps, WrappedFieldProps} from "redux-form";
-import {FieldValidatorType} from "../../../utils/validators/validators";
+import {Field, WrappedFieldMetaProps, WrappedFieldProps} from "redux-form"
+import {FieldValidatorType} from "../../../utils/validators/validators"
+
 
 type ElementParamsType = {
     input: any
@@ -9,8 +10,11 @@ type ElementParamsType = {
     props: WrappedFieldProps
 }
 
+
 export const Element = (Elem: string) => ({input, meta: {touched, error}, ...props}: ElementParamsType) => {
+
     const hasError = touched && error
+
     return (
         <div className={styles.formControl + ' ' + (hasError ? styles.error : '')}>
             <Elem {...input} {...props}/>
@@ -21,8 +25,16 @@ export const Element = (Elem: string) => ({input, meta: {touched, error}, ...pro
     )
 }
 
-export function createField<FormKeysType extends string>(placeholder: string | undefined, name: FormKeysType, validators: Array<FieldValidatorType>,
-                                          component: string | React.FC<ElementParamsType> | React.Component<ElementParamsType>, props: any = {}, text = '') {
+
+export function createField<FormKeysType extends string>(
+    placeholder: string | undefined,
+    name: FormKeysType,
+    validators: Array<FieldValidatorType>,
+    component: string | React.FC<ElementParamsType> | React.Component<ElementParamsType>,
+    props: any = {},
+    text = ''
+) {
+
     return <div>
         <Field
             placeholder={placeholder}
@@ -34,7 +46,9 @@ export function createField<FormKeysType extends string>(placeholder: string | u
     </div>
 }
 
+
 export type GetStringKeys<T> = Extract<keyof T, string>
+
 
 export const InputElement = Element('input')
 export const TextareaElement = Element('textarea')

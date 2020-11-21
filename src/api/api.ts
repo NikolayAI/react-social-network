@@ -1,5 +1,5 @@
-import axios from "axios";
-import {ResponseUserType} from "../types/types";
+import axios from "axios"
+import {ResponseUserType} from "../types/types"
 
 export const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.0/',

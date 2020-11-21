@@ -25,11 +25,9 @@ export const LoginPage: React.FC<LoginPropsType> = () => {
     const captchaUrl = useSelector((state: GlobalStateType) => state.auth.captchaUrl)
     const isAuth = useSelector((state: GlobalStateType) => state.auth.isAuth)
 
-
     const onSubmit = (formData: LoginFormDataType) => {
         dispatch(login(formData.email, formData.password, formData.rememberMe, formData.captcha))
     }
-
 
     if (isAuth) return <Redirect to={'/profile/'}/>
 
@@ -49,21 +47,52 @@ type LoginFormPropsType = {
 type LoginFormDataKeysType = GetStringKeys<LoginFormDataType>
 
 
-const LoginForm: React.FC<InjectedFormProps<LoginFormDataType, LoginFormPropsType> & LoginFormPropsType> = ({error, handleSubmit,
-                                                                                            captchaUrl}) => {
+const LoginForm: React.FC<InjectedFormProps<LoginFormDataType, LoginFormPropsType> & LoginFormPropsType> = (
+    {
+        error,
+        handleSubmit,
+        captchaUrl
+    }) => {
+
     return (
         <>
             <form onSubmit={handleSubmit}>
-                {createField<LoginFormDataKeysType>('email', 'email', [required], InputElement)}
-                {createField<LoginFormDataKeysType>('password', 'password', [required], InputElement, {type: 'password'})}
-                {createField<LoginFormDataKeysType>(undefined, 'rememberMe', [], InputElement, {type: 'checkbox'}, 'remember me')}
+                {createField<LoginFormDataKeysType>(
+                    'email',
+                    'email',
+                    [required],
+                    InputElement
+                )}
+                {createField<LoginFormDataKeysType>(
+                    'password',
+                    'password',
+                    [required],
+                    InputElement,
+                    {type: 'password'}
+                )}
+                {createField<LoginFormDataKeysType>(
+                    undefined,
+                    'rememberMe',
+                    [],
+                    InputElement,
+                    {type: 'checkbox'},
+                    'remember me'
+                )}
                 {captchaUrl && <img src={captchaUrl}/>}
-                {captchaUrl && createField<LoginFormDataKeysType>('Value from the image', 'captcha', [required], InputElement)}
+                {captchaUrl && createField<LoginFormDataKeysType>(
+                    'Value from the image',
+                    'captcha',
+                    [required],
+                    InputElement
+                )}
                 {error && <div className={style.formSummaryError}>{error}</div>}
-                <div><button>Login</button></div>
+                <div>
+                    <button>Login</button>
+                </div>
             </form>
         </>
     )
 }
+
 
 const LoginReduxForm = reduxForm<LoginFormDataType, LoginFormPropsType>({form: 'login'})(LoginForm)

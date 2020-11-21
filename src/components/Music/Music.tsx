@@ -1,9 +1,9 @@
-import React from "react";
+import React from "react"
 
-function Music() {
-    return (
-        <div>Music</div>
-    )
-}
+
+const Music = () => (
+    <div>Music</div>
+)
+
 
 export default Music
