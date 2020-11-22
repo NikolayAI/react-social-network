@@ -1,4 +1,4 @@
-import {InferActionsTypes} from "./reduxStore";
+import {InferActionsTypes} from "./reduxStore"
 
 
 const initialState = {

@@ -5,12 +5,9 @@ import {logout, StateAuthObjectType} from "../../redux/authReducer"
 import {StateProfileObjectPageType} from "../../redux/profilePageReducer"
 
 
-class HeaderContainer extends React.Component<mapStateToPropsType & mapDispatchToPropsType> {
-    render() {
-        return <Header logout={this.props.logout} isAuth={this.props.isAuth} login={this.props.login}
-                       smallPhoto={this.props.smallPhoto}/>
-    }
-}
+const HeaderContainer: React.FC<mapStateToPropsType & mapDispatchToPropsType> = (
+    {logout, isAuth, login, smallPhoto}
+) => (<Header logout={logout} isAuth={isAuth} login={login} smallPhoto={smallPhoto}/>)
 
 
 type mapStateToPropsType = {

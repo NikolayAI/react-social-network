@@ -1,5 +1,5 @@
-import {getAuthUserData} from "./authReducer";
-import {BaseThunkType, InferActionsTypes} from "./reduxStore";
+import {getAuthUserData} from "./authReducer"
+import {BaseThunkType, InferActionsTypes} from "./reduxStore"
 
 
 const initialState = {
@@ -7,14 +7,14 @@ const initialState = {
 }
 
 
-export const appReducer = (state= initialState, action: ActionsAppTypes): StateAppType => {
+export const appReducer = (state = initialState, action: ActionsAppTypes): StateAppType => {
     switch (action.type) {
         case 's_n/app/INITIALIZED_SUCCESS':
             return {...state, initialized: true}
         default:
-            return state;
+            return state
     }
-};
+}
 
 
 const appActions = {
@@ -22,7 +22,7 @@ const appActions = {
 }
 
 
-export const initialize = (): any => (dispatch: any) => {
+export const initialize = () => (dispatch: any) => {
     Promise.all([dispatch(getAuthUserData())])
         .then(() => dispatch(appActions.setAppInitializedSuccessAC()))
 }

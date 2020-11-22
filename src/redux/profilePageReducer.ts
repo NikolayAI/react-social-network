@@ -1,7 +1,7 @@
-import {FormAction, stopSubmit} from "redux-form";
-import {ResponsePhotosType, ResponseProfileType} from "../types/types";
-import {profileAPI} from "../api/profileApi";
-import {BaseThunkType, InferActionsTypes} from "./reduxStore";
+import {FormAction, stopSubmit} from "redux-form"
+import {ResponsePhotosType, ResponseProfileType} from "../types/types"
+import {profileAPI} from "../api/profileApi"
+import {BaseThunkType, InferActionsTypes} from "./reduxStore"
 
 
 const initialState = {
@@ -35,9 +35,9 @@ export const profilePageReducer = (state = initialState, action: ActionsProfileP
         case 's_n/profile/SET_PHOTO_SUCCESS':
             return {...state, profile: {...state.profile, photos: action.photos}}
         default:
-            return state;
+            return state
     }
-};
+}
 
 
 export const profileActions = {
@@ -76,9 +76,9 @@ export const saveProfile = (profile: ResponseProfileType): ProfileThunkType => a
         }
     } else {
         let wrongNetwork = data.messages[0].slice(
-                data.messages[0].indexOf(">") + 1,
-                data.messages[0].indexOf(")")
-            ).toLocaleLowerCase();
+            data.messages[0].indexOf(">") + 1,
+            data.messages[0].indexOf(")")
+        ).toLocaleLowerCase()
         dispatch(stopSubmit('editProfile', {_error: wrongNetwork}))
         return Promise.reject(data.messages[0])
         // dispatch(stopSubmit('editProfile', {'contacts': {'facebook': response.data.messages[0]}}))

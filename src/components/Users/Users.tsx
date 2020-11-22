@@ -12,12 +12,12 @@ import {
     getUsers,
     getUsersFilter
 } from '../../redux/users-selectors'
-import { useHistory } from "react-router-dom"
+import {useHistory} from "react-router-dom"
 import * as queryString from 'querystring'
 
 
 type UsersPropsType = {}
-type QueryParamsType = {term?: string, page?: string, friend?: string}
+type QueryParamsType = { term?: string, page?: string, friend?: string }
 
 
 export const Users: React.FC<UsersPropsType> = () => {
@@ -39,7 +39,9 @@ export const Users: React.FC<UsersPropsType> = () => {
 
 
     useEffect(() => {
-        const parsed = queryString.parse(history.location.search.substr(1)) as {term: string, page: string, friend: string}
+        const parsed = queryString.parse(
+            history.location.search.substr(1)
+        ) as { term: string, page: string, friend: string }
 
         let actualPage = currentPage
         let actualFilter = filter

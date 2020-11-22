@@ -1,18 +1,19 @@
-import React from "react";
-import {Redirect} from "react-router-dom";
-import {connect} from "react-redux";
-import {GlobalStateType} from "../redux/reduxStore";
+import React from "react"
+import {Redirect} from "react-router-dom"
+import {connect} from "react-redux"
+import {GlobalStateType} from "../redux/reduxStore"
+
 
 type mapStateToPropsForRedirectType = {
     isAuth: boolean
 }
 
-type mapDispatchToPropsForRedirectType = {
-}
+type mapDispatchToPropsForRedirectType = {}
 
 const mapStateToPropsForRedirect = (state: GlobalStateType): mapStateToPropsForRedirectType => ({
     isAuth: state.auth.isAuth,
 })
+
 
 export function withAuthRedirect<WCP>(WrappedComponent: React.ComponentType<WCP>) {
     const RedirectComponent: React.FC<mapStateToPropsForRedirectType & mapDispatchToPropsForRedirectType> = (props) => {

@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
 
 
 export type GlobalStateType = ReturnType<typeof rootReducer>
-export type InferActionsTypes<T> = T extends {[key: string]: (...args: Array<any>) => infer U} ? U : never
+export type InferActionsTypes<T> = T extends { [key: string]: (...args: Array<any>) => infer U } ? U : never
 export type BaseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, GlobalStateType, unknown, A>
 
 

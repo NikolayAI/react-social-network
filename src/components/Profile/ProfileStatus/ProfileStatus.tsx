@@ -1,35 +1,35 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react"
+
 
 type ProfileStatusPropsType = {
     status: string
     updateUserStatus: (status: string) => void
 }
 
-const ProfileStatus: React.FC<ProfileStatusPropsType> = (props) => {
 
+const ProfileStatus: React.FC<ProfileStatusPropsType> = ({status, updateUserStatus}) => {
     const [editMode, setEditMode] = useState<boolean>(false)
-    const [status, setStatus] = useState<string>(props.status)
+    const [statusProfile, setStatus] = useState<string>(status)
 
     const activateEditModeHandler = () => setEditMode(true)
     const deActivateEditModeHandler = () => {
         setEditMode(false)
-        props.updateUserStatus(status)
+        updateUserStatus(statusProfile)
     }
     const statusChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => setStatus(e.currentTarget.value)
 
     useEffect(() => {
-        setStatus(props.status)
-    }, [props.status])
+        setStatus(status)
+    }, [status])
 
     return <>
-            <b>Status: </b>
-            {editMode
-                ? <input autoFocus={true} onChange={statusChangeHandler} onBlur={deActivateEditModeHandler}
-                              value={status}/>
-                : <span onDoubleClick={activateEditModeHandler}>{props.status || '-------'}</span>}
-        </>
-
-
+        <b>Status: </b>
+        {editMode
+            ? <input autoFocus={true} onChange={statusChangeHandler} onBlur={deActivateEditModeHandler}
+                     value={statusProfile}/>
+            : <span onDoubleClick={activateEditModeHandler}>{status || '-------'}</span>}
+    </>
 }
+
 
 export default ProfileStatus

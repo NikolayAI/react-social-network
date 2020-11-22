@@ -14,8 +14,9 @@ import {initialize, StateAppObjectType} from "./redux/appReducer"
 import {Preloader} from "./components/common/Preloader/Preloader"
 import withSuspense from "./hoc/withSuspens"
 
-const ProfileContainer = React.lazy(() => import("./components/Profile/ProfileContainer"));
-const DialogsContainer = React.lazy(() => import("./components/Dialogs/DialogsContainer"));
+
+const ProfileContainer = React.lazy(() => import("./components/Profile/ProfileContainer"))
+const DialogsContainer = React.lazy(() => import("./components/Dialogs/DialogsContainer"))
 
 const SuspendedProfile = withSuspense(ProfileContainer)
 const SuspendedDialogs = withSuspense(DialogsContainer)
@@ -34,10 +35,12 @@ class App extends React.Component<MapStateToPropsType & MapDispatchToPropsType> 
         alert('some error occurred')
         console.log(promiseRejectionEvent)
     }
+
     componentDidMount() {
         this.props.initialize()
         window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors)
     }
+
     componentWillUnmount() {
         window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors)
     }
@@ -77,5 +80,6 @@ const mapStateToProps = (state: StateAppObjectType): MapStateToPropsType => ({
 const mapDispatchToProps = {
     initialize,
 }
+
 
 export default compose<React.ComponentType>(connect(mapStateToProps, mapDispatchToProps))(App)

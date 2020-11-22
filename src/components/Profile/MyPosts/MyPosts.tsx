@@ -1,10 +1,10 @@
-import React from "react";
+import React from "react"
 import s from './MyPosts.module.css'
-import Post from "./Post/Post";
-import {InjectedFormProps, reduxForm} from "redux-form";
-import {maxLengthCreator, required} from "../../../utils/validators/validators";
-import {createField, GetStringKeys, TextareaElement} from "../../common/FormsControl/FormsControl";
-import {StateProfilePagePostsItemType} from "../../../redux/profilePageReducer";
+import Post from "./Post/Post"
+import {InjectedFormProps, reduxForm} from "redux-form"
+import {maxLengthCreator, required} from "../../../utils/validators/validators"
+import {createField, GetStringKeys, TextareaElement} from "../../common/FormsControl/FormsControl"
+import {StateProfilePagePostsItemType} from "../../../redux/profilePageReducer"
 
 
 export type MyPostsPropsType = {
@@ -12,15 +12,14 @@ export type MyPostsPropsType = {
     addPostHandler: (text: string) => void
 }
 
-const MyPosts = (props: MyPostsPropsType) => {
-
+const MyPosts: React.FC<MyPostsPropsType> = ({addPostHandler, posts}) => {
     const onSubmit = (profileMyPostsFormData: MyPostsFormDataType) => {
-        props.addPostHandler(profileMyPostsFormData.profileMyPostsMessage)
+        addPostHandler(profileMyPostsFormData.profileMyPostsMessage)
     }
 
-    let postsElement = props.posts.map(
+    let postsElement = posts.map(
         p => <Post key={p.id} message={p.message} likesCount={p.likesCount} id={p.id}/>
-        ).reverse()
+    ).reverse()
 
     return (
         <div className={s.postsBlock}><h3>my posts</h3>
@@ -32,6 +31,7 @@ const MyPosts = (props: MyPostsPropsType) => {
     )
 }
 
+
 type MyPostsFormDataType = {
     profileMyPostsMessage: string
 }
@@ -40,26 +40,23 @@ type ProfileMyPostsFormDataKeysType = GetStringKeys<MyPostsFormDataType>
 
 const maxLength10 = maxLengthCreator(10)
 
-const ProfileAddMessageForm: React.FC<InjectedFormProps<MyPostsFormDataType>> = (props) => {
 
-    return (
-        <>
-            <form onSubmit={props.handleSubmit}>
-                <div>
-                    {createField<ProfileMyPostsFormDataKeysType>('Enter your message',
-                        'profileMyPostsMessage', [required, maxLength10], TextareaElement)}
-                </div>
-                <div>
-                    <button>Add post</button>
-                </div>
-            </form>
-        </>
-    )
+const ProfileAddMessageForm: React.FC<InjectedFormProps<MyPostsFormDataType>> = ({handleSubmit}) => (
+    <form onSubmit={handleSubmit}>
+        <div>
+            {createField<ProfileMyPostsFormDataKeysType>('Enter your message',
+                'profileMyPostsMessage', [required, maxLength10], TextareaElement)}
+        </div>
+        <div>
+            <button>Add post</button>
+        </div>
+    </form>
+)
 
-}
 
 const ProfileAddMessageReduxForm = reduxForm<MyPostsFormDataType>({
     form: 'profileMyPostsForm'
 })(ProfileAddMessageForm)
+
 
 export default MyPosts

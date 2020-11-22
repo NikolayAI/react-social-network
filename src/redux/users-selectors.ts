@@ -1,5 +1,5 @@
-import {createSelector} from "reselect";
-import {GlobalStateType} from "./reduxStore";
+import {createSelector} from "reselect"
+import {GlobalStateType} from "./reduxStore"
 
 export const getUsersSuperSelector = (state: GlobalStateType) => state.usersPage.users
 export const getUsers = createSelector(getUsersSuperSelector, (users) => users)

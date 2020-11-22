@@ -1,7 +1,8 @@
-import React from "react";
-import ProfileInfo from "./ProfileInfo/ProfileInfo";
-import MyPostsContainer from "./MyPosts/MyPostsContainer";
-import {ResponseProfileType} from "../../types/types";
+import React from "react"
+import ProfileInfo from "./ProfileInfo/ProfileInfo"
+import MyPostsContainer from "./MyPosts/MyPostsContainer"
+import {ResponseProfileType} from "../../types/types"
+
 
 type ProfilePropsType = {
     isOwner: boolean
@@ -12,20 +13,22 @@ type ProfilePropsType = {
     saveProfile: (data: any) => Promise<any>
 }
 
-const Profile: React.FC<ProfilePropsType> = (props) => {
-    return (
-        <div>
-            <ProfileInfo
-                isOwner={props.isOwner}
-                profile={props.profile}
-                status={props.status}
-                updateUserStatus={props.updateUserStatus}
-                onSavePhoto={props.onSavePhoto}
-                saveProfile={props.saveProfile}
-            />
-            <MyPostsContainer/>
-        </div>
-    )
-}
+
+const Profile: React.FC<ProfilePropsType> = (
+    {isOwner, profile, status, updateUserStatus, onSavePhoto, saveProfile}
+) => (
+    <div>
+        <ProfileInfo
+            isOwner={isOwner}
+            profile={profile}
+            status={status}
+            updateUserStatus={updateUserStatus}
+            onSavePhoto={onSavePhoto}
+            saveProfile={saveProfile}
+        />
+        <MyPostsContainer/>
+    </div>
+)
+
 
 export default Profile

@@ -1,16 +1,17 @@
-import React from "react";
-import Profile from "./Profile";
-import {connect} from "react-redux";
+import React, {useEffect} from "react"
+import Profile from "./Profile"
+import {connect} from "react-redux"
 import {
     getUserProfile,
     getUserStatus,
     savePhoto, saveProfile,
     StateProfileObjectPageType, updateUserStatus
-} from "../../redux/profilePageReducer";
+} from "../../redux/profilePageReducer"
 import {RouteComponentProps, withRouter} from 'react-router'
-import {compose} from "redux";
-import {StateAuthObjectType} from "../../redux/authReducer";
-import {ResponseProfileType} from "../../types/types";
+import {compose} from "redux"
+import {StateAuthObjectType} from "../../redux/authReducer"
+import {ResponseProfileType} from "../../types/types"
+
 
 type mapStateToPropsType = {
     profile: ResponseProfileType | null
@@ -35,46 +36,44 @@ type ProfileContainerPropsType = RouteComponentProps<PathParamsType>
     & mapStateToPropsType
     & mapDispatchToPropsType
 
-// const urlParams = new URLSearchParams(window.location.search);
-// const id = urlParams.get('id');
 
-export class ProfileContainer extends React.Component<ProfileContainerPropsType>{
+export const ProfileContainer: React.FC<ProfileContainerPropsType> = (
+    {
+        match, authorizedUserId, history, getUserProfile, getUserStatus,
+        profile, status, updateUserStatus, savePhoto, saveProfile
+    }
+) => {
 
-    refreshProfile = () => {
-        let userId = Number(this.props.match.params.userId) || null
+    const refreshProfile = () => {
+        // const urlParams = new URLSearchParams(window.location.search);
+        // const id = urlParams.get('id');
+        let userId = Number(match.params.userId) || null
         if (!userId) {
-            userId = this.props.authorizedUserId
-            if (!userId) this.props.history.push('/login/')
+            userId = authorizedUserId
+            if (!userId) return history.push('/login/')
         }
         if (!userId) {
             throw new Error('ID should exists in URI params or in state("authorizedUserId")')
         } else {
-            this.props.getUserProfile(userId)
-            this.props.getUserStatus(userId)
+            getUserProfile(userId)
+            getUserStatus(userId)
         }
     }
 
-    componentDidMount() {
-        this.refreshProfile()
-    }
+    useEffect(() => {
+        refreshProfile()
+    }, [match.params.userId])
 
-    componentDidUpdate(prevProps: ProfileContainerPropsType, prevState: ProfileContainerPropsType) {
-        if(this.props.match.params.userId !== prevProps.match.params.userId) this.refreshProfile()
-    }
-
-    render() {
-        return (
-            <Profile
-                isOwner={!this.props.match.params.userId}
-                profile={this.props.profile}
-                status={this.props.status}
-                updateUserStatus={this.props.updateUserStatus}
-                onSavePhoto={this.props.savePhoto}
-                saveProfile={this.props.saveProfile}
-            />
-        )
-    }
+    return <Profile
+        isOwner={!match.params.userId}
+        profile={profile}
+        status={status}
+        updateUserStatus={updateUserStatus}
+        onSavePhoto={savePhoto}
+        saveProfile={saveProfile}
+    />
 }
+
 
 type MergedMapStateToPropsArgumentType = StateProfileObjectPageType & StateAuthObjectType
 
@@ -87,6 +86,7 @@ const mapStateToProps = (state: MergedMapStateToPropsArgumentType): mapStateToPr
     }
 }
 
+
 const mapDispatchToProps = {
     getUserProfile,
     getUserStatus,
@@ -94,6 +94,7 @@ const mapDispatchToProps = {
     savePhoto,
     saveProfile,
 }
+
 
 export default compose<React.ComponentType>(
     connect(mapStateToProps, mapDispatchToProps),

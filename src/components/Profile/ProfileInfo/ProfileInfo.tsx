@@ -1,11 +1,12 @@
-import React, {useState} from "react";
+import React, {useState} from "react"
 import s from './ProfileInfo.module.css'
-import {Preloader} from "../../common/Preloader/Preloader";
-import ProfileStatus from "../ProfileStatus/ProfileStatus";
+import {Preloader} from "../../common/Preloader/Preloader"
+import ProfileStatus from "../ProfileStatus/ProfileStatus"
 import userPhoto
-    from "../../../assets/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg";
-import ProfileDataReduxForm, {ProfileDataFormFormDataType} from "./ProfileDataForm";
-import {ResponseContactsType, ResponseProfileType} from "../../../types/types";
+    from "../../../assets/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg"
+import ProfileDataReduxForm, {ProfileDataFormFormDataType} from "./ProfileDataForm"
+import {ResponseContactsType, ResponseProfileType} from "../../../types/types"
+
 
 type ProfileInfoPropsType = {
     isOwner: boolean
@@ -16,23 +17,21 @@ type ProfileInfoPropsType = {
     saveProfile: (data: ProfileDataFormFormDataType) => Promise<any>
 }
 
-const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
-                                                         profile, status,
-                                                         updateUserStatus, isOwner, onSavePhoto, saveProfile
-                                                     }) => {
+
+const ProfileInfo: React.FC<ProfileInfoPropsType> = (
+    {profile, status, updateUserStatus, isOwner, onSavePhoto, saveProfile}
+) => {
+
     const [editMode, setEditMode] = useState<boolean>(false)
 
     const mainPhotoSelectedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.target.files?.length && onSavePhoto(e.target.files[0])
     }
-
     const onEditMode = () => setEditMode(true)
     const offEditMode = () => setEditMode(false)
-
     const onSubmit = (formData: ProfileDataFormFormDataType) => {
         saveProfile(formData).then(() => offEditMode())
     }
-
 
     return (
         <div>
@@ -54,13 +53,16 @@ const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
     )
 }
 
+
 type ProfileDataPropsType = {
     profile: ResponseProfileType | null
     isOwner: boolean
     onEditMode: () => void
 }
-const ProfileData: React.FC<ProfileDataPropsType> = ({profile, isOwner, onEditMode}) => {
-    return <>
+
+
+const ProfileData: React.FC<ProfileDataPropsType> = ({profile, isOwner, onEditMode}) => (
+    <>
         {isOwner && <button onClick={onEditMode}>edit</button>}
         <div><b>Full name</b>: {profile?.fullName}</div>
         <div><b>Looking for a job</b>: {profile?.lookingForAJob ? 'yes' : 'no'}</div>
@@ -68,18 +70,22 @@ const ProfileData: React.FC<ProfileDataPropsType> = ({profile, isOwner, onEditMo
         <div><b>About me</b>: {profile?.aboutMe}</div>
         <div><b>Contacts</b>: {Object.keys(profile !== null && profile.contacts).map(key => {
             return <Contacts key={key}
-                            contactTitle={key}
-                            contactValue={profile?.contacts[key as keyof ResponseContactsType]}/>
+                             contactTitle={key}
+                             contactValue={profile?.contacts[key as keyof ResponseContactsType]}/>
         })}</div>
     </>
-}
+)
+
 
 type ContactPropsType = {
     contactTitle: string
     contactValue: string | null | undefined
 }
-export const Contacts: React.FC<ContactPropsType> = ({contactTitle, contactValue}) => {
-    return <div className={s.contact}><b>{contactTitle}</b>: {contactValue}</div>
-}
+
+
+export const Contacts: React.FC<ContactPropsType> = ({contactTitle, contactValue}) => (
+    <div className={s.contact}><b>{contactTitle}</b>: {contactValue}</div>
+)
+
 
 export default ProfileInfo

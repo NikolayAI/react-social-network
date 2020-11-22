@@ -5,10 +5,7 @@ import {useSelector} from 'react-redux'
 import {getIsFetching} from '../../redux/users-selectors'
 
 
-type UsersPagePropsType = {}
-
-
-export const UsersPage: React.FC<UsersPagePropsType> = () => {
+export const UsersPage: React.FC = () => {
     const isFetching = useSelector(getIsFetching)
     return <>
         {isFetching ? <Preloader/> : null}

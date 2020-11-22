@@ -4,6 +4,7 @@ import {UsersPageFilterType} from '../../redux/usersPageReducer'
 import {useSelector} from 'react-redux'
 import {getUsersFilter} from '../../redux/users-selectors'
 
+
 const usersSearchFormValidate = (values: any) => {
     const errors = {}
     return errors
@@ -20,8 +21,8 @@ type UsersSearchFormFormType = {
     friend: UsersSearchFormFriendType
 }
 
-export const UsersSearchForm: React.FC<UsersSearchFormPropsType> = ({onFilterChanged}) => {
 
+export const UsersSearchForm: React.FC<UsersSearchFormPropsType> = ({onFilterChanged}) => {
     const filter = useSelector(getUsersFilter)
 
 
