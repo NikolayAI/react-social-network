@@ -42,7 +42,7 @@ export const Paginator: React.FC<PaginatorPropsType> = (
                 .map(p => <span
                     className={cn({[style.selectedPage]: currentPage === p}, style.pageNumber)}
                     key={p}
-                    onClick={e => setCurrentPageHandler(p)}>{p}</span>)}
+                    onClick={() => setCurrentPageHandler(p)}>{p}</span>)}
             {portionCount > portionNumber &&
             <button onClick={() => setPortionNumber(prev => prev + 1)}>NEXT</button>}
         </div>

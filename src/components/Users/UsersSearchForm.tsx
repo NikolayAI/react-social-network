@@ -5,6 +5,12 @@ import {useSelector} from 'react-redux'
 import {getUsersFilter} from '../../redux/users-selectors'
 
 
+type ForFormAnyType = {
+    name: string
+    id: number
+}
+
+
 const usersSearchFormValidate = (values: any) => {
     const errors = {}
     return errors
