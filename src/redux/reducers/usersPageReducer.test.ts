@@ -55,14 +55,14 @@ beforeEach(() => {
 })
 
 test('follow success', () => {
-    const newState = usersPageReducer(state, usersPageActions.followAC(1))
+    const newState = usersPageReducer(state, usersPageActions.follow(1))
 
     expect(newState.users[0].followed).toBeFalsy()
     expect(newState.users[1].followed).toBeTruthy()
 })
 
 test('unfollow success', () => {
-    const newState = usersPageReducer(state, usersPageActions.unfollowAC(3))
+    const newState = usersPageReducer(state, usersPageActions.unfollow(3))
 
     expect(newState.users[2].followed).toBeTruthy()
     expect(newState.users[3].followed).toBeFalsy()

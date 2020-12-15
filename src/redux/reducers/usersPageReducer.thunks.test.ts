@@ -32,12 +32,12 @@ test('success follow thunk', async () => {
     expect(dispatchMock).toBeCalledTimes(3)
     expect(dispatchMock).toHaveBeenNthCalledWith(
         1,
-        usersPageActions.toggleFollowingProgressAC(true, 1)
+        usersPageActions.toggleFollowingProgress(true, 1)
     )
-    expect(dispatchMock).toHaveBeenNthCalledWith(2, usersPageActions.followAC(1))
+    expect(dispatchMock).toHaveBeenNthCalledWith(2, usersPageActions.follow(1))
     expect(dispatchMock).toHaveBeenNthCalledWith(
         3,
-        usersPageActions.toggleFollowingProgressAC(false, 1)
+        usersPageActions.toggleFollowingProgress(false, 1)
     )
 })
 
@@ -49,11 +49,11 @@ test('success unfollow thunk', async () => {
     expect(dispatchMock).toBeCalledTimes(3)
     expect(dispatchMock).toHaveBeenNthCalledWith(
         1,
-        usersPageActions.toggleFollowingProgressAC(true, 1)
+        usersPageActions.toggleFollowingProgress(true, 1)
     )
-    expect(dispatchMock).toHaveBeenNthCalledWith(2, usersPageActions.unfollowAC(1))
+    expect(dispatchMock).toHaveBeenNthCalledWith(2, usersPageActions.unfollow(1))
     expect(dispatchMock).toHaveBeenNthCalledWith(
         3,
-        usersPageActions.toggleFollowingProgressAC(false, 1)
+        usersPageActions.toggleFollowingProgress(false, 1)
     )
 })

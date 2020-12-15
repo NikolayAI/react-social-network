@@ -72,15 +72,15 @@ export const profilePageReducer = (
 }
 
 export const profileActions = {
-    addPostAC: (message: string) =>
+    addPost: (message: string) =>
         ({ type: 's_n/profile/ADD_POST', payload: message } as const),
-    deletePostAC: (postId: number) =>
+    deletePost: (postId: number) =>
         ({ type: 's_n/profile/DELETE_POST', payload: postId } as const),
-    setUserProfileAC: (profile: ResponseProfileType) =>
+    setUserProfile: (profile: ResponseProfileType) =>
         ({ type: 's_n/profile/SET_USER_PROFILE', payload: { profile } } as const),
-    setUserStatusProfileAC: (status: string) =>
+    setUserStatusProfile: (status: string) =>
         ({ type: 's_n/profile/SET_USER_STATUS', payload: { status } } as const),
-    savePhotoSuccessAC: (photos: ResponsePhotosType) =>
+    savePhotoSuccess: (photos: ResponsePhotosType) =>
         ({ type: 's_n/profile/SET_PHOTO_SUCCESS', payload: photos } as const),
 }
 
@@ -88,26 +88,26 @@ export const getUserStatus = (userId: number | null): ProfileThunkType => async 
     dispatch
 ) => {
     const data = await profileAPI.getStatus(userId)
-    dispatch(profileActions.setUserStatusProfileAC(data))
+    dispatch(profileActions.setUserStatusProfile(data))
 }
 
 export const updateUserStatus = (status: string): ProfileThunkType => async (
     dispatch
 ) => {
     const data = await profileAPI.updateStatus(status)
-    if (!data.resultCode) dispatch(profileActions.setUserStatusProfileAC(status))
+    if (!data.resultCode) dispatch(profileActions.setUserStatusProfile(status))
 }
 
 export const getUserProfile = (userId: number | null): ProfileThunkType => async (
     dispatch
 ) => {
     const data = await profileAPI.getProfile(userId)
-    dispatch(profileActions.setUserProfileAC(data))
+    dispatch(profileActions.setUserProfile(data))
 }
 
 export const savePhoto = (file: File): ProfileThunkType => async (dispatch) => {
     const data = await profileAPI.savePhoto(file)
-    if (!data.resultCode) dispatch(profileActions.savePhotoSuccessAC(data.data.photos))
+    if (!data.resultCode) dispatch(profileActions.savePhotoSuccess(data.data.photos))
 }
 
 export const saveProfile = (profile: ProfileDataFormFormDataType) => async (

@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { getIsAuth } from '../../redux/selectors/authSelectors'
 import { getDialogs, getMessages } from '../../redux/selectors/dialogsSelectors'
-import { maxLengthCreator } from '../../utils/validators/validators'
 
 const Dialogs: React.FC = React.memo(() => {
     const dispatch = useDispatch()
@@ -21,7 +20,7 @@ const Dialogs: React.FC = React.memo(() => {
         (dialogsMyPostsFormData: DialogsMyPostsFormDataType) => {
             console.log(dialogsMyPostsFormData.dialogsMyPostsMessage)
             dispatch(
-                dialogsActions.addMessageAC(dialogsMyPostsFormData.dialogsMyPostsMessage)
+                dialogsActions.addMessage(dialogsMyPostsFormData.dialogsMyPostsMessage)
             )
             dispatch(reset('dialogsMyPostsForm'))
         },
@@ -54,7 +53,6 @@ type DialogsMyPostsFormDataType = {
 }
 
 type DialogsMyPostsFormDataKeysType = Extract<keyof DialogsMyPostsFormDataType, string>
-// const maxLength50 = maxLengthCreator(50)
 
 const DialogsAddMessageForm: React.FC<InjectedFormProps<DialogsMyPostsFormDataType>> = ({
     handleSubmit,

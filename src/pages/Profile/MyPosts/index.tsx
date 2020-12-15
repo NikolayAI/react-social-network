@@ -17,9 +17,7 @@ export const MyPosts: React.FC = React.memo(() => {
 
     const handleSubmit = useCallback(
         (profileMyPostsFormData: MyPostsFormDataType) => {
-            dispatch(
-                profileActions.addPostAC(profileMyPostsFormData.profileMyPostsMessage)
-            )
+            dispatch(profileActions.addPost(profileMyPostsFormData.profileMyPostsMessage))
             dispatch(reset('profileMyPostsForm'))
         },
         [dispatch]

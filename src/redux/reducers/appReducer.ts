@@ -19,12 +19,12 @@ export const appReducer = (
 }
 
 const appActions = {
-    setAppInitializedSuccessAC: () => ({ type: 's_n/app/INITIALIZED_SUCCESS' } as const),
+    setAppInitializedSuccess: () => ({ type: 's_n/app/INITIALIZED_SUCCESS' } as const),
 }
 
 export const initialize = () => async (dispatch: Dispatch<any>) => {
     await Promise.all([dispatch(getAuthUserData())])
-    dispatch(appActions.setAppInitializedSuccessAC())
+    dispatch(appActions.setAppInitializedSuccess())
 }
 
 export type StateAppObjectType = {

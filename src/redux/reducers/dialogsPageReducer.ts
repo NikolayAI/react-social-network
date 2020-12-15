@@ -34,7 +34,7 @@ export const dialogsPageReducer = (
 }
 
 export const dialogsActions = {
-    addMessageAC: (message: string) =>
+    addMessage: (message: string) =>
         ({ type: 's_n/dialogs/ADD_MESSAGE', payload: message } as const),
 }
 

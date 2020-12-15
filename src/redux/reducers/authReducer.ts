@@ -27,7 +27,7 @@ export const authReducer = (
 }
 
 const authActions = {
-    setAuthUserDataAC: (
+    setAuthUserData: (
         userId: number | null,
         login: string | null,
         email: string | null,
@@ -37,7 +37,7 @@ const authActions = {
             type: 's_n/auth/SET_AUTH_USER_DATA',
             payload: { userId, login, email, isAuth },
         } as const),
-    getCaptchaUrlSuccessAC: (captchaUrl: string) =>
+    getCaptchaUrlSuccess: (captchaUrl: string) =>
         ({
             type: 's_n/auth/SET_CAPTCHA_URL_SUCCESS',
             payload: { captchaUrl },
@@ -48,7 +48,7 @@ export const getAuthUserData = (): AuthThunkType => async (dispatch) => {
     const data = await authAPI.me()
     if (data.resultCode === ResultCodes.Success) {
         const { id, login, email } = data.data
-        dispatch(authActions.setAuthUserDataAC(id, login, email, true))
+        dispatch(authActions.setAuthUserData(id, login, email, true))
     }
 }
 
@@ -56,13 +56,13 @@ export const getCaptchaUrl = (): AuthThunkType => async (
     dispatch: ThunkDispatch<StateAuthType, {}, ActionsAuthTypes>
 ) => {
     const data = await securityAPI.getCaptchaUrl()
-    dispatch(authActions.getCaptchaUrlSuccessAC(data.url))
+    dispatch(authActions.getCaptchaUrlSuccess(data.url))
 }
 
 export const logout = (): AuthThunkType => async (dispatch) => {
     const data = await authAPI.logout()
     if (data.resultCode === ResultCodes.Success) {
-        dispatch(authActions.setAuthUserDataAC(null, null, null, false))
+        dispatch(authActions.setAuthUserData(null, null, null, false))
     }
 }
 
