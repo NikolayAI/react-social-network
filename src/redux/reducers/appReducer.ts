@@ -1,5 +1,5 @@
 import { getAuthUserData } from './authReducer'
-import { BaseThunkType, InferActionsTypes } from './rootReducer'
+import { BaseThunkType, InferActionsTypes } from './rootReducer1'
 import { Dispatch } from 'redux'
 
 const initialState = {

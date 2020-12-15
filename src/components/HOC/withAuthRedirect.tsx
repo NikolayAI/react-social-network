@@ -1,7 +1,7 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { RootStateType } from '../../redux/reducers/rootReducer'
+import { RootStateType } from '../../redux/reducers/rootReducer1'
 
 type mapStateToPropsForRedirectType = {
     isAuth: boolean

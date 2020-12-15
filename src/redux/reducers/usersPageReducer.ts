@@ -2,7 +2,7 @@ import { updateObjectInArray } from '../../utils/object-helpers'
 import { Dispatch } from 'react'
 import { usersAPI } from '../../api/usersApi'
 import { APIResponseType, ResponseUserType } from '../../api/api'
-import { BaseThunkType, InferActionsTypes } from './rootReducer'
+import { BaseThunkType, InferActionsTypes } from './rootReducer1'
 
 const initialState = {
     users: [] as Array<ResponseUserType>,

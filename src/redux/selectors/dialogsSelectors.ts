@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { RootStateType } from '../reducers/rootReducer'
+import { RootStateType } from '../reducers/rootReducer1'
 
 export const getDialogsSuperSelector = (state: RootStateType) => state.dialogsPage.dialogs
 

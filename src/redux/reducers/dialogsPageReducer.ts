@@ -1,4 +1,4 @@
-import { InferActionsTypes } from './rootReducer'
+import { InferActionsTypes } from './rootReducer1'
 
 const initialState = {
     dialogs: [

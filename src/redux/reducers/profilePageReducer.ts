@@ -7,7 +7,7 @@ import {
 } from '../../api/api'
 import { ProfileDataFormFormDataType } from '../../pages/Profile/ProfileInfo/ProfileDataForm'
 import { Dispatch } from 'redux'
-import { BaseThunkType, InferActionsTypes, RootStateType } from './rootReducer'
+import { BaseThunkType, InferActionsTypes, RootStateType } from './rootReducer1'
 
 const initialState = {
     posts: [

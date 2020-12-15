@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { RootStateType } from '../reducers/rootReducer'
+import { RootStateType } from '../reducers/rootReducer1'
 
 export const getUsersSuperSelector = (state: RootStateType) => state.usersPage.users
 export const getUsers = createSelector(getUsersSuperSelector, (users) => users)

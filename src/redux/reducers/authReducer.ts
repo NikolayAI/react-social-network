@@ -3,7 +3,7 @@ import { ThunkDispatch } from 'redux-thunk'
 import { FormAction, stopSubmit } from 'redux-form'
 import { authAPI } from '../../api/authApi'
 import { securityAPI } from '../../api/securityApi'
-import { BaseThunkType, InferActionsTypes } from './rootReducer'
+import { BaseThunkType, InferActionsTypes } from './rootReducer1'
 
 const initialState = {
     userId: null as number | null,

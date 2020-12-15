@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { RootStateType } from '../reducers/rootReducer'
+import { RootStateType } from '../reducers/rootReducer1'
 
 export const getProfileSuperSelector = (state: RootStateType) => state.profilePage.profile
 export const getProfile = createSelector(getProfileSuperSelector, (profile) => profile)
