@@ -15,12 +15,15 @@ export const rootReducer = combineReducers({
     app: appReducer,
     form: formReducer,
 })
+
 export type RootStateType = ReturnType<typeof rootReducer>
+
 export type InferActionsTypes<T> = T extends {
     [key: string]: (...args: Array<any>) => infer U
 }
     ? U
     : never
+
 export type BaseThunkType<A extends Action, R = Promise<void>> = ThunkAction<
     R,
     RootStateType,
