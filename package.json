@@ -61,12 +61,12 @@
     "gh-pages": "^3.1.0"
   },
   "prettier": {
-    "semi": false,
+    "semi": true,
+    "trailingComma": "all",
     "singleQuote": true,
-    "jsxSingleQuote": true,
-    "tabWidth": 4,
-    "printWidth": 90,
-    "embeddedLanguageFormatting": "off"
+    "printWidth": 80,
+    "tabWidth": 2,
+    "arrowParens": "avoid"
   },
   "husky": {
     "hooks": {
