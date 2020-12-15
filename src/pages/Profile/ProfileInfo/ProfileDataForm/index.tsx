@@ -28,7 +28,7 @@ type ProfileDataFormFormDataKeysType = GetStringKeys<ProfileDataFormFormDataType
 const ProfileDataForm: React.FC<
     InjectedFormProps<ProfileDataFormFormDataType, ProfileDataFormPropsType> &
         ProfileDataFormPropsType
-> = ({ profile, handleSubmit, offEditMode, error }) => (
+> = React.memo(({ profile, handleSubmit, offEditMode, error }) => (
     <form onSubmit={handleSubmit}>
         <button>save</button>
         <button onClick={offEditMode}>cancel</button>
@@ -87,7 +87,7 @@ const ProfileDataForm: React.FC<
             })}
         </div>
     </form>
-)
+))
 
 export const ProfileDataReduxForm = reduxForm<
     ProfileDataFormFormDataType,

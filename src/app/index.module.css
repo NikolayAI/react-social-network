@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-.app-wrapper {
+.appWrapper {
     height: 100vh;
     margin: 0 auto;
     display: grid;
@@ -17,7 +17,7 @@
     grid-gap: 0.5vw;
 }
 
-.app-wrapper-content {
+.appWrapperContent {
     grid-area: c;
     background-color: antiquewhite;
     height: 100%;

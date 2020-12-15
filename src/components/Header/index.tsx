@@ -2,11 +2,10 @@ import React from 'react'
 import s from './index.module.css'
 import { NavLink } from 'react-router-dom'
 import userPhoto from '../../common/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg'
-import { logout } from '../../reducers/authReducer'
+import { logout } from '../../redux/reducers/authReducer'
 import { useSelector } from 'react-redux'
-import { RootStateType } from '../../reducers/reduxStore'
-import { getIsAuth, getLogin } from '../../selectors/authSelectors'
-import { getSmallPhoto } from '../../selectors/profileSelectors'
+import { getIsAuth, getLogin } from '../../redux/selectors/authSelectors'
+import { getSmallPhoto } from '../../redux/selectors/profileSelectors'
 
 export const Header: React.FC = () => {
     const login = useSelector(getLogin)
@@ -25,6 +24,7 @@ export const Header: React.FC = () => {
                         <img
                             style={{ width: '3vw', borderRadius: '25px' }}
                             src={smallPhoto != null ? smallPhoto : userPhoto}
+                            alt={'avatar'}
                         />
                         {login} - <button onClick={logout}>Logout</button>
                     </div>

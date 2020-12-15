@@ -9,36 +9,26 @@ type ElementParamsType = {
     props: WrappedFieldProps
 }
 
-export const Element = (Elem: string) => ({
-    input,
-    meta: { touched, error },
-    ...props
-}: ElementParamsType) => {
-    const hasError = touched && error
+export const Element = (Elem: string) =>
+    React.memo(({ input, meta: { touched, error }, ...props }: ElementParamsType) => {
+        const hasError = touched && error
 
-    return (
-        <div
-            className={
-                styles.formControl + ' ' + (hasError ? styles.error : '')
-            }
-        >
-            <Elem {...input} {...props} />
-            <div>{hasError && <span>{error}</span>}</div>
-        </div>
-    )
-}
+        return (
+            <div className={styles.formControl + ' ' + (hasError ? styles.error : '')}>
+                <Elem {...input} {...props} />
+                <div>{hasError && <span>{error}</span>}</div>
+            </div>
+        )
+    })
 
-export function createField<FormKeysType extends string>(
+export const createField = <FormKeysType extends string>(
     placeholder: string | undefined,
     name: FormKeysType,
     validators: Array<FieldValidatorType>,
-    component:
-        | string
-        | React.FC<ElementParamsType>
-        | React.Component<ElementParamsType>,
+    component: string | React.FC<ElementParamsType> | React.Component<ElementParamsType>,
     props: any = {},
     text = ''
-) {
+) => {
     return (
         <div>
             <Field

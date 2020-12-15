@@ -1,7 +1,7 @@
 import s from '../index.module.css'
 import { NavLink } from 'react-router-dom'
 import React from 'react'
-import { StateDialogsPageDialogsItemType } from '../../../reducers/dialogsPageReducer'
+import { StateDialogsPageDialogsItemType } from '../../../redux/reducers/dialogsPageReducer'
 
 type DialogItemPropsType = StateDialogsPageDialogsItemType
 

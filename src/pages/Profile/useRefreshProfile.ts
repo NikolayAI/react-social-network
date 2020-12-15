@@ -1,14 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { RootStateType } from '../../reducers/reduxStore'
-import {
-    getUserProfile,
-    getUserStatus,
-    savePhoto,
-    saveProfile,
-} from '../../reducers/profilePageReducer'
-import { useEffect } from 'react'
-import { getAuthorizedUserId } from '../../selectors/authSelectors'
+import { getUserProfile, getUserStatus } from '../../redux/reducers/profilePageReducer'
+import { useCallback, useEffect } from 'react'
+import { getAuthorizedUserId } from '../../redux/selectors/authSelectors'
 
 export const useRefreshProfile = () => {
     const dispatch = useDispatch()
@@ -16,31 +10,32 @@ export const useRefreshProfile = () => {
     const history = useHistory()
     const authorizedUserId = useSelector(getAuthorizedUserId)
 
-    const refreshProfile = () => {
-        // const urlParams = new URLSearchParams(window.location.search);
-        // const id = urlParams.get('id');
-        if (!userId) {
-            userId = authorizedUserId
-            if (!userId) return history.push('/login/')
-        }
-        if (!userId) {
-            throw new Error(
-                'ID should exists in URI params or in state("authorizedUserId")'
-            )
-        } else {
-            dispatch(getUserProfile(userId))
-            dispatch(getUserStatus(userId))
-        }
-    }
+    const refreshProfile = useCallback(
+        (userId: number | null) => {
+            // const urlParams = new URLSearchParams(window.location.search);
+            // const id = urlParams.get('id');
+            if (!userId) {
+                userId = authorizedUserId
+                if (!userId) return history.push('/login/')
+            }
+            if (!userId) {
+                throw new Error(
+                    'ID should exists in URI params or in state("authorizedUserId")'
+                )
+            } else {
+                dispatch(getUserProfile(userId))
+                dispatch(getUserStatus(userId))
+            }
+        },
+        [dispatch, history, authorizedUserId]
+    )
 
     useEffect(() => {
-        refreshProfile()
-    }, [userId])
+        refreshProfile(userId)
+    }, [refreshProfile, userId])
 
     return {
         userId,
-        savePhoto,
-        saveProfile,
         authorizedUserId,
     }
 }

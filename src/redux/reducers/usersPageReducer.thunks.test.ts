@@ -1,8 +1,8 @@
-import { usersAPI } from '../api/usersApi'
-import { APIResponseType, ResultCodes } from '../api/api'
+import { usersAPI } from '../../api/usersApi'
+import { APIResponseType, ResultCodes } from '../../api/api'
 import { follow, unfollow, usersPageActions } from './usersPageReducer'
 
-jest.mock('../api/usersApi')
+jest.mock('../../api/usersApi')
 const userAPIMock = usersAPI as jest.Mocked<typeof usersAPI>
 
 const dispatchMock = jest.fn()
@@ -34,10 +34,7 @@ test('success follow thunk', async () => {
         1,
         usersPageActions.toggleFollowingProgressAC(true, 1)
     )
-    expect(dispatchMock).toHaveBeenNthCalledWith(
-        2,
-        usersPageActions.followAC(1)
-    )
+    expect(dispatchMock).toHaveBeenNthCalledWith(2, usersPageActions.followAC(1))
     expect(dispatchMock).toHaveBeenNthCalledWith(
         3,
         usersPageActions.toggleFollowingProgressAC(false, 1)
@@ -54,10 +51,7 @@ test('success unfollow thunk', async () => {
         1,
         usersPageActions.toggleFollowingProgressAC(true, 1)
     )
-    expect(dispatchMock).toHaveBeenNthCalledWith(
-        2,
-        usersPageActions.unfollowAC(1)
-    )
+    expect(dispatchMock).toHaveBeenNthCalledWith(2, usersPageActions.unfollowAC(1))
     expect(dispatchMock).toHaveBeenNthCalledWith(
         3,
         usersPageActions.toggleFollowingProgressAC(false, 1)

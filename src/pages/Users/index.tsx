@@ -5,7 +5,7 @@ import { UsersSearchForm } from './UsersSearchForm'
 import { Preloader } from '../../components/Preloader'
 import { useUsersSearchForm } from './useUsersSearchForm'
 
-export const Users: React.FC = () => {
+export const Users: React.FC = React.memo(() => {
     const {
         isFetching,
         handleFilterChanged,
@@ -45,4 +45,4 @@ export const Users: React.FC = () => {
             </div>
         </>
     )
-}
+})

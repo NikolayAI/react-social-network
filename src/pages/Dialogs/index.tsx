@@ -1,34 +1,34 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import s from './index.module.css'
 import { DialogItem } from './DialogItem'
 import { Dialog } from './Dialog'
-import {
-    StateDialogsPageType,
-    dialogsActions,
-} from '../../reducers/dialogsPageReducer'
-import { InjectedFormProps, reduxForm } from 'redux-form'
+import { dialogsActions } from '../../redux/reducers/dialogsPageReducer'
+import { InjectedFormProps, reduxForm, reset } from 'redux-form'
 import { createField, TextareaElement } from '../../components/FormsControl'
-import { maxLengthCreator, required } from '../../utils/validators/validators'
-import { useSelector } from 'react-redux'
-import { RootStateType } from '../../reducers/reduxStore'
+import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { getIsAuth } from '../../selectors/authSelectors'
-import { getDialogs, getMessages } from '../../selectors/dialogsSelectors'
+import { getIsAuth } from '../../redux/selectors/authSelectors'
+import { getDialogs, getMessages } from '../../redux/selectors/dialogsSelectors'
+import { maxLengthCreator } from '../../utils/validators/validators'
 
-const Dialogs: React.FC = () => {
+const Dialogs: React.FC = React.memo(() => {
+    const dispatch = useDispatch()
     const isAuth = useSelector(getIsAuth)
     const dialogs = useSelector(getDialogs)
     const messages = useSelector(getMessages)
 
-    const handleAddNewDialogsMyPostsMessage = (
-        dialogsMyPostsFormData: DialogsMyPostsFormDataType
-    ) => {
-        dialogsActions.addMessageAC(
-            dialogsMyPostsFormData.dialogsMyPostsMessage
-        )
-    }
+    const handleAddNewDialogsMyPostsMessage = useCallback(
+        (dialogsMyPostsFormData: DialogsMyPostsFormDataType) => {
+            console.log(dialogsMyPostsFormData.dialogsMyPostsMessage)
+            dispatch(
+                dialogsActions.addMessageAC(dialogsMyPostsFormData.dialogsMyPostsMessage)
+            )
+            dispatch(reset('dialogsMyPostsForm'))
+        },
+        [dispatch]
+    )
 
-    if (isAuth) return <Redirect to={'/login/'} />
+    if (!isAuth) return <Redirect to={'/login/'} />
 
     return (
         <div className={s.dialogs}>
@@ -47,37 +47,32 @@ const Dialogs: React.FC = () => {
             </div>
         </div>
     )
-}
+})
 
 type DialogsMyPostsFormDataType = {
     dialogsMyPostsMessage: string
 }
 
-type DialogsMyPostsFormDataKeysType = Extract<
-    keyof DialogsMyPostsFormDataType,
-    string
->
-const maxLength50 = maxLengthCreator(50)
+type DialogsMyPostsFormDataKeysType = Extract<keyof DialogsMyPostsFormDataType, string>
+// const maxLength50 = maxLengthCreator(50)
 
-const DialogsAddMessageForm: React.FC<
-    InjectedFormProps<DialogsMyPostsFormDataType>
-> = (props) => {
+const DialogsAddMessageForm: React.FC<InjectedFormProps<DialogsMyPostsFormDataType>> = ({
+    handleSubmit,
+}) => {
     return (
-        <>
-            <form onSubmit={props.handleSubmit}>
-                <div>
-                    {createField<DialogsMyPostsFormDataKeysType>(
-                        'Enter your message',
-                        'dialogsMyPostsMessage',
-                        [required, maxLength50],
-                        TextareaElement
-                    )}
-                </div>
-                <div>
-                    <button>Send message</button>
-                </div>
-            </form>
-        </>
+        <form onSubmit={handleSubmit}>
+            <div>
+                {createField<DialogsMyPostsFormDataKeysType>(
+                    'Enter your message',
+                    'dialogsMyPostsMessage',
+                    [],
+                    TextareaElement
+                )}
+            </div>
+            <div>
+                <button>Send message</button>
+            </div>
+        </form>
     )
 }
 

@@ -1,13 +1,13 @@
 import { FormAction, stopSubmit } from 'redux-form'
-import { profileAPI } from '../api/profileApi'
-import { BaseThunkType, InferActionsTypes, RootStateType } from './reduxStore'
+import { profileAPI } from '../../api/profileApi'
 import {
     ResponseContactsType,
     ResponsePhotosType,
     ResponseProfileType,
-} from '../api/api'
-import { ProfileDataFormFormDataType } from '../pages/Profile/ProfileInfo/ProfileDataForm'
+} from '../../api/api'
+import { ProfileDataFormFormDataType } from '../../pages/Profile/ProfileInfo/ProfileDataForm'
 import { Dispatch } from 'redux'
+import { BaseThunkType, InferActionsTypes, RootStateType } from './rootReducer'
 
 const initialState = {
     posts: [
@@ -50,22 +50,21 @@ export const profilePageReducer = (
                 ...state,
                 posts: [
                     ...state.posts,
-                    { id: 5, message: action.text, likesCount: 0 },
+                    { id: 10, message: action.payload, likesCount: 0 },
                 ],
             }
         case 's_n/profile/DELETE_POST':
             return {
                 ...state,
-                posts: state.posts.filter((p) => p.id !== action.postId),
+                posts: state.posts.filter((p) => p.id !== action.payload),
             }
         case 's_n/profile/SET_USER_PROFILE':
-            return { ...state, profile: action.profile }
         case 's_n/profile/SET_USER_STATUS':
-            return { ...state, status: action.status }
+            return { ...state, ...action.payload }
         case 's_n/profile/SET_PHOTO_SUCCESS':
             return {
                 ...state,
-                profile: { ...state.profile, photos: action.photos },
+                profile: { ...state.profile, ...action.payload },
             }
         default:
             return state
@@ -73,21 +72,21 @@ export const profilePageReducer = (
 }
 
 export const profileActions = {
-    addPostAC: (text: string) =>
-        ({ type: 's_n/profile/ADD_POST', text } as const),
+    addPostAC: (message: string) =>
+        ({ type: 's_n/profile/ADD_POST', payload: message } as const),
     deletePostAC: (postId: number) =>
-        ({ type: 's_n/profile/DELETE_POST', postId } as const),
+        ({ type: 's_n/profile/DELETE_POST', payload: postId } as const),
     setUserProfileAC: (profile: ResponseProfileType) =>
-        ({ type: 's_n/profile/SET_USER_PROFILE', profile } as const),
+        ({ type: 's_n/profile/SET_USER_PROFILE', payload: { profile } } as const),
     setUserStatusProfileAC: (status: string) =>
-        ({ type: 's_n/profile/SET_USER_STATUS', status } as const),
+        ({ type: 's_n/profile/SET_USER_STATUS', payload: { status } } as const),
     savePhotoSuccessAC: (photos: ResponsePhotosType) =>
-        ({ type: 's_n/profile/SET_PHOTO_SUCCESS', photos } as const),
+        ({ type: 's_n/profile/SET_PHOTO_SUCCESS', payload: photos } as const),
 }
 
-export const getUserStatus = (
-    userId: number | null
-): ProfileThunkType => async (dispatch) => {
+export const getUserStatus = (userId: number | null): ProfileThunkType => async (
+    dispatch
+) => {
     const data = await profileAPI.getStatus(userId)
     dispatch(profileActions.setUserStatusProfileAC(data))
 }
@@ -96,21 +95,19 @@ export const updateUserStatus = (status: string): ProfileThunkType => async (
     dispatch
 ) => {
     const data = await profileAPI.updateStatus(status)
-    if (!data.resultCode)
-        dispatch(profileActions.setUserStatusProfileAC(status))
+    if (!data.resultCode) dispatch(profileActions.setUserStatusProfileAC(status))
 }
 
-export const getUserProfile = (
-    userId: number | null
-): ProfileThunkType => async (dispatch) => {
+export const getUserProfile = (userId: number | null): ProfileThunkType => async (
+    dispatch
+) => {
     const data = await profileAPI.getProfile(userId)
     dispatch(profileActions.setUserProfileAC(data))
 }
 
 export const savePhoto = (file: File): ProfileThunkType => async (dispatch) => {
     const data = await profileAPI.savePhoto(file)
-    if (!data.resultCode)
-        dispatch(profileActions.savePhotoSuccessAC(data.data.photos))
+    if (!data.resultCode) dispatch(profileActions.savePhotoSuccessAC(data.data.photos))
 }
 
 export const saveProfile = (profile: ProfileDataFormFormDataType) => async (
@@ -127,10 +124,7 @@ export const saveProfile = (profile: ProfileDataFormFormDataType) => async (
         }
     } else {
         let wrongNetwork = data.messages[0]
-            .slice(
-                data.messages[0].indexOf('>') + 1,
-                data.messages[0].indexOf(')')
-            )
+            .slice(data.messages[0].indexOf('>') + 1, data.messages[0].indexOf(')'))
             .toLocaleLowerCase()
         dispatch(stopSubmit('editProfile', { _error: wrongNetwork }))
         return Promise.reject(data.messages[0])

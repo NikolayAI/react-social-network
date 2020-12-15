@@ -8,17 +8,18 @@ import {
     getTotalUsersCount,
     getUsers,
     getUsersFilter,
-} from '../../selectors/usersSelectors'
+} from '../../redux/selectors/usersSelectors'
 import {
     follow,
     requestUsers,
     unfollow,
     UsersPageFilterType,
-} from '../../reducers/usersPageReducer'
-import { useEffect } from 'react'
+} from '../../redux/reducers/usersPageReducer'
+import { useCallback, useEffect } from 'react'
 import queryString from 'querystring'
 
 type QueryParamsType = { term?: string; page?: string; friend?: string }
+
 export const useUsersSearchForm = () => {
     const dispatch = useDispatch()
     const history = useHistory()
@@ -30,12 +31,25 @@ export const useUsersSearchForm = () => {
     const followingInProgress = useSelector(getFollowingInProgress)
     const isFetching = useSelector(getIsFetching)
 
-    const handleSetCurrentPage = (page: number) =>
-        dispatch(requestUsers(page, pageSize, filter))
-    const handleFilterChanged = (filter: UsersPageFilterType) =>
-        dispatch(requestUsers(1, pageSize, filter))
-    const handleFollow = (userId: number) => dispatch(follow(userId))
-    const handleUnfollow = (userId: number) => dispatch(unfollow(userId))
+    const handleSetCurrentPage = useCallback(
+        (page: number) => {
+            dispatch(requestUsers(page, pageSize, filter))
+        },
+        [dispatch, pageSize, filter]
+    )
+
+    const handleFilterChanged = useCallback(
+        (filter: UsersPageFilterType) => dispatch(requestUsers(1, pageSize, filter)),
+        [dispatch, pageSize]
+    )
+
+    const handleFollow = useCallback((userId: number) => dispatch(follow(userId)), [
+        dispatch,
+    ])
+
+    const handleUnfollow = useCallback((userId: number) => dispatch(unfollow(userId)), [
+        dispatch,
+    ])
 
     useEffect(() => {
         const parsed = queryString.parse(history.location.search.substr(1)) as {
@@ -76,7 +90,7 @@ export const useUsersSearchForm = () => {
             search: queryString.stringify(query),
             // `?term=${filter.term}&friend=${filter.friend}&page=${currentPage}`
         })
-    }, [filter, currentPage])
+    }, [])
 
     return {
         isFetching,

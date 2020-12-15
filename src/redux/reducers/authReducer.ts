@@ -1,9 +1,9 @@
-import { ResultCodeForCaptcha, ResultCodes } from '../api/api'
+import { ResultCodeForCaptcha, ResultCodes } from '../../api/api'
 import { ThunkDispatch } from 'redux-thunk'
 import { FormAction, stopSubmit } from 'redux-form'
-import { authAPI } from '../api/authApi'
-import { securityAPI } from '../api/securityApi'
-import { BaseThunkType, InferActionsTypes } from './reduxStore'
+import { authAPI } from '../../api/authApi'
+import { securityAPI } from '../../api/securityApi'
+import { BaseThunkType, InferActionsTypes } from './rootReducer'
 
 const initialState = {
     userId: null as number | null,

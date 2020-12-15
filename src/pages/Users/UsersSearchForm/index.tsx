@@ -1,8 +1,8 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik'
-import React from 'react'
-import { UsersPageFilterType } from '../../../reducers/usersPageReducer'
+import React, { useCallback } from 'react'
+import { UsersPageFilterType } from '../../../redux/reducers/usersPageReducer'
 import { useSelector } from 'react-redux'
-import { getUsersFilter } from '../../../selectors/usersSelectors'
+import { getUsersFilter } from '../../../redux/selectors/usersSelectors'
 
 const usersSearchFormValidate = (values: any) => {
     const errors = {}
@@ -20,52 +20,55 @@ type UsersSearchFormFormType = {
     friend: UsersSearchFormFriendType
 }
 
-export const UsersSearchForm: React.FC<UsersSearchFormPropsType> = ({
-    onFilterChanged,
-}) => {
-    const filter = useSelector(getUsersFilter)
+export const UsersSearchForm: React.FC<UsersSearchFormPropsType> = React.memo(
+    ({ onFilterChanged }) => {
+        const filter = useSelector(getUsersFilter)
 
-    const handleSubmit = (
-        values: UsersSearchFormFormType,
-        { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
-    ) => {
-        const filter: UsersPageFilterType = {
-            term: values.term,
-            friend:
-                values.friend === 'null'
-                    ? null
-                    : values.friend === 'true'
-                    ? true
-                    : false,
-        }
-        onFilterChanged(filter)
-        setSubmitting(false)
+        const handleSubmit = useCallback(
+            (
+                values: UsersSearchFormFormType,
+                { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
+            ) => {
+                const filter: UsersPageFilterType = {
+                    term: values.term,
+                    friend:
+                        values.friend === 'null'
+                            ? null
+                            : values.friend === 'true'
+                            ? true
+                            : false,
+                }
+                onFilterChanged(filter)
+                setSubmitting(false)
+            },
+            [onFilterChanged]
+        )
+
+        return (
+            <Formik
+                enableReinitialize
+                initialValues={{
+                    term: filter.term,
+                    friend: (filter.friend as unknown) as UsersSearchFormFriendType,
+                }}
+                validate={usersSearchFormValidate}
+                onSubmit={handleSubmit}
+            >
+                {({ isSubmitting }) => (
+                    <Form>
+                        <Field type='text' name='term' />
+                        <Field name='friend' as='select'>
+                            <option value='null'>All</option>
+                            <option value='true'>Only followed</option>
+                            <option value='false'>Only unfollowed</option>
+                        </Field>
+                        <ErrorMessage name='term' component='div' />
+                        <button type='submit' disabled={isSubmitting}>
+                            Find
+                        </button>
+                    </Form>
+                )}
+            </Formik>
+        )
     }
-
-    return (
-        <Formik
-            enableReinitialize
-            initialValues={{
-                term: filter.term,
-                friend: (filter.friend as unknown) as UsersSearchFormFriendType,
-            }}
-            validate={usersSearchFormValidate}
-            onSubmit={handleSubmit}
-        >
-            {({ isSubmitting }) => (
-                <Form>
-                    <Field type='text' name='term' />
-                    <Field name='friend' as='select'>
-                        <option value='null'>All</option>
-                        <option value='true'>Only followed</option>
-                        <option value='false'>Only unfollowed</option>
-                    </Field>
-                    <ErrorMessage name='term' component='div' />
-                    <button type='submit' disabled={isSubmitting}>
-                        Find
-                    </button>
-                </Form>
-            )}
-        </Formik>
-    )
-}
+)

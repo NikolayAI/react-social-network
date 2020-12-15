@@ -1,40 +1,13 @@
 import React from 'react'
 import { InjectedFormProps, reduxForm } from 'redux-form'
-import {
-    createField,
-    GetStringKeys,
-    InputElement,
-} from '../../components/FormsControl'
+import { createField, GetStringKeys, InputElement } from '../../components/FormsControl'
 import { required } from '../../utils/validators/validators'
-import { useDispatch, useSelector } from 'react-redux'
-import { login } from '../../reducers/authReducer'
 import { Redirect } from 'react-router-dom'
 import style from '../../components/FormsControl/index.module.css'
-import { RootStateType } from '../../reducers/reduxStore'
-import { getCaptchaUrl, getIsAuth } from '../../selectors/authSelectors'
-
-export type LoginFormDataType = {
-    email: string
-    password: string
-    rememberMe: boolean
-    captcha: string | null
-}
+import { LoginFormDataType, useLogin } from './useLogin'
 
 export const Login: React.FC = () => {
-    const dispatch = useDispatch()
-    const captchaUrl = useSelector(getCaptchaUrl)
-    const isAuth = useSelector(getIsAuth)
-
-    const handleSubmit = (formData: LoginFormDataType) => {
-        dispatch(
-            login(
-                formData.email,
-                formData.password,
-                formData.rememberMe,
-                formData.captcha
-            )
-        )
-    }
+    const { isAuth, handleSubmit, captchaUrl } = useLogin()
 
     if (isAuth) return <Redirect to={'/profile/'} />
 
@@ -53,9 +26,8 @@ type LoginFormPropsType = {
 type LoginFormDataKeysType = GetStringKeys<LoginFormDataType>
 
 const LoginForm: React.FC<
-    InjectedFormProps<LoginFormDataType, LoginFormPropsType> &
-        LoginFormPropsType
-> = ({ error, handleSubmit, captchaUrl }) => {
+    InjectedFormProps<LoginFormDataType, LoginFormPropsType> & LoginFormPropsType
+> = React.memo(({ error, handleSubmit, captchaUrl }) => {
     return (
         <form onSubmit={handleSubmit}>
             {createField<LoginFormDataKeysType>(
@@ -93,7 +65,7 @@ const LoginForm: React.FC<
             </div>
         </form>
     )
-}
+})
 
 const LoginReduxForm = reduxForm<LoginFormDataType, LoginFormPropsType>({
     form: 'login',

@@ -3,7 +3,7 @@ import {
     profilePageReducer,
     StateProfilePageType,
 } from './profilePageReducer'
-import { ResponseContactsType, ResponsePhotosType } from '../api/api'
+import { ResponseContactsType, ResponsePhotosType } from '../../api/api'
 
 const state: StateProfilePageType = {
     posts: [

@@ -1,8 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { RootStateType } from '../../../reducers/reduxStore'
-import React, { useEffect, useState } from 'react'
-import { updateUserStatus } from '../../../reducers/profilePageReducer'
-import { getProfileStatus } from '../../../selectors/profileSelectors'
+import React, { useCallback, useEffect, useState } from 'react'
+import { updateUserStatus } from '../../../redux/reducers/profilePageReducer'
+import { getProfileStatus } from '../../../redux/selectors/profileSelectors'
 
 export const useProfileStatus = () => {
     const dispatch = useDispatch()
@@ -10,14 +9,17 @@ export const useProfileStatus = () => {
     const [editMode, setEditMode] = useState<boolean>(false)
     const [statusProfile, setStatus] = useState<string>(status)
 
-    const handleActivateEditMode = () => setEditMode(true)
-    const handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-        setStatus(e.currentTarget.value)
+    const handleActivateEditMode = useCallback(() => setEditMode(true), [])
 
-    const handleDeActivateEditMode = () => {
+    const handleStatusChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => setStatus(e.currentTarget.value),
+        []
+    )
+
+    const handleDeActivateEditMode = useCallback(() => {
         setEditMode(false)
         dispatch(updateUserStatus(statusProfile))
-    }
+    }, [dispatch, statusProfile])
 
     useEffect(() => {
         setStatus(status)

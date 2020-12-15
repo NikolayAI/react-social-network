@@ -1,4 +1,4 @@
-import { InferActionsTypes } from './reduxStore'
+import { InferActionsTypes } from './rootReducer'
 
 const initialState = {
     dialogs: [
@@ -26,7 +26,7 @@ export const dialogsPageReducer = (
         case 's_n/dialogs/ADD_MESSAGE':
             return {
                 ...state,
-                messages: [...state.messages, { id: 10, message: action.text }],
+                messages: [...state.messages, { id: 10, message: action.payload }],
             }
         default:
             return state
@@ -34,8 +34,8 @@ export const dialogsPageReducer = (
 }
 
 export const dialogsActions = {
-    addMessageAC: (text: string) =>
-        ({ type: 's_n/dialogs/ADD_MESSAGE', text } as const),
+    addMessageAC: (message: string) =>
+        ({ type: 's_n/dialogs/ADD_MESSAGE', payload: message } as const),
 }
 
 export type StateDialogsPageDialogsItemType = {
@@ -46,10 +46,6 @@ export type StateDialogsPageDialogsItemType = {
 export type StateDialogsPageMessagesItemType = {
     id: number
     message: string
-}
-
-export type StateDialogsObjectPageType = {
-    dialogsPage: StateDialogsPageType
 }
 
 export type StateDialogsPageType = typeof initialState

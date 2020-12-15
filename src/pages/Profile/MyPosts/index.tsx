@@ -1,35 +1,33 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import s from './index.module.css'
 import { Post } from './Post'
-import { InjectedFormProps, reduxForm } from 'redux-form'
-import {
-    maxLengthCreator,
-    required,
-} from '../../../utils/validators/validators'
+import { InjectedFormProps, reduxForm, reset } from 'redux-form'
 import {
     createField,
     GetStringKeys,
     TextareaElement,
 } from '../../../components/FormsControl'
-import { profileActions } from '../../../reducers/profilePageReducer'
-import { useSelector } from 'react-redux'
-import { getPosts } from '../../../selectors/profileSelectors'
+import { profileActions } from '../../../redux/reducers/profilePageReducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { getPosts } from '../../../redux/selectors/profileSelectors'
 
-export const MyPosts: React.FC = () => {
+export const MyPosts: React.FC = React.memo(() => {
+    const dispatch = useDispatch()
     const posts = useSelector(getPosts)
 
-    const handleSubmit = (profileMyPostsFormData: MyPostsFormDataType) => {
-        profileActions.addPostAC(profileMyPostsFormData.profileMyPostsMessage)
-    }
+    const handleSubmit = useCallback(
+        (profileMyPostsFormData: MyPostsFormDataType) => {
+            dispatch(
+                profileActions.addPostAC(profileMyPostsFormData.profileMyPostsMessage)
+            )
+            dispatch(reset('profileMyPostsForm'))
+        },
+        [dispatch]
+    )
 
     let postsElement = posts
         .map((p) => (
-            <Post
-                key={p.id}
-                message={p.message}
-                likesCount={p.likesCount}
-                id={p.id}
-            />
+            <Post key={p.id} message={p.message} likesCount={p.likesCount} id={p.id} />
         ))
         .reverse()
 
@@ -40,24 +38,23 @@ export const MyPosts: React.FC = () => {
             <div className={s.posts}>{postsElement}</div>
         </div>
     )
-}
+})
 
 type MyPostsFormDataType = {
     profileMyPostsMessage: string
 }
 
 type ProfileMyPostsFormDataKeysType = GetStringKeys<MyPostsFormDataType>
-const maxLength10 = maxLengthCreator(10)
 
-const ProfileAddMessageForm: React.FC<
-    InjectedFormProps<MyPostsFormDataType>
-> = ({ handleSubmit }) => (
+const ProfileAddMessageForm: React.FC<InjectedFormProps<MyPostsFormDataType>> = ({
+    handleSubmit,
+}) => (
     <form onSubmit={handleSubmit}>
         <div>
             {createField<ProfileMyPostsFormDataKeysType>(
                 'Enter your message',
                 'profileMyPostsMessage',
-                [required, maxLength10],
+                [],
                 TextareaElement
             )}
         </div>

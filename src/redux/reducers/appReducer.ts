@@ -1,5 +1,6 @@
 import { getAuthUserData } from './authReducer'
-import { BaseThunkType, InferActionsTypes } from './reduxStore'
+import { BaseThunkType, InferActionsTypes } from './rootReducer'
+import { Dispatch } from 'redux'
 
 const initialState = {
     initialized: false,
@@ -18,14 +19,12 @@ export const appReducer = (
 }
 
 const appActions = {
-    setAppInitializedSuccessAC: () =>
-        ({ type: 's_n/app/INITIALIZED_SUCCESS' } as const),
+    setAppInitializedSuccessAC: () => ({ type: 's_n/app/INITIALIZED_SUCCESS' } as const),
 }
 
-export const initialize = () => (dispatch: any) => {
-    Promise.all([dispatch(getAuthUserData())]).then(() =>
-        dispatch(appActions.setAppInitializedSuccessAC())
-    )
+export const initialize = () => async (dispatch: Dispatch<any>) => {
+    await Promise.all([dispatch(getAuthUserData())])
+    dispatch(appActions.setAppInitializedSuccessAC())
 }
 
 export type StateAppObjectType = {

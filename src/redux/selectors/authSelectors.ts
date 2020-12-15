@@ -1,5 +1,4 @@
-import { createSelector } from 'reselect'
-import { RootStateType } from '../reducers/reduxStore'
+import { RootStateType } from '../reducers/rootReducer'
 
 export const getAuthorizedUserId = (state: RootStateType) => state.auth.userId
 export const getIsAuth = (state: RootStateType) => state.auth.isAuth

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Preloader } from '../components/Preloader'
+import { Preloader } from '../Preloader'
 
 export function withSuspense<WCP>(WrappedComponent: React.ComponentType<WCP>) {
     return (props: WCP) => {
