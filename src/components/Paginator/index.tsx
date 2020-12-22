@@ -15,7 +15,7 @@ export const Paginator: React.FC<PaginatorPropsType> = React.memo(
         let [portionNumber, setPortionNumber] = useState<number>(1)
 
         const pagesCount = Math.ceil(totalItemsCount / pageSize)
-        let pagesArr: Array<number> = []
+        let pagesArr: number[] = []
         let portionCount = Math.ceil(pagesCount / portionSize)
         let leftPortionPageNumber = (portionNumber - 1) * portionSize + 1
         let rightPortionPageNumber = portionNumber * portionSize

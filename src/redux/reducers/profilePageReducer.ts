@@ -15,7 +15,7 @@ const initialState = {
         { id: 2, message: "It's my first post", likesCount: 23 },
         { id: 3, message: 'Blabla', likesCount: 5 },
         { id: 4, message: 'Dada', likesCount: 7 },
-    ] as Array<StateProfilePagePostsItemType>,
+    ] as StateProfilePagePostsItemType[],
     profile: {
         fullName: null,
         lookingForAJob: null,

@@ -5,12 +5,12 @@ import { APIResponseType, ResponseUserType } from '../../api/api'
 import { BaseThunkType, InferActionsTypes } from './rootReducer1'
 
 const initialState = {
-    users: [] as Array<ResponseUserType>,
+    users: [] as ResponseUserType[],
     pageSize: 10,
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: false,
-    followingInProgress: [] as Array<number>, // array of users id
+    followingInProgress: [] as number[], // array of users id
     filter: {
         term: '',
         friend: null as null | boolean,
@@ -64,7 +64,7 @@ export const usersPageActions = {
     follow: (userId: number) => ({ type: 's_n/users/FOLLOW', payload: userId } as const),
     unfollow: (userId: number) =>
         ({ type: 's_n/users/UNFOLLOW', payload: userId } as const),
-    setUsers: (users: Array<ResponseUserType>) =>
+    setUsers: (users: ResponseUserType[]) =>
         ({ type: 's_n/users/SET_USERS', payload: users } as const),
     setCurrentPage: (page: number) =>
         ({ type: 's_n/users/SET_CURRENT_PAGE', payload: page } as const),

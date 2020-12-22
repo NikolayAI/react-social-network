@@ -5,7 +5,7 @@ import { ResponseUserType } from '../../../api/api'
 
 type UserPropsType = {
     user: ResponseUserType
-    followingInProgress: Array<number>
+    followingInProgress: number[]
     onFollow: (userId: number) => void
     onUnfollow: (userId: number) => void
 }

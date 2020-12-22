@@ -19,7 +19,7 @@ export const rootReducer = combineReducers({
 export type RootStateType = ReturnType<typeof rootReducer>
 
 export type InferActionsTypes<T> = T extends {
-    [key: string]: (...args: Array<any>) => infer U
+    [key: string]: (...args: any[]) => infer U
 }
     ? U
     : never

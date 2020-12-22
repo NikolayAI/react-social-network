@@ -24,7 +24,7 @@ export const Element = (Elem: string) =>
 export const createField = <FormKeysType extends string>(
     placeholder: string | undefined,
     name: FormKeysType,
-    validators: Array<FieldValidatorType>,
+    validators: FieldValidatorType[],
     component: string | React.FC<ElementParamsType> | React.Component<ElementParamsType>,
     props: any = {},
     text = ''

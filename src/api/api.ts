@@ -47,12 +47,12 @@ export type ResponseUserType = {
     followed: boolean
 }
 export type GetItemsType = {
-    items: Array<ResponseUserType>
+    items: ResponseUserType[]
     totalCount: number
     error: string | null
 }
 export type APIResponseType<D = {}, RC = ResultCodes> = {
     data: D
-    messages: Array<string>
+    messages: string[]
     resultCode: RC
 }
