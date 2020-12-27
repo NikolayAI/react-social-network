@@ -2,13 +2,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { getUserProfile, getUserStatus } from '../../redux/reducers/profilePageReducer'
 import { useCallback, useEffect } from 'react'
-import { getAuthorizedUserId } from '../../redux/selectors/authSelectors'
+import { selectAuthorizedUserId } from '../../redux/selectors/authSelectors'
 
 export const useRefreshProfile = () => {
     const dispatch = useDispatch()
     let { userId } = useParams()
     const history = useHistory()
-    const authorizedUserId = useSelector(getAuthorizedUserId)
+    const authorizedUserId = useSelector(selectAuthorizedUserId)
 
     const refreshProfile = useCallback(
         (userId: number | null) => {

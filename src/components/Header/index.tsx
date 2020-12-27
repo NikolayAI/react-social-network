@@ -4,13 +4,13 @@ import { NavLink } from 'react-router-dom'
 import userPhoto from '../../common/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg'
 import { logout } from '../../redux/reducers/authReducer'
 import { useSelector } from 'react-redux'
-import { getIsAuth, getLogin } from '../../redux/selectors/authSelectors'
-import { getSmallPhoto } from '../../redux/selectors/profileSelectors'
+import { selectIsAuth, selectLogin } from '../../redux/selectors/authSelectors'
+import { selectSmallPhoto } from '../../redux/selectors/profileSelectors'
 
 export const Header: React.FC = () => {
-    const login = useSelector(getLogin)
-    const isAuth = useSelector(getIsAuth)
-    const smallPhoto = useSelector(getSmallPhoto)
+    const login = useSelector(selectLogin)
+    const isAuth = useSelector(selectIsAuth)
+    const smallPhoto = useSelector(selectSmallPhoto)
 
     return (
         <header className={s.header}>

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { getCaptchaUrl, getIsAuth } from '../../redux/selectors/authSelectors'
+import { selectCaptchaUrl, selectIsAuth } from '../../redux/selectors/authSelectors'
 import { useCallback } from 'react'
 import { login } from '../../redux/reducers/authReducer'
 
@@ -11,8 +11,8 @@ export type LoginFormDataType = {
 }
 export const useLogin = () => {
     const dispatch = useDispatch()
-    const captchaUrl = useSelector(getCaptchaUrl)
-    const isAuth = useSelector(getIsAuth)
+    const captchaUrl = useSelector(selectCaptchaUrl)
+    const isAuth = useSelector(selectIsAuth)
 
     const handleSubmit = useCallback(
         (formData: LoginFormDataType) => {

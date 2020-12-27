@@ -2,7 +2,7 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React, { useCallback } from 'react'
 import { UsersPageFilterType } from '../../../redux/reducers/usersPageReducer'
 import { useSelector } from 'react-redux'
-import { getUsersFilter } from '../../../redux/selectors/usersSelectors'
+import { selectUsersFilter } from '../../../redux/selectors/usersSelectors'
 
 const usersSearchFormValidate = (values: any) => {
     const errors = {}
@@ -22,7 +22,7 @@ type UsersSearchFormFormType = {
 
 export const UsersSearchForm: React.FC<UsersSearchFormPropsType> = React.memo(
     ({ onFilterChanged }) => {
-        const filter = useSelector(getUsersFilter)
+        const filter = useSelector(selectUsersFilter)
 
         const handleSubmit = useCallback(
             (

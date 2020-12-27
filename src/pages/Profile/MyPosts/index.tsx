@@ -9,11 +9,11 @@ import {
 } from '../../../components/FormsControl'
 import { profileActions } from '../../../redux/reducers/profilePageReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { getPosts } from '../../../redux/selectors/profileSelectors'
+import { selectPosts } from '../../../redux/selectors/profileSelectors'
 
 export const MyPosts: React.FC = React.memo(() => {
     const dispatch = useDispatch()
-    const posts = useSelector(getPosts)
+    const posts = useSelector(selectPosts)
 
     const handleSubmit = useCallback(
         (profileMyPostsFormData: MyPostsFormDataType) => {

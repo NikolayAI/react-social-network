@@ -1,14 +1,14 @@
 import { createSelector } from 'reselect'
 import { RootStateType } from '../reducers/rootReducer1'
 
-export const getUsersSuperSelector = (state: RootStateType) => state.usersPage.users
-export const getUsers = createSelector(getUsersSuperSelector, (users) => users)
+const getUsers = (state: RootStateType) => state.usersPage.users
+export const selectUsers = createSelector(getUsers, (users) => users)
 
-export const getPageSize = (state: RootStateType) => state.usersPage.pageSize
-export const getTotalUsersCount = (state: RootStateType) =>
+export const selectPageSize = (state: RootStateType) => state.usersPage.pageSize
+export const selectTotalUsersCount = (state: RootStateType) =>
     state.usersPage.totalUsersCount
-export const getCurrentPage = (state: RootStateType) => state.usersPage.currentPage
-export const getIsFetching = (state: RootStateType) => state.usersPage.isFetching
-export const getFollowingInProgress = (state: RootStateType) =>
+export const selectCurrentPage = (state: RootStateType) => state.usersPage.currentPage
+export const selectIsFetching = (state: RootStateType) => state.usersPage.isFetching
+export const selectFollowingInProgress = (state: RootStateType) =>
     state.usersPage.followingInProgress
-export const getUsersFilter = (state: RootStateType) => state.usersPage.filter
+export const selectUsersFilter = (state: RootStateType) => state.usersPage.filter

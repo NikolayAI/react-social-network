@@ -1,12 +1,12 @@
 import { createSelector } from 'reselect'
 import { RootStateType } from '../reducers/rootReducer1'
 
-export const getProfileSuperSelector = (state: RootStateType) => state.profilePage.profile
-export const getProfile = createSelector(getProfileSuperSelector, (profile) => profile)
+const getProfile = (state: RootStateType) => state.profilePage.profile
+export const selectProfile = createSelector(getProfile, (profile) => profile)
 
-export const getPostsSuperSelector = (state: RootStateType) => state.profilePage.posts
-export const getPosts = createSelector(getPostsSuperSelector, (posts) => posts)
+const getPosts = (state: RootStateType) => state.profilePage.posts
+export const selectPosts = createSelector(getPosts, (posts) => posts)
 
-export const getProfileStatus = (state: RootStateType) => state.profilePage.status
-export const getSmallPhoto = (state: RootStateType) =>
+export const selectProfileStatus = (state: RootStateType) => state.profilePage.status
+export const selectSmallPhoto = (state: RootStateType) =>
     state.profilePage.profile.photos.small

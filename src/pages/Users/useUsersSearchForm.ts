@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import {
-    getCurrentPage,
-    getFollowingInProgress,
-    getIsFetching,
-    getPageSize,
-    getTotalUsersCount,
-    getUsers,
-    getUsersFilter,
+    selectCurrentPage,
+    selectFollowingInProgress,
+    selectIsFetching,
+    selectPageSize,
+    selectTotalUsersCount,
+    selectUsers,
+    selectUsersFilter,
 } from '../../redux/selectors/usersSelectors'
 import {
     follow,
@@ -23,13 +23,13 @@ type QueryParamsType = { term?: string; page?: string; friend?: string }
 export const useUsersSearchForm = () => {
     const dispatch = useDispatch()
     const history = useHistory()
-    const users = useSelector(getUsers)
-    const totalUsersCount = useSelector(getTotalUsersCount)
-    const currentPage = useSelector(getCurrentPage)
-    const pageSize = useSelector(getPageSize)
-    const filter = useSelector(getUsersFilter)
-    const followingInProgress = useSelector(getFollowingInProgress)
-    const isFetching = useSelector(getIsFetching)
+    const users = useSelector(selectUsers)
+    const totalUsersCount = useSelector(selectTotalUsersCount)
+    const currentPage = useSelector(selectCurrentPage)
+    const pageSize = useSelector(selectPageSize)
+    const filter = useSelector(selectUsersFilter)
+    const followingInProgress = useSelector(selectFollowingInProgress)
+    const isFetching = useSelector(selectIsFetching)
 
     const handleSetCurrentPage = useCallback(
         (page: number) => {

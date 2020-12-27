@@ -6,7 +6,7 @@ import userPhoto from '../../../common/images/avatar-user-computer-icons-softwar
 import { ProfileDataFormFormDataType, ProfileDataReduxForm } from './ProfileDataForm'
 import { ResponseContactsType, ResponseProfileType } from '../../../api/api'
 import { useDispatch, useSelector } from 'react-redux'
-import { getProfile } from '../../../redux/selectors/profileSelectors'
+import { selectProfile } from '../../../redux/selectors/profileSelectors'
 import { savePhoto, saveProfile } from '../../../redux/reducers/profilePageReducer'
 
 type ProfileInfoPropsType = {
@@ -16,7 +16,7 @@ type ProfileInfoPropsType = {
 export const ProfileInfo: React.FC<ProfileInfoPropsType> = React.memo(({ isOwner }) => {
     const dispatch = useDispatch()
     const [editMode, setEditMode] = useState<boolean>(false)
-    const profile = useSelector(getProfile)
+    const profile = useSelector(selectProfile)
 
     const handleOnEditMode = useCallback(() => setEditMode(true), [])
     const handleOffEditMode = useCallback(() => setEditMode(false), [])
@@ -25,7 +25,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = React.memo(({ isOwner
         (e: React.ChangeEvent<HTMLInputElement>) => {
             e.target.files?.length && dispatch(savePhoto(e.target.files[0]))
         },
-        [savePhoto]
+        [dispatch]
     )
 
     const handleSubmit = useCallback(
@@ -33,7 +33,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = React.memo(({ isOwner
             await dispatch(saveProfile(formData))
             handleOffEditMode()
         },
-        [handleOffEditMode, saveProfile]
+        [dispatch, handleOffEditMode]
     )
 
     return (

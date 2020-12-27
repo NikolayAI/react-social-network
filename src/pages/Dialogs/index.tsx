@@ -7,14 +7,14 @@ import { InjectedFormProps, reduxForm, reset } from 'redux-form'
 import { createField, TextareaElement } from '../../components/FormsControl'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { getIsAuth } from '../../redux/selectors/authSelectors'
-import { getDialogs, getMessages } from '../../redux/selectors/dialogsSelectors'
+import { selectIsAuth } from '../../redux/selectors/authSelectors'
+import { selectDialogs, selectMessages } from '../../redux/selectors/dialogsSelectors'
 
 const Dialogs: React.FC = React.memo(() => {
     const dispatch = useDispatch()
-    const isAuth = useSelector(getIsAuth)
-    const dialogs = useSelector(getDialogs)
-    const messages = useSelector(getMessages)
+    const isAuth = useSelector(selectIsAuth)
+    const dialogs = useSelector(selectDialogs)
+    const messages = useSelector(selectMessages)
 
     const handleAddNewDialogsMyPostsMessage = useCallback(
         (dialogsMyPostsFormData: DialogsMyPostsFormDataType) => {
