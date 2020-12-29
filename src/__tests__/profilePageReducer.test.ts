@@ -2,8 +2,8 @@ import {
     profileActions,
     profilePageReducer,
     StateProfilePageType,
-} from './profilePageReducer'
-import { ResponseContactsType, ResponsePhotosType } from '../../api/api'
+} from '../redux/reducers/profilePageReducer'
+import { ResponseContactsType, ResponsePhotosType } from '../api/api'
 
 const state: StateProfilePageType = {
     posts: [

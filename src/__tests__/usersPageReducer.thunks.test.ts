@@ -1,6 +1,6 @@
-import { usersAPI } from '../../api/usersApi'
-import { APIResponseType, ResultCodes } from '../../api/api'
-import { follow, unfollow, usersPageActions } from './usersPageReducer'
+import { usersAPI } from '../api/usersApi'
+import { APIResponseType, ResultCodes } from '../api/api'
+import { follow, unfollow, usersPageActions } from '../redux/reducers/usersPageReducer'
 
 jest.mock('../../api/usersApi')
 const userAPIMock = usersAPI as jest.Mocked<typeof usersAPI>

@@ -2,7 +2,7 @@ import {
     StateUsersPageType,
     usersPageActions,
     usersPageReducer,
-} from './usersPageReducer'
+} from '../redux/reducers/usersPageReducer'
 
 let state: StateUsersPageType
 
