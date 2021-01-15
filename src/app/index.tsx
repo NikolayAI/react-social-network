@@ -11,6 +11,7 @@ import { Preloader } from '../components/Preloader'
 import { withSuspense } from '../components/HOC/withSuspense'
 import { Users } from '../pages/Users'
 import { useAppInitialize } from './useAppInitialize'
+import '../common/assets/css/app.css'
 
 const ProfileContainer = React.lazy(() => import('../pages/Profile'))
 const DialogsContainer = React.lazy(() => import('../pages/Dialogs'))
@@ -19,37 +20,37 @@ const SuspendedProfile = withSuspense(ProfileContainer)
 const SuspendedDialogs = withSuspense(DialogsContainer)
 
 export const App: React.FC = React.memo(() => {
-    const initialized = useAppInitialize()
+  const initialized = useAppInitialize()
 
-    if (!initialized) return <Preloader />
+  if (!initialized) return <Preloader />
 
-    return (
-        //HashRouter for gh-pages only
-        <HashRouter>
-            <div className={style.appWrapper}>
-                <Header />
-                <Navbar />
-                <div className={style.appWrapperContent}>
-                    <Switch>
-                        <Route
-                            exact
-                            path={'/'}
-                            render={() => <Redirect to={'/profile/'} />}
-                        />
-                        <Route
-                            path={'/profile/:userId?'}
-                            render={() => <SuspendedProfile />}
-                        />
-                        <Route path={'/dialogs/'} render={() => <SuspendedDialogs />} />
-                        <Route path={'/users/'} render={() => <Users />} />
-                        <Route path={'/news/'} render={() => <News />} />
-                        <Route path={'/music/'} render={() => <Music />} />
-                        <Route path={'/settings/'} render={() => <Settings />} />
-                        <Route path={'/login/'} render={() => <Login />} />
-                        <Route path={'*'} render={() => <div>404 PAGE NOT FOUND</div>} />
-                    </Switch>
-                </div>
-            </div>
-        </HashRouter>
-    )
+  return (
+    //HashRouter for gh-pages only
+    <HashRouter>
+      <div className='container' x-data='{ rightSide: false, leftSide: false }'>
+        <Header />
+        <Navbar />
+        <div className={style.appWrapperContent}>
+          <Switch>
+            <Route
+              exact
+              path={'/'}
+              render={() => <Redirect to={'/profile/'} />}
+            />
+            <Route
+              path={'/profile/:userId?'}
+              render={() => <SuspendedProfile />}
+            />
+            <Route path={'/dialogs/'} render={() => <SuspendedDialogs />} />
+            <Route path={'/users/'} render={() => <Users />} />
+            <Route path={'/news/'} render={() => <News />} />
+            <Route path={'/music/'} render={() => <Music />} />
+            <Route path={'/settings/'} render={() => <Settings />} />
+            <Route path={'/login/'} render={() => <Login />} />
+            <Route path={'*'} render={() => <div>404 PAGE NOT FOUND</div>} />
+          </Switch>
+        </div>
+      </div>
+    </HashRouter>
+  )
 })
