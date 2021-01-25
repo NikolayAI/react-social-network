@@ -1,11 +1,11 @@
 import React from 'react'
 import style from './index.module.css'
-import { Navbar } from '../components/Navbar'
+import { NavbarLeft } from '../components/NavbarLeft'
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
 import { News } from '../pages/News'
 import { Music } from '../pages/Music'
 import { Settings } from '../pages/Settings'
-import { Header } from '../components/Header'
+import { SideBarRight } from '../components/SideBarRight'
 import { Login } from '../pages/Login'
 import { Preloader } from '../components/Preloader'
 import { withSuspense } from '../components/HOC/withSuspense'
@@ -19,6 +19,8 @@ const DialogsContainer = React.lazy(() => import('../pages/Dialogs'))
 const SuspendedProfile = withSuspense(ProfileContainer)
 const SuspendedDialogs = withSuspense(DialogsContainer)
 
+// TODO:
+
 export const App: React.FC = React.memo(() => {
   const initialized = useAppInitialize()
 
@@ -28,8 +30,8 @@ export const App: React.FC = React.memo(() => {
     //HashRouter for gh-pages only
     <HashRouter>
       <div className='container' x-data='{ rightSide: false, leftSide: false }'>
-        <Header />
-        <Navbar />
+        <NavbarLeft />
+
         <div className={style.appWrapperContent}>
           <Switch>
             <Route
@@ -50,6 +52,7 @@ export const App: React.FC = React.memo(() => {
             <Route path={'*'} render={() => <div>404 PAGE NOT FOUND</div>} />
           </Switch>
         </div>
+        <SideBarRight />
       </div>
     </HashRouter>
   )

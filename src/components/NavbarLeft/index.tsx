@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 // TODO: при клике на блок с классом 'left-side-button' тогглить класс 'active'
 // на блоке с классом 'left-side'
 
-export const Navbar: React.FC = () => {
+export const NavbarLeft: React.FC = () => {
   return (
     <div className='left-side'>
       <div className='left-side-button'>
