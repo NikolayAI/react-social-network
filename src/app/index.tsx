@@ -19,7 +19,8 @@ const DialogsContainer = React.lazy(() => import('../pages/Dialogs'))
 const SuspendedProfile = withSuspense(ProfileContainer)
 const SuspendedDialogs = withSuspense(DialogsContainer)
 
-// TODO:
+// TODO: разобраться с x-data='{ rightSide: false, leftSide: false }'
+// на корневом диве с классом 'container'
 
 export const App: React.FC = React.memo(() => {
   const initialized = useAppInitialize()
@@ -29,9 +30,8 @@ export const App: React.FC = React.memo(() => {
   return (
     //HashRouter for gh-pages only
     <HashRouter>
-      <div className='container' x-data='{ rightSide: false, leftSide: false }'>
+      <div className='container'>
         <NavbarLeft />
-
         <div className={style.appWrapperContent}>
           <Switch>
             <Route

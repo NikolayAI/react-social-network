@@ -34,7 +34,7 @@ export const NavbarLeft: React.FC = () => {
         </svg>
       </div>
       <div className='logo'>SOCIAL NETWORK</div>
-      <div className='sideWrapper'>
+      <div className='side-wrapper'>
         <div className='side-title'>MENU</div>
         <div className='side-menu'>
           <Link to={'/profile'}>
@@ -144,7 +144,7 @@ export const NavbarLeft: React.FC = () => {
           </a>
         </div>
       </div>
-      <div className='sideWrapper'>
+      <div className='side-wrapper'>
         <div className='side-title'>YOUR FAVOURITE</div>
         <div className='side-menu'>
           <a href='#'>
