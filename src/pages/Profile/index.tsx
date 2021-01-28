@@ -16,6 +16,7 @@ const Profile: React.FC<IProfile> = ({ rightSide, onClickRightSide }) => {
 
   const handleClickRightSide = () => {
     onClickRightSide(!rightSide)
+    console.log('render')
   }
 
   return (
