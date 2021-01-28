@@ -6,10 +6,22 @@ import { Link } from 'react-router-dom'
 // TODO: при клике на блок с классом 'left-side-button' тогглить класс 'active'
 // на блоке с классом 'left-side'
 
-export const NavbarLeft: React.FC = () => {
+interface INavbarLeft {
+  leftSide: boolean
+  onClickLeftSide: (value: boolean) => void
+}
+
+export const NavbarLeft: React.FC<INavbarLeft> = ({
+  leftSide,
+  onClickLeftSide,
+}) => {
+  const handleClickLeftSide = () => {
+    onClickLeftSide(!leftSide)
+  }
+
   return (
-    <div className='left-side'>
-      <div className='left-side-button'>
+    <div className={leftSide ? 'left-side active' : 'left-side'}>
+      <div className='left-side-button' onClick={handleClickLeftSide}>
         <svg
           viewBox='0 0 24 24'
           stroke='currentColor'

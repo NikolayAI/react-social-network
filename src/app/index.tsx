@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import style from './index.module.css'
 import { NavbarLeft } from '../components/NavbarLeft'
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
@@ -21,17 +21,35 @@ const SuspendedDialogs = withSuspense(DialogsContainer)
 
 // TODO: разобраться с x-data='{ rightSide: false, leftSide: false }'
 // на корневом диве с классом 'container'
+// TODO: разобраться с дивом с классом overlay:
+//  @click="rightSide = false;
+//  leftSide = false" :class="{ 'active': rightSide || leftSide }"
 
 export const App: React.FC = React.memo(() => {
+  const [leftSide, setLeftSide] = useState(false)
+  const [rightSide, setRightSide] = useState(false)
+  const [overlay, setOverlaySide] = useState(false)
+
   const initialized = useAppInitialize()
 
   if (!initialized) return <Preloader />
+
+  const handleClickLeftSide = (value: boolean) => {
+    setLeftSide(value)
+    setOverlaySide(value)
+  }
+
+  const handleClickOverlay = () => {
+    setOverlaySide(false)
+    setLeftSide(false)
+    setRightSide(false)
+  }
 
   return (
     //HashRouter for gh-pages only
     <HashRouter>
       <div className='container'>
-        <NavbarLeft />
+        <NavbarLeft leftSide={leftSide} onClickLeftSide={handleClickLeftSide} />
         <div className={style.appWrapperContent}>
           <Switch>
             <Route
@@ -41,7 +59,12 @@ export const App: React.FC = React.memo(() => {
             />
             <Route
               path={'/profile/:userId?'}
-              render={() => <SuspendedProfile />}
+              render={() => (
+                <SuspendedProfile
+                  rightSide={rightSide}
+                  onClickRightSide={setRightSide}
+                />
+              )}
             />
             <Route path={'/dialogs/'} render={() => <SuspendedDialogs />} />
             <Route path={'/users/'} render={() => <Users />} />
@@ -53,6 +76,10 @@ export const App: React.FC = React.memo(() => {
           </Switch>
         </div>
         <SideBarRight />
+        <div
+          className={overlay ? 'overlay active' : 'overlay'}
+          onClick={handleClickOverlay}
+        />
       </div>
     </HashRouter>
   )

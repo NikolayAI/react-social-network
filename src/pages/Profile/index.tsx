@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ProfileInfo } from './ProfileInfo'
 import { MyPosts } from './MyPosts'
 import { useRefreshProfile } from './useRefreshProfile'
@@ -6,8 +6,17 @@ import { useRefreshProfile } from './useRefreshProfile'
 // TODO: тригерить кнопку с калассом "right-side-button" по нажатию
 //  на изменение стейта согласно логике @click="rightSide = !rightSide"
 
-const Profile: React.FC = () => {
+interface IProfile {
+  rightSide: boolean
+  onClickRightSide: (value: boolean) => void
+}
+
+const Profile: React.FC<IProfile> = ({ rightSide, onClickRightSide }) => {
   const { userId, authorizedUserId } = useRefreshProfile()
+
+  const handleClickRightSide = () => {
+    onClickRightSide(!rightSide)
+  }
 
   return (
     <>
