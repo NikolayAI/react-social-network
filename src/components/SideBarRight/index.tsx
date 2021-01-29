@@ -7,18 +7,17 @@ import { useSelector } from 'react-redux'
 import { selectIsAuth, selectLogin } from '../../redux/selectors/authSelectors'
 import { selectSmallPhoto } from '../../redux/selectors/profileSelectors'
 
-// :class="{'active' : rightSide}"
-// @click="rightSide = !rightSide"
-// TODO: при клике на блок с классом 'right-side-button' тогглить класс 'active'
-// на блоке с классом 'right-side'
+interface ISideBarRight {
+  rightSide: boolean
+}
 
-export const SideBarRight: React.FC = () => {
+export const SideBarRight: React.FC<ISideBarRight> = ({ rightSide }) => {
   const login = useSelector(selectLogin)
   const isAuth = useSelector(selectIsAuth)
   const smallPhoto = useSelector(selectSmallPhoto)
 
   return (
-    <div className='right-side'>
+    <div className={rightSide ? 'right-side active' : 'right-side'}>
       <div className='account'>
         <button className='account-button'>
           <svg

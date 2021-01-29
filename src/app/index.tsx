@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import style from './index.module.css'
+import React, { useCallback, useState } from 'react'
 import { NavbarLeft } from '../components/NavbarLeft'
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
 import { News } from '../pages/News'
@@ -19,24 +18,20 @@ const DialogsContainer = React.lazy(() => import('../pages/Dialogs'))
 const SuspendedProfile = withSuspense(ProfileContainer)
 const SuspendedDialogs = withSuspense(DialogsContainer)
 
-// TODO: разобраться с x-data='{ rightSide: false, leftSide: false }'
-// на корневом диве с классом 'container'
-// TODO: разобраться с дивом с классом overlay:
-//  @click="rightSide = false;
-//  leftSide = false" :class="{ 'active': rightSide || leftSide }"
-
 export const App: React.FC = React.memo(() => {
   const [leftSide, setLeftSide] = useState(false)
   const [rightSide, setRightSide] = useState(false)
   const [overlay, setOverlaySide] = useState(false)
-
   const initialized = useAppInitialize()
 
-  if (!initialized) return <Preloader />
-
-  const handleClickLeftSide = (value: boolean) => {
+  const handleClickLeftSide = useCallback((value: boolean) => {
     setLeftSide(value)
     setOverlaySide(value)
+  }, [])
+
+  const handleClickRightSide = () => {
+    setRightSide(!rightSide)
+    setOverlaySide(!rightSide)
   }
 
   const handleClickOverlay = () => {
@@ -45,37 +40,60 @@ export const App: React.FC = React.memo(() => {
     setRightSide(false)
   }
 
+  if (!initialized) return <Preloader />
+
   return (
     //HashRouter for gh-pages only
     <HashRouter>
       <div className='container'>
         <NavbarLeft leftSide={leftSide} onClickLeftSide={handleClickLeftSide} />
-        <div className={style.appWrapperContent}>
-          <Switch>
-            <Route
-              exact
-              path={'/'}
-              render={() => <Redirect to={'/profile/'} />}
-            />
-            <Route
-              path={'/profile/:userId?'}
-              render={() => (
-                <SuspendedProfile
-                  rightSide={rightSide}
-                  onClickRightSide={setRightSide}
+        <div className='main'>
+          <div className='search-bar'>
+            <input type='text' placeholder='Search' />
+            <button
+              className='right-side-button'
+              onClick={handleClickRightSide}
+            >
+              <svg
+                viewBox='0 0 24 24'
+                width='24'
+                height='24'
+                stroke='currentColor'
+                strokeWidth='2'
+                fill='none'
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                className='css-i6dzq1'
+              >
+                <path
+                  d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1
+                  2-2h14a2 2 0 0 1 2 2z'
                 />
-              )}
-            />
-            <Route path={'/dialogs/'} render={() => <SuspendedDialogs />} />
-            <Route path={'/users/'} render={() => <Users />} />
-            <Route path={'/news/'} render={() => <News />} />
-            <Route path={'/music/'} render={() => <Music />} />
-            <Route path={'/settings/'} render={() => <Settings />} />
-            <Route path={'/login/'} render={() => <Login />} />
-            <Route path={'*'} render={() => <div>404 PAGE NOT FOUND</div>} />
-          </Switch>
+              </svg>
+            </button>
+          </div>
+          <div className='main-container'>
+            <Switch>
+              <Route
+                exact
+                path={'/'}
+                render={() => <Redirect to={'/profile/'} />}
+              />
+              <Route
+                path={'/profile/:userId?'}
+                render={() => <SuspendedProfile />}
+              />
+              <Route path={'/dialogs/'} render={() => <SuspendedDialogs />} />
+              <Route path={'/users/'} render={() => <Users />} />
+              <Route path={'/news/'} render={() => <News />} />
+              <Route path={'/music/'} render={() => <Music />} />
+              <Route path={'/settings/'} render={() => <Settings />} />
+              <Route path={'/login/'} render={() => <Login />} />
+              <Route path={'*'} render={() => <div>404 PAGE NOT FOUND</div>} />
+            </Switch>
+          </div>
         </div>
-        <SideBarRight />
+        <SideBarRight rightSide={rightSide} />
         <div
           className={overlay ? 'overlay active' : 'overlay'}
           onClick={handleClickOverlay}

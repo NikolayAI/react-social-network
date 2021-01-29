@@ -1,11 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-// :class="{'active' : leftSide}"
-// @click="leftSide = !leftSide"
-// TODO: при клике на блок с классом 'left-side-button' тогглить класс 'active'
-// на блоке с классом 'left-side'
-
 interface INavbarLeft {
   leftSide: boolean
   onClickLeftSide: (value: boolean) => void
