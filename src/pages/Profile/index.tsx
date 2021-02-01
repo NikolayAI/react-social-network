@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { ProfileInfo } from './ProfileInfo'
 import { MyPosts } from './MyPosts'
 import { useRefreshProfile } from './useRefreshProfile'

@@ -1,9 +1,9 @@
 import React from 'react'
-import s from './index.module.css'
+
 import { NavLink } from 'react-router-dom'
 import userPhoto from '../../common/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg'
 import { logout } from '../../redux/reducers/authReducer'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { selectIsAuth, selectLogin } from '../../redux/selectors/authSelectors'
 import { selectSmallPhoto } from '../../redux/selectors/profileSelectors'
 
@@ -12,9 +12,12 @@ interface ISideBarRight {
 }
 
 export const SideBarRight: React.FC<ISideBarRight> = ({ rightSide }) => {
+  const dispatch = useDispatch()
   const login = useSelector(selectLogin)
   const isAuth = useSelector(selectIsAuth)
   const smallPhoto = useSelector(selectSmallPhoto)
+
+  const handleClickLogOut = () => dispatch(logout())
 
   return (
     <div className={rightSide ? 'right-side active' : 'right-side'}>
@@ -47,13 +50,23 @@ export const SideBarRight: React.FC<ISideBarRight> = ({ rightSide }) => {
           </svg>
         </button>
         <span className='account-user'>
-          NikolayAI
-          <img
-            src='https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg'
-            className='account-profile'
-            alt='profile photo'
-          />
-          <span>▼</span>
+          {isAuth ? (
+            <>
+              {login}
+              <img
+                className='account-profile'
+                src={smallPhoto != null ? smallPhoto : userPhoto}
+                alt='profile photo'
+              />
+              <button className='status-share' onClick={handleClickLogOut}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <NavLink className='status-share' to={'/login'}>
+              Login
+            </NavLink>
+          )}
         </span>
       </div>
       <div className='side-wrapper stories'>
@@ -253,25 +266,3 @@ export const SideBarRight: React.FC<ISideBarRight> = ({ rightSide }) => {
     </div>
   )
 }
-
-//
-//   <header className={s.header}>
-// <img
-//     src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/1200px-Check_green_icon.svg.png'
-//     alt=''
-//   />
-//   <div className={s.loginBlock}>
-//     {isAuth ? (
-//       <div>
-//         <img
-//           style={{width: '3vw', borderRadius: '25px'}}
-//           src={smallPhoto != null ? smallPhoto : userPhoto}
-//           alt={'avatar'}
-//         />
-//         {login} - <button onClick={logout}>Logout</button>
-//       </div>
-//     ) : (
-//       <NavLink to={'/login/'}>Login</NavLink>
-//     )}
-//   </div>
-// </header>
