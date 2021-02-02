@@ -286,6 +286,8 @@ body {
   color: #5c5e6e;
   transition: 0.3s;
   cursor: pointer;
+  text-decoration: none;
+  z-index: 2;
 }
 .profile-menu-link.active,
 .profile-menu-link:hover {

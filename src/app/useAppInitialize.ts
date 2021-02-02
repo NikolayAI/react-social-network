@@ -4,23 +4,25 @@ import { initialize } from '../redux/reducers/appReducer'
 import { RootStateType } from '../redux/reducers/rootReducer1'
 
 export const useAppInitialize = () => {
-    const dispatch = useDispatch()
-    const initialized = useSelector<RootStateType, boolean>(
-        (state) => state.app.initialized
-    )
+  const dispatch = useDispatch()
+  const initialized = useSelector<RootStateType, boolean>(
+    (state) => state.app.initialized
+  )
 
-    const catchAllUnhandledErrors = (promiseRejectionEvent: PromiseRejectionEvent) => {
-        alert('some error occurred')
-        console.log(promiseRejectionEvent)
+  const catchAllUnhandledErrors = (
+    promiseRejectionEvent: PromiseRejectionEvent
+  ) => {
+    console.log('some error occurred')
+    console.log(promiseRejectionEvent)
+  }
+
+  useEffect(() => {
+    dispatch(initialize())
+    window.addEventListener('unhandledrejection', catchAllUnhandledErrors)
+    return () => {
+      window.removeEventListener('unhandledrejection', catchAllUnhandledErrors)
     }
+  }, [dispatch])
 
-    useEffect(() => {
-        dispatch(initialize())
-        window.addEventListener('unhandledrejection', catchAllUnhandledErrors)
-        return () => {
-            window.removeEventListener('unhandledrejection', catchAllUnhandledErrors)
-        }
-    }, [dispatch])
-
-    return initialized
+  return initialized
 }
