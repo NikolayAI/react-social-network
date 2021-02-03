@@ -5,13 +5,29 @@ import { useRefreshProfile } from './useRefreshProfile'
 import { useSelector } from 'react-redux'
 import { selectProfile } from '../../redux/selectors/profileSelectors'
 import userPhoto from '../../common/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg'
-import { Preloader } from '../../components/Preloader'
-import { NavLink, Route } from 'react-router-dom'
+import { NavLink, Redirect, Route } from 'react-router-dom'
 import { TimeLine } from '../../components/TimeLine'
 
-const Profile: React.FC = () => {
+interface IProfileProps {
+  activeTab: number
+  onClickActiveTab: (index: number) => void
+}
+
+const Profile: React.FC<IProfileProps> = ({ activeTab, onClickActiveTab }) => {
   const profile = useSelector(selectProfile)
   const { userId, authorizedUserId } = useRefreshProfile()
+
+  const handleClickProfileTab = (index: number) => {
+    onClickActiveTab(index)
+  }
+
+  const tabs = [
+    { link: 'timeline', title: 'Timeline' },
+    { link: 'about', title: 'About' },
+    { link: 'friends', title: 'Friends' },
+    { link: 'photos', title: 'Photos' },
+    { link: 'more', title: 'More' },
+  ]
 
   return (
     <>
@@ -30,23 +46,23 @@ const Profile: React.FC = () => {
           className='profile-cover'
         />
         <div className='profile-menu'>
-          <NavLink to='/profile/timeline' className='profile-menu-link'>
-            Timeline
-          </NavLink>
-          <NavLink to='/profile/about' className='profile-menu-link'>
-            About
-          </NavLink>
-          <NavLink to='/profile/friends' className='profile-menu-link'>
-            Friends
-          </NavLink>
-          <NavLink to='/profile/photos' className='profile-menu-link'>
-            Photos
-          </NavLink>
-          <NavLink to='/profile/more' className='profile-menu-link'>
-            More
-          </NavLink>
+          {tabs.map((tab, i) => (
+            <NavLink
+              key={tab.link}
+              to={`/profile/${tab.link}`}
+              className={
+                activeTab === i
+                  ? 'profile-menu-link active'
+                  : 'profile-menu-link'
+              }
+              onClick={() => handleClickProfileTab(i)}
+            >
+              {tab.title}
+            </NavLink>
+          ))}
         </div>
       </div>
+      <Redirect to={`/profile/${tabs[activeTab].link}`} />
       <Route path='/profile/timeline'>
         <TimeLine />
       </Route>

@@ -11,7 +11,6 @@ import { withSuspense } from '../components/HOC/withSuspense'
 import { Users } from '../pages/Users'
 import { useAppInitialize } from './useAppInitialize'
 import '../common/assets/css/app.css'
-import { TimeLine } from '../components/TimeLine'
 
 const ProfileContainer = React.lazy(() => import('../pages/Profile'))
 const DialogsContainer = React.lazy(() => import('../pages/Dialogs'))
@@ -20,10 +19,15 @@ const SuspendedProfile = withSuspense(ProfileContainer)
 const SuspendedDialogs = withSuspense(DialogsContainer)
 
 export const App: React.FC = React.memo(() => {
+  const [activeTab, setActiveTab] = useState(0)
   const [leftSide, setLeftSide] = useState(false)
   const [rightSide, setRightSide] = useState(false)
   const [overlay, setOverlaySide] = useState(false)
   const initialized = useAppInitialize()
+
+  const handleClickActiveTab = useCallback((index: number) => {
+    setActiveTab(index)
+  }, [])
 
   const handleClickLeftSide = useCallback((value: boolean) => {
     setLeftSide(value)
@@ -75,22 +79,20 @@ export const App: React.FC = React.memo(() => {
           </div>
           <div className='main-container'>
             <Switch>
-              <Route
-                exact
-                path={'/'}
-                render={() => <Redirect to={'/profile'} />}
-              />
-              <Route
-                path={'/profile/:userId?'}
-                render={() => <SuspendedProfile />}
-              />
-              <Route path={'/dialogs'} render={() => <SuspendedDialogs />} />
-              <Route path={'/users'} render={() => <Users />} />
-              <Route path={'/news'} render={() => <News />} />
-              <Route path={'/music'} render={() => <Music />} />
-              <Route path={'/settings'} render={() => <Settings />} />
-              <Route path={'/login'} render={() => <Login />} />
-              <Route path={'*'} render={() => <div>404 PAGE NOT FOUND</div>} />
+              <Route exact path='/' render={() => <Redirect to='/profile' />} />
+              <Route path='/profile/:userId?'>
+                <SuspendedProfile
+                  activeTab={activeTab}
+                  onClickActiveTab={handleClickActiveTab}
+                />
+              </Route>
+              <Route path='/dialogs' render={() => <SuspendedDialogs />} />
+              <Route path='/users' render={() => <Users />} />
+              <Route path='/news' render={() => <News />} />
+              <Route path='/music' render={() => <Music />} />
+              <Route path='/settings' render={() => <Settings />} />
+              <Route path='/login' render={() => <Login />} />
+              <Route path='*' render={() => <div>404 PAGE NOT FOUND</div>} />
             </Switch>
           </div>
         </div>
