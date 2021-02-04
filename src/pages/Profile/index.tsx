@@ -1,7 +1,6 @@
 import React from 'react'
 import { ProfileInfo } from './ProfileInfo'
 import { MyPosts } from './MyPosts'
-import { useRefreshProfile } from './useRefreshProfile'
 import { useSelector } from 'react-redux'
 import { selectProfile } from '../../redux/selectors/profileSelectors'
 import userPhoto from '../../common/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg'
@@ -15,17 +14,12 @@ interface IProfileProps {
 
 const Profile: React.FC<IProfileProps> = ({ activeTab, onClickActiveTab }) => {
   const profile = useSelector(selectProfile)
-  const { userId, authorizedUserId } = useRefreshProfile()
-
-  const handleClickProfileTab = (index: number) => {
-    onClickActiveTab(index)
-  }
 
   const tabs = [
     { link: 'timeline', title: 'Timeline' },
     { link: 'about', title: 'About' },
     { link: 'friends', title: 'Friends' },
-    { link: 'photos', title: 'Photos' },
+    { link: 'dialogs', title: 'Dialogs' },
     { link: 'more', title: 'More' },
   ]
 
@@ -55,7 +49,7 @@ const Profile: React.FC<IProfileProps> = ({ activeTab, onClickActiveTab }) => {
                   ? 'profile-menu-link active'
                   : 'profile-menu-link'
               }
-              onClick={() => handleClickProfileTab(i)}
+              onClick={() => onClickActiveTab(i)}
             >
               {tab.title}
             </NavLink>
@@ -67,21 +61,17 @@ const Profile: React.FC<IProfileProps> = ({ activeTab, onClickActiveTab }) => {
         <TimeLine />
       </Route>
       <Route path='/profile/about'>
-        <ProfileInfo
-          profile={profile}
-          isOwner={userId === undefined && authorizedUserId !== userId}
-        />
+        <ProfileInfo profile={profile} />
       </Route>
       <Route path='/profile/friends'>
         <div>friends</div>
       </Route>
-      <Route path='/profile/photos'>
-        <div>photos</div>
+      <Route path='/profile/dialogs'>
+        <MyPosts />
       </Route>
       <Route path='/profile/more'>
         <div>more</div>
       </Route>
-      <MyPosts />
     </>
   )
 }
