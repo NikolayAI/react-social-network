@@ -55,7 +55,7 @@ export const SideBarRight: React.FC<ISideBarRight> = ({ rightSide }) => {
               {login}
               <img
                 className='account-profile'
-                src={smallPhoto != null ? smallPhoto : userPhoto}
+                src={smallPhoto !== null ? smallPhoto : userPhoto}
                 alt='profile photo'
               />
               <button className='status-share' onClick={handleClickLogOut}>

@@ -1,6 +1,5 @@
 import React from 'react'
 import userPhoto from '../../common/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg'
-import { Preloader } from '../Preloader'
 import { useSelector } from 'react-redux'
 import { selectProfile } from '../../redux/selectors/profileSelectors'
 
@@ -161,7 +160,7 @@ export const TimeLine: React.FC = () => {
             />
             <textarea
               className='status-textarea'
-              placeholder='Write something to NikolayAI..'
+              placeholder={`Write something to ${profile.fullName}..`}
             />
           </div>
           <div className='status-actions'>
@@ -265,7 +264,8 @@ export const TimeLine: React.FC = () => {
             />
             <div className='album-detail'>
               <div className='album-title'>
-                <strong>NikolayAI</strong> create new <span>album</span>
+                <strong>{profile.fullName}</strong> create new{' '}
+                <span>album</span>
               </div>
               <div className='album-date'>6 hours ago</div>
             </div>

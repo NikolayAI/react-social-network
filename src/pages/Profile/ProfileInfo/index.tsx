@@ -11,19 +11,16 @@ import {
   savePhoto,
   saveProfile,
 } from '../../../redux/reducers/profilePageReducer'
-import { useRefreshProfile } from '../useRefreshProfile'
 
 interface IProfileInfoProps {
   profile: ResponseProfileType
+  isOwner: boolean
 }
 
 export const ProfileInfo: React.FC<IProfileInfoProps> = React.memo(
-  ({ profile }) => {
+  ({ profile, isOwner }) => {
     const dispatch = useDispatch()
     const [editMode, setEditMode] = useState<boolean>(false)
-    const { userId, authorizedUserId } = useRefreshProfile()
-
-    const isOwner = userId === undefined && authorizedUserId !== userId
 
     const handleOnEditMode = useCallback(() => setEditMode(true), [])
     const handleOffEditMode = useCallback(() => setEditMode(false), [])
