@@ -4,18 +4,33 @@ import { NavLink } from 'react-router-dom'
 import userPhoto from '../../common/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg'
 import { logout } from '../../redux/reducers/authReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectIsAuth, selectLogin } from '../../redux/selectors/authSelectors'
-import { selectSmallPhoto } from '../../redux/selectors/profileSelectors'
+import {
+  selectAuthorizedUserId,
+  selectIsAuth,
+  selectLogin,
+} from '../../redux/selectors/authSelectors'
+import {
+  selectSmallPhoto,
+  selectUserId,
+} from '../../redux/selectors/profileSelectors'
 
 interface ISideBarRight {
   rightSide: boolean
 }
+
+let photo: string | undefined
 
 export const SideBarRight: React.FC<ISideBarRight> = ({ rightSide }) => {
   const dispatch = useDispatch()
   const login = useSelector(selectLogin)
   const isAuth = useSelector(selectIsAuth)
   const smallPhoto = useSelector(selectSmallPhoto)
+  const authorizedUserId = useSelector(selectAuthorizedUserId)
+  const userId = useSelector(selectUserId)
+
+  if (authorizedUserId === userId) {
+    photo = smallPhoto
+  }
 
   const handleClickLogOut = () => dispatch(logout())
 
@@ -55,7 +70,7 @@ export const SideBarRight: React.FC<ISideBarRight> = ({ rightSide }) => {
               {login}
               <img
                 className='account-profile'
-                src={smallPhoto !== null ? smallPhoto : userPhoto}
+                src={photo ? photo : userPhoto}
                 alt='profile photo'
               />
               <button className='status-share' onClick={handleClickLogOut}>
