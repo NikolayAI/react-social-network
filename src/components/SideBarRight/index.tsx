@@ -73,7 +73,10 @@ export const SideBarRight: React.FC<ISideBarRight> = ({ rightSide }) => {
                 src={photo ? photo : userPhoto}
                 alt='profile photo'
               />
-              <button className='status-share' onClick={handleClickLogOut}>
+              <button
+                className='status-share status-share-logout-button'
+                onClick={handleClickLogOut}
+              >
                 Logout
               </button>
             </>

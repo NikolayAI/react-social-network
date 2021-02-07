@@ -586,6 +586,14 @@ body {
   cursor: pointer;
 }
 
+.status-share-logout-button {
+  padding: 5px 10px;
+}
+
+.status-share-follow-button {
+  padding: 3px 10px;
+}
+
 .album {
   padding-top: 20px;
   margin-top: 20px;
@@ -746,6 +754,13 @@ body {
 }
 .user-status.idle {
   background-color: #dd1c20;
+}
+.user-status-search {
+  display: flex;
+  align-items: center;
+  width: auto;
+  margin-right: 10px;
+  background-color: inherit;
 }
 
 .contacts .username {
