@@ -105,7 +105,7 @@ type ContactPropsType = {
 
 export const Contacts: React.FC<ContactPropsType> = React.memo(
   ({ contactTitle, contactValue }) => (
-    <div className={s.contact}>
+    <div>
       {contactTitle}: {contactValue}
     </div>
   )
