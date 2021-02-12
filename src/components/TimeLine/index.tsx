@@ -1,5 +1,5 @@
 import React from 'react'
-import userPhoto from '../../common/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg'
+import userPhoto from '../../common/images/avatar-user-computer.jpg'
 import { useSelector } from 'react-redux'
 import { selectProfile } from '../../redux/selectors/profileSelectors'
 

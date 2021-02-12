@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { NavLink } from 'react-router-dom'
-import userPhoto from '../../common/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg'
+import userPhoto from '../../common/images/avatar-user-computer.jpg'
 import { logout } from '../../redux/reducers/authReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import {

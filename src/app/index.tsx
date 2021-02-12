@@ -14,9 +14,11 @@ import '../common/assets/css/app.css'
 
 const ProfileContainer = React.lazy(() => import('../pages/Profile'))
 const DialogsContainer = React.lazy(() => import('../pages/Dialogs'))
+const ChatContainer = React.lazy(() => import('../pages/Chat'))
 
 const SuspendedProfile = withSuspense(ProfileContainer)
 const SuspendedDialogs = withSuspense(DialogsContainer)
+export const SuspendedChat = withSuspense(ChatContainer)
 
 export const App: React.FC = React.memo(() => {
   const [activeTab, setActiveTab] = useState(0)

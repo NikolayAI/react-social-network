@@ -1,12 +1,14 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { NavLink, Redirect, Route } from 'react-router-dom'
+
 import { ProfileInfo } from './ProfileInfo'
 import { MyPosts } from './MyPosts'
-import { useSelector } from 'react-redux'
 import { selectProfile } from '../../redux/selectors/profileSelectors'
-import userPhoto from '../../common/images/avatar-user-computer-icons-software-developer-png-favpng-7SbFpNeqKqhhTrrrnHFUqk6U4.jpg'
-import { NavLink, Redirect, Route } from 'react-router-dom'
+import { SuspendedChat } from '../../app'
 import { TimeLine } from '../../components/TimeLine'
 import { useRefreshProfile } from './useRefreshProfile'
+import userPhoto from '../../common/images/avatar-user-computer.jpg'
 
 interface IProfileProps {
   activeTab: number
@@ -22,7 +24,7 @@ const Profile: React.FC<IProfileProps> = ({ activeTab, onClickActiveTab }) => {
     { link: 'about', title: 'About' },
     { link: 'friends', title: 'Friends' },
     { link: 'dialogs', title: 'Dialogs' },
-    { link: 'more', title: 'More' },
+    { link: 'chat', title: 'Chat' },
   ]
 
   return (
@@ -76,8 +78,8 @@ const Profile: React.FC<IProfileProps> = ({ activeTab, onClickActiveTab }) => {
       <Route path={`/profile/${userId}/dialogs`}>
         <MyPosts />
       </Route>
-      <Route path={`/profile/${userId}/more`}>
-        <div>more</div>
+      <Route path={`/profile/${userId}/chat`}>
+        <SuspendedChat />
       </Route>
     </>
   )
