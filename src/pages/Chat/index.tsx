@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react'
 
-const ws = new WebSocket(
-  'wss://social-network.samuraijs.com/handlers/ChatHandler.ashx'
-)
-
 export interface IChatMessage {
   message: string
   photo: string
@@ -12,22 +8,43 @@ export interface IChatMessage {
 }
 
 const Chat: React.FC = () => {
+  const [ws, setWs] = useState<WebSocket | null>(null)
+
+  useEffect(() => {
+    const createChannel = () => {
+      let ws = new WebSocket(
+        'wss://social-network.samuraijs.com/handlers/ChatHandler.ashx'
+      )
+      ws.onclose = () => setTimeout(createChannel, 3000)
+      setWs(ws)
+    }
+    createChannel()
+    return () => ws?.close()
+  }, [])
+
   return (
     <>
-      <ChatMessages />
-      <ChatAddMessageForm />
+      <ChatMessages ws={ws} />
+      <ChatAddMessageForm ws={ws} />
     </>
   )
 }
 
-const ChatMessages: React.FC = () => {
+interface IChatMessages {
+  ws: WebSocket | null
+}
+
+const ChatMessages: React.FC<IChatMessages> = ({ ws }) => {
   const [messages, setMessages] = useState<IChatMessage[]>([])
 
   useEffect(() => {
-    ws.addEventListener('message', (e) => {
-      setMessages((prevMessages) => [...prevMessages, ...JSON.parse(e.data)])
-    })
-  }, [])
+    if (ws) {
+      ws.onmessage = (e) => {
+        setMessages((prevMessages) => [...prevMessages, ...JSON.parse(e.data)])
+      }
+    }
+    return () => ws?.close()
+  }, [ws])
 
   return (
     <div style={{ height: 400, overflowY: 'auto' }}>
@@ -54,12 +71,24 @@ const ChatMessage: React.FC<IChatMessageProps> = ({ message }) => {
   )
 }
 
-const ChatAddMessageForm: React.FC = () => {
+interface IChatAddMessageForm {
+  ws: WebSocket | null
+}
+
+const ChatAddMessageForm: React.FC<IChatAddMessageForm> = ({ ws }) => {
   const [message, setMessage] = useState('')
+  const [readyStatus, setReadyStatus] = useState<'pending' | 'ready'>('pending')
+
+  useEffect(() => {
+    if (ws) {
+      ws.onopen = () => setReadyStatus('ready')
+    }
+    return () => ws?.close()
+  }, [ws])
 
   const handleCLickSendMessage = () => {
     if (!message) return
-    ws.send(message)
+    ws?.send(message)
     setMessage('')
   }
 
@@ -72,7 +101,12 @@ const ChatAddMessageForm: React.FC = () => {
         />
       </div>
       <div>
-        <button onClick={handleCLickSendMessage}>send</button>
+        <button
+          disabled={readyStatus !== 'ready' || ws === null}
+          onClick={handleCLickSendMessage}
+        >
+          send
+        </button>
       </div>
     </>
   )
