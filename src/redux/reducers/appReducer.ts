@@ -3,33 +3,33 @@ import { BaseThunkType, InferActionsTypes } from './rootReducer1'
 import { Dispatch } from 'redux'
 
 const initialState = {
-    initialized: false,
+  initialized: false,
 }
 
 export const appReducer = (
-    state = initialState,
-    action: ActionsAppTypes
+  state = initialState,
+  action: ActionsAppTypes
 ): StateAppType => {
-    switch (action.type) {
-        case 's_n/app/INITIALIZED_SUCCESS':
-            return { ...state, initialized: true }
-        default:
-            return state
-    }
+  switch (action.type) {
+    case 's_n/app/INITIALIZED_SUCCESS':
+      return { ...state, initialized: true }
+    default:
+      return state
+  }
 }
 
 const appActions = {
-    setAppInitializedSuccess: () => ({ type: 's_n/app/INITIALIZED_SUCCESS' } as const),
+  setAppInitializedSuccess: () =>
+    ({ type: 's_n/app/INITIALIZED_SUCCESS' } as const),
 }
 
 export const initialize = () => async (dispatch: Dispatch<any>) => {
-    await Promise.all([dispatch(getAuthUserData())])
-    dispatch(appActions.setAppInitializedSuccess())
+  await Promise.all([dispatch(getAuthUserData())])
+  dispatch(appActions.setAppInitializedSuccess())
 }
 
 export type StateAppObjectType = {
-    app: StateAppType
+  app: StateAppType
 }
 export type StateAppType = typeof initialState
 type ActionsAppTypes = InferActionsTypes<typeof appActions>
-type AuthThunkType = BaseThunkType<ActionsAppTypes>

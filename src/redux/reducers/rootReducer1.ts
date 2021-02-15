@@ -6,27 +6,29 @@ import { authReducer } from './authReducer'
 import { appReducer } from './appReducer'
 import { reducer as formReducer } from 'redux-form'
 import { ThunkAction } from 'redux-thunk'
+import { chatReducer } from './chatReducer'
 
 export const rootReducer = combineReducers({
-    profilePage: profilePageReducer,
-    dialogsPage: dialogsPageReducer,
-    usersPage: usersPageReducer,
-    auth: authReducer,
-    app: appReducer,
-    form: formReducer,
+  profilePage: profilePageReducer,
+  dialogsPage: dialogsPageReducer,
+  usersPage: usersPageReducer,
+  auth: authReducer,
+  app: appReducer,
+  form: formReducer,
+  chat: chatReducer,
 })
 
 export type RootStateType = ReturnType<typeof rootReducer>
 
 export type InferActionsTypes<T> = T extends {
-    [key: string]: (...args: any[]) => infer U
+  [key: string]: (...args: any[]) => infer U
 }
-    ? U
-    : never
+  ? U
+  : never
 
 export type BaseThunkType<A extends Action, R = Promise<void>> = ThunkAction<
-    R,
-    RootStateType,
-    unknown,
-    A
+  R,
+  RootStateType,
+  unknown,
+  A
 >

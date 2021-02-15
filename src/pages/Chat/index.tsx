@@ -1,50 +1,33 @@
 import React, { useEffect, useState } from 'react'
-
-export interface IChatMessage {
-  message: string
-  photo: string
-  userId: number
-  userName: string
-}
+import { IChatMessage } from '../../api/chatApi'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  sendMessage,
+  startListeningMessages,
+  stopListeningMessages,
+} from '../../redux/reducers/chatReducer'
+import { RootStateType } from '../../redux/reducers/rootReducer1'
 
 const Chat: React.FC = () => {
-  const [ws, setWs] = useState<WebSocket | null>(null)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    const createChannel = () => {
-      let ws = new WebSocket(
-        'wss://social-network.samuraijs.com/handlers/ChatHandler.ashx'
-      )
-      ws.onclose = () => setTimeout(createChannel, 3000)
-      setWs(ws)
+    dispatch(startListeningMessages())
+    return () => {
+      dispatch(stopListeningMessages())
     }
-    createChannel()
-    return () => ws?.close()
   }, [])
 
   return (
     <>
-      <ChatMessages ws={ws} />
-      <ChatAddMessageForm ws={ws} />
+      <ChatMessages />
+      <ChatAddMessageForm />
     </>
   )
 }
 
-interface IChatMessages {
-  ws: WebSocket | null
-}
-
-const ChatMessages: React.FC<IChatMessages> = ({ ws }) => {
-  const [messages, setMessages] = useState<IChatMessage[]>([])
-
-  useEffect(() => {
-    if (ws) {
-      ws.onmessage = (e) => {
-        setMessages((prevMessages) => [...prevMessages, ...JSON.parse(e.data)])
-      }
-    }
-    return () => ws?.close()
-  }, [ws])
+const ChatMessages: React.FC = () => {
+  const messages = useSelector((state: RootStateType) => state.chat.messages)
 
   return (
     <div style={{ height: 400, overflowY: 'auto' }}>
@@ -71,24 +54,13 @@ const ChatMessage: React.FC<IChatMessageProps> = ({ message }) => {
   )
 }
 
-interface IChatAddMessageForm {
-  ws: WebSocket | null
-}
-
-const ChatAddMessageForm: React.FC<IChatAddMessageForm> = ({ ws }) => {
+const ChatAddMessageForm: React.FC = () => {
   const [message, setMessage] = useState('')
-  const [readyStatus, setReadyStatus] = useState<'pending' | 'ready'>('pending')
-
-  useEffect(() => {
-    if (ws) {
-      ws.onopen = () => setReadyStatus('ready')
-    }
-    return () => ws?.close()
-  }, [ws])
+  const dispatch = useDispatch()
 
   const handleCLickSendMessage = () => {
     if (!message) return
-    ws?.send(message)
+    dispatch(sendMessage(message))
     setMessage('')
   }
 
@@ -101,10 +73,7 @@ const ChatAddMessageForm: React.FC<IChatAddMessageForm> = ({ ws }) => {
         />
       </div>
       <div>
-        <button
-          disabled={readyStatus !== 'ready' || ws === null}
-          onClick={handleCLickSendMessage}
-        >
+        <button disabled={false} onClick={handleCLickSendMessage}>
           send
         </button>
       </div>
