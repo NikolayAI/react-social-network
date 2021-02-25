@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { IChatMessage } from '../../api/chatApi'
+import React, { useEffect, useRef, useState } from 'react'
+import { IChatMessageApi } from '../../api/chatApi'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   sendMessage,
@@ -7,10 +7,13 @@ import {
   stopListeningMessages,
 } from '../../redux/reducers/chatReducer'
 import { RootStateType } from '../../redux/reducers/rootReducer1'
+import { selectStatus } from '../../redux/selectors/chatSelectors'
 
 const Chat: React.FC = () => {
   const dispatch = useDispatch()
+  const status = useSelector(selectStatus)
 
+  const x = status
   useEffect(() => {
     dispatch(startListeningMessages())
     return () => {
@@ -20,6 +23,7 @@ const Chat: React.FC = () => {
 
   return (
     <>
+      {status === 'error' && <div>Error. Please refresh page.</div>}
       <ChatMessages />
       <ChatAddMessageForm />
     </>
@@ -28,21 +32,45 @@ const Chat: React.FC = () => {
 
 const ChatMessages: React.FC = () => {
   const messages = useSelector((state: RootStateType) => state.chat.messages)
+  const messagesAnchorRef = useRef<HTMLDivElement>(null)
+  const [isAutoScroll, setIsAutoScroll] = useState(true)
+
+  const scrollHandler = (e: React.UIEvent<HTMLDivElement>) => {
+    const element = e.currentTarget
+    if (
+      Math.abs(
+        element.scrollHeight - element.scrollTop - element.clientHeight
+      ) < 300
+    ) {
+      !isAutoScroll && setIsAutoScroll(true)
+    } else {
+      isAutoScroll && setIsAutoScroll(false)
+    }
+  }
+
+  useEffect(() => {
+    if (isAutoScroll)
+      messagesAnchorRef.current?.scrollIntoView({
+        block: 'end',
+        behavior: 'smooth',
+      })
+  }, [messages])
 
   return (
-    <div style={{ height: 400, overflowY: 'auto' }}>
+    <div style={{ height: 400, overflowY: 'auto' }} onScroll={scrollHandler}>
       {messages.map((item, i) => (
-        <ChatMessage key={i} message={item} />
+        <ChatMessage key={item.id} message={item} />
       ))}
+      <div ref={messagesAnchorRef}></div>
     </div>
   )
 }
 
 interface IChatMessageProps {
-  message: IChatMessage
+  message: IChatMessageApi
 }
 
-const ChatMessage: React.FC<IChatMessageProps> = ({ message }) => {
+const ChatMessage: React.FC<IChatMessageProps> = React.memo(({ message }) => {
   return (
     <div>
       <img src={message.photo} alt='avatar' />
@@ -52,10 +80,11 @@ const ChatMessage: React.FC<IChatMessageProps> = ({ message }) => {
       <hr />
     </div>
   )
-}
+})
 
 const ChatAddMessageForm: React.FC = () => {
   const [message, setMessage] = useState('')
+  const status = useSelector(selectStatus)
   const dispatch = useDispatch()
 
   const handleCLickSendMessage = () => {
@@ -73,7 +102,10 @@ const ChatAddMessageForm: React.FC = () => {
         />
       </div>
       <div>
-        <button disabled={false} onClick={handleCLickSendMessage}>
+        <button
+          disabled={status === 'pending'}
+          onClick={handleCLickSendMessage}
+        >
           send
         </button>
       </div>
