@@ -49,7 +49,8 @@ export const chatAPI = {
     return () => {
       // @ts-ignore
       subscribers[eventName] = subscribers[eventName].filter(
-        (s) => s !== callback
+        (s: MessagesReceivedSubscriberType | StatusChangedSubscriberType) =>
+          s !== callback
       )
     }
   },
@@ -59,7 +60,8 @@ export const chatAPI = {
   ) {
     // @ts-ignore
     subscribers[eventName] = subscribers[eventName].filter(
-      (s) => s !== callback
+      (s: MessagesReceivedSubscriberType | StatusChangedSubscriberType) =>
+        s !== callback
     )
   },
   sendMessage(message: string) {
